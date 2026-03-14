@@ -104,15 +104,16 @@ function renderCodes() {
 }
 
 function copyOne(code) {
+  const btn = event.target;
   navigator.clipboard.writeText(code).then(() => {
-    event.target.textContent = '✓';
-    setTimeout(() => event.target.textContent = 'Copiar', 1200);
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = 'Copiar', 1200);
   });
 }
 
 function copyAll() {
+  const btn = event.target;
   navigator.clipboard.writeText(generated.join('\n')).then(() => {
-    const btn = event.target;
     btn.textContent = '✓ Copiados';
     setTimeout(() => btn.textContent = '📋 Copiar todos', 1500);
   });
