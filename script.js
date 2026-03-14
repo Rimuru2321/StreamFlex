@@ -4173,22 +4173,20 @@ function openPremiumModal() {
             msg.textContent = 'Consultando servidor...';
 
             try {
-                const { db, doc, getDoc, updateDoc, collection, query, where, getDocs } = window._fb;
+                const { db, doc, getDoc, updateDoc } = window._fb;
 
-                // 1. Look up code in Firestore "premiumCodes" collection
-                const codesRef = collection(db, 'premiumCodes');
-                const q = query(codesRef, where('code', '==', code));
-                const snap = await getDocs(q);
+                // 1. Look up code in Firestore "premiumCodes" collection by document ID
+                const codeRef = doc(db, 'premiumCodes', code);
+                const codeSnap = await getDoc(codeRef);
 
-                if (snap.empty) {
+                if (!codeSnap.exists()) {
                     msg.style.color = 'var(--red)';
                     msg.textContent = 'Codigo invalido. Verifica que este bien escrito.';
                     btn.disabled = false; btn.textContent = 'Activar';
                     return;
                 }
 
-                const codeDoc = snap.docs[0];
-                const codeData = codeDoc.data();
+                const codeData = codeSnap.data();
 
                 if (codeData.used) {
                     msg.style.color = 'var(--red)';
@@ -4197,7 +4195,7 @@ function openPremiumModal() {
                     return;
                 }
 
-                await updateDoc(codeDoc.ref, {
+                await updateDoc(codeRef, {
                     used: true,
                     usedBy: user.uid,
                     usedByEmail: user.email,
