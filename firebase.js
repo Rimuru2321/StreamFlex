@@ -26,20 +26,12 @@ import {
     deleteDoc,
     updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-    getStorage,
-    ref as storageRef,
-    uploadString,
-    getDownloadURL,
-    deleteObject,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ── YOUR FIREBASE CONFIG (replace with yours) ────────────────
 const firebaseConfig = {
     apiKey:            "AIzaSyApxnv6GbVYM4aV3ubRA6eG1QWrgowscYM",
     authDomain:        "streamflex-app-d8624.firebaseapp.com",
     projectId:         "streamflex-app-d8624",
-    storageBucket:     "streamflex-app-d8624.appspot.com",
     messagingSenderId: "919493990395",
     appId:             "1:919493990395:web:9e350a110a87d2c0c6dd5e",
 };
@@ -48,17 +40,15 @@ const firebaseConfig = {
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
-const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 // Force Google account selection for better UX
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Expose to global scope so script.js can use them
 window._fb = {
-    auth, db, storage, googleProvider,
+    auth, db, googleProvider,
     doc, getDoc, getDocs, setDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp,
     deleteDoc, updateDoc,
-    storageRef, uploadString, getDownloadURL, deleteObject,
     signOut, sendPasswordResetEmail, signInWithEmailAndPassword,
     createUserWithEmailAndPassword, signInWithPopup, updateProfile, onAuthStateChanged
 };
@@ -89,11 +79,9 @@ function bootAuth() {
             document.getElementById('userBarName').textContent  = firstName;
             document.getElementById('userBarEmail').textContent = user.email;
             const avatarEl = document.getElementById('userBarAvatar');
-            if (user.photoURL) {
-                avatarEl.innerHTML = `<img src="${user.photoURL}" alt="${firstName}">`;
-            } else {
-                avatarEl.textContent = firstName.charAt(0).toUpperCase();
-            }
+            const savedIcon = localStorage.getItem('sf_avatarIcon') || '';
+            if (savedIcon) avatarEl.textContent = savedIcon;
+            else avatarEl.textContent = firstName.charAt(0).toUpperCase();
 
             // Signal script.js that user is ready
             window.dispatchEvent(new CustomEvent('sf:userReady', { detail: { uid: user.uid, user } }));
