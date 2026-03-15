@@ -607,6 +607,45 @@ function setupEventListeners() {
             console.warn('PWA install prompt failed:', err);
         }
     });
+    const qrBtn = document.getElementById('qrBtn');
+    const qrModal = document.getElementById('qrModal');
+    const qrClose = document.getElementById('qrClose');
+    const qrCodeEl = document.getElementById('qrCode');
+    const qrUrlEl = document.getElementById('qrUrl');
+    if (qrBtn && qrModal && qrCodeEl && qrUrlEl) {
+        const renderQR = () => {
+            if (typeof QRCode !== 'function') {
+                console.warn('QRCode library not loaded.');
+                return;
+            }
+            const url = `${location.origin}${location.pathname}`;
+            qrCodeEl.innerHTML = '';
+            qrUrlEl.textContent = url;
+            new QRCode(qrCodeEl, {
+                text: url,
+                width: 220,
+                height: 220,
+                colorDark: '#111111',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        };
+        qrBtn.addEventListener('click', () => {
+            renderQR();
+            qrModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        qrClose?.addEventListener('click', () => {
+            qrModal.style.display = 'none';
+            document.body.style.overflow = '';
+        });
+        qrModal.addEventListener('click', e => {
+            if (e.target === qrModal) {
+                qrModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        });
+    }
 
     setupCardSwipeGestures();
 
