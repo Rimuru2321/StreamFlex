@@ -711,6 +711,31 @@ main { padding: 0 2.5rem 3rem calc(40px + 2.5rem); }
 
 #modalBody { padding: 2rem; margin-top: 0; }
 
+/* QR modal */
+.qr-modal-content {
+    max-width: 380px;
+    padding: 1.25rem 1.5rem 1.75rem;
+    text-align: center;
+}
+.qr-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text);
+}
+.qr-code {
+    margin: 1rem auto 0.5rem;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    width: fit-content;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+.qr-url {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    word-break: break-all;
+}
+
 /* Modal backdrop image */
 .modal-backdrop {
     position: absolute;
