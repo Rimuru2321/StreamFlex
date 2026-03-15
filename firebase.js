@@ -39,7 +39,7 @@ const firebaseConfig = {
     apiKey:            "AIzaSyApxnv6GbVYM4aV3ubRA6eG1QWrgowscYM",
     authDomain:        "streamflex-app-d8624.firebaseapp.com",
     projectId:         "streamflex-app-d8624",
-    storageBucket:     "streamflex-app-d8624.firebasestorage.app",
+    storageBucket:     "streamflex-app-d8624.appspot.com",
     messagingSenderId: "919493990395",
     appId:             "1:919493990395:web:9e350a110a87d2c0c6dd5e",
 };
