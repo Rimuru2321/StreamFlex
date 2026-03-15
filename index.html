@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Firebase -->
     <script type="module" src="firebase.js"></script>
 </head>
@@ -252,6 +253,7 @@
         <button id="listsBtn" class="icon-action-btn" title="Mis listas personalizadas"><i class="fas fa-list-ul"></i></button>
         <button id="ruletaBtn" class="icon-action-btn ruleta-btn" title="Película aleatoria"><i class="fas fa-dice"></i></button>
         <button id="themeToggle" class="theme-toggle-btn" title="Cambiar tema"><i class="fas fa-sun"></i></button>
+        <button id="qrBtn" class="icon-action-btn" title="Compartir QR"><i class="fas fa-qrcode"></i></button>
         <button id="installPWABtn" class="icon-action-btn" title="Instalar app" style="display:none"><i class="fas fa-download"></i></button>
     </header>
 
@@ -431,6 +433,14 @@
         <div class="share-modal-content">
             <span class="close share-close">&times;</span>
             <div id="shareModalBody"></div>
+        </div>
+    </div>
+    <div id="qrModal" class="modal qr-modal">
+        <div class="modal-content qr-modal-content">
+            <span class="close" id="qrClose">&times;</span>
+            <div class="qr-title">Escanea y entra</div>
+            <div id="qrCode" class="qr-code"></div>
+            <div id="qrUrl" class="qr-url"></div>
         </div>
     </div>
 
