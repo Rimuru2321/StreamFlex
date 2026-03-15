@@ -256,10 +256,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (isPremium && localStorage.getItem('sf_theme') && localStorage.getItem('sf_theme') !== 'red') {
         setTimeout(() => applyPremiumTheme(localStorage.getItem('sf_theme')), 50);
     }
-    await loadGenres();
     setupEventListeners();
     initCardDelegation();
     setupInfiniteScroll();
+    await loadGenres();
 });
 
 window.addEventListener('sf:userReady', async (e) => {
