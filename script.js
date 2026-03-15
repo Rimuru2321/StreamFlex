@@ -3778,11 +3778,25 @@ function openEditProfile() {
         const btn = document.getElementById('epSaveBtn');
         btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
         try {
-            await window._fb.updateProfile(user, { displayName: newName });
+            const avatarEl = document.getElementById('epAvatarPreview');
+            const newPhoto = avatarEl?.dataset?.newPhoto;
+            const updatePayload = { displayName: newName };
+            if (newPhoto !== undefined) updatePayload.photoURL = newPhoto || '';
 
-            if (window._sfSaveToCloud) await window._sfSaveToCloud({ displayName: newName });
+            await window._fb.updateProfile(user, updatePayload);
+
+            if (window._sfSaveToCloud) {
+                const cloudPayload = { displayName: newName };
+                if (newPhoto !== undefined) cloudPayload.photoURL = newPhoto || '';
+                await window._sfSaveToCloud(cloudPayload);
+            }
 
             document.getElementById('userBarName').textContent = newName.split(' ')[0];
+            const userBarAvatar = document.getElementById('userBarAvatar');
+            if (userBarAvatar) {
+                if (updatePayload.photoURL) userBarAvatar.innerHTML = `<img src="${updatePayload.photoURL}" alt="${newName}">`;
+                else userBarAvatar.textContent = newName.charAt(0).toUpperCase();
+            }
             showToast('<i class="fas fa-check"></i> Perfil actualizado');
             closeModalFn();
             if (currentView === 'profile') loadProfileView();
