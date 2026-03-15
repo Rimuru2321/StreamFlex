@@ -4668,6 +4668,7 @@ kbd {
     border-radius: 12px;
     transition: transform .2s, border-color .2s, box-shadow .2s;
 }
+.lb-row-premium { border-color: rgba(201,168,76,.35); box-shadow: inset 0 0 0 1px rgba(201,168,76,.12); }
 .lb-row:hover { transform: translateY(-2px); border-color: rgba(255,215,0,.6); box-shadow: 0 10px 25px rgba(0,0,0,.35); }
 .lb-row-self { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255,215,0,.25); }
 .lb-rank {
@@ -4684,6 +4685,7 @@ kbd {
 }
 .lb-user-info { display: flex; flex-direction: column; gap: .15rem; overflow: hidden; }
 .lb-name { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lb-premium-star { color: var(--gold); font-size: .75rem; margin-left: .3rem; line-height: 1; text-shadow: 0 0 8px rgba(201,168,76,.45); }
 .lb-sub { font-size: .75rem; color: var(--text-muted); }
 .lb-xp { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; min-width: 3.5rem; text-align: right; color: var(--gold); }
 
