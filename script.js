@@ -591,12 +591,13 @@ function setupEventListeners() {
     document.getElementById('bottomNoSeBtn')?.addEventListener('click', openMoodPicker);
 
     window.addEventListener('beforeinstallprompt', e => {
+        const installBtn = document.getElementById('installPWABtn');
+        if (!installBtn) return;
         e.preventDefault();
         deferredInstall = e;
-        const installBtn = document.getElementById('installPWABtn');
-        if (installBtn) installBtn.style.display = 'flex';
+        installBtn.style.display = 'flex';
     });
-    document.getElementById('installPWABtn').addEventListener('click', async () => {
+    document.getElementById('installPWABtn')?.addEventListener('click', async () => {
         if (!deferredInstall) return;
         try {
             await deferredInstall.prompt();
@@ -3451,8 +3452,7 @@ async function loadTVSeasons(item) {
         const ep = document.getElementById('seasonEpisodesContainer');
         ep.innerHTML = `<div class="loading-spinner" style="padding:2rem 0"><div class="spinner"></div></div>`;
         try {
-            const res = await tmdbFetch(`${BASE_URL}/tv/${item.id}/season/${seasonNum}?api_key=${API_KEY}&language=${LANGUAGE}`);
-            const data = await res.json();
+            const data = await tmdbFetch(`${BASE_URL}/tv/${item.id}/season/${seasonNum}?api_key=${API_KEY}&language=${LANGUAGE}`);
             const eps = data.episodes || [];
             ep.innerHTML = `
             <div class="episodes-grid">
