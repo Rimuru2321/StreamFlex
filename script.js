@@ -193,6 +193,8 @@ let marathonQueue    = JSON.parse(localStorage.getItem('marathonQueue'))    || [
 let seriesProgress   = JSON.parse(localStorage.getItem('seriesProgress'))   || {};
 let userBio          = localStorage.getItem('sf_bio') || '';
 let profileBg        = localStorage.getItem('sf_profileBg') || '';
+const AVATAR_ICONS = ['🐶','🐱','🦊','🐼','🐵','🦁','🐯','🐸','🐰','🐻','🐧','🦉','🦄','🐙','🐢','🐬'];
+let userAvatarIcon   = localStorage.getItem('sf_avatarIcon') || '';
 let top10List        = JSON.parse(localStorage.getItem('top10List'))        || [];
 let searchHistory    = JSON.parse(localStorage.getItem('searchHistory'))    || [];
 let streakData       = JSON.parse(localStorage.getItem('streakData'))       || { lastWatch: null, streak: 0, longest: 0 };
@@ -201,6 +203,15 @@ let deferredInstall  = null;
 
 let currentUid = null;
 let cloudSaveTimer = null;
+
+function getDefaultAvatarIcon(seed='') {
+    if (!seed) return AVATAR_ICONS[0];
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+    return AVATAR_ICONS[hash % AVATAR_ICONS.length];
+}
 
 window._sfLoadUserData = function(data) {
     if (data.favorites)    { favorites    = data.favorites;    }
@@ -213,6 +224,17 @@ window._sfLoadUserData = function(data) {
     if (data.achievements) { achievements = data.achievements; }
     if (data.streakData)   { streakData   = data.streakData;   }
     if (data.marathonQueue){ marathonQueue= data.marathonQueue;}
+    if (data.avatarIcon)   {
+        userAvatarIcon = data.avatarIcon;
+        localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+    }
+    if (!userAvatarIcon) {
+        userAvatarIcon = getDefaultAvatarIcon(currentUid || data.email || '');
+        localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+        cloudSave();
+    }
+    const userBarAvatar = document.getElementById('userBarAvatar');
+    if (userBarAvatar && userAvatarIcon) userBarAvatar.textContent = userAvatarIcon;
 
     if (data.isPremium === true) {
         isPremium = true;
@@ -237,6 +259,7 @@ function cloudSave() {
             favorites, watchLater, watchHistory, top10List,
             userRatings, userNotes, customLists, achievements,
             streakData, marathonQueue,
+            avatarIcon: userAvatarIcon,
         });
     }, 2500);
 }
@@ -1739,10 +1762,9 @@ async function loadProfileView() {
     const fbUser    = window._fb?.auth?.currentUser;
     const fbName    = fbUser?.displayName || fbUser?.email?.split('@')[0] || 'Cinéfilo';
     const fbEmail   = fbUser?.email || '';
-    const fbPhoto   = fbUser?.photoURL || '';
     const fbInitial = fbName.charAt(0).toUpperCase();
-    const avatarHtml = fbPhoto
-        ? `<img src="${fbPhoto}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+    const avatarHtml = userAvatarIcon
+        ? `<span class="pv-avatar-icon">${userAvatarIcon}</span>`
         : `<span class="pv-avatar-initial">${fbInitial}</span>`;
 
     const level   = getUserLevel();
@@ -3643,10 +3665,11 @@ async function loadLeaderboard() {
     if (!user) return;
 
     try {
+        const avatarIcon = userAvatarIcon || getDefaultAvatarIcon(user.uid);
         await setDoc(doc(db, 'leaderboard', user.uid), {
             name: user.displayName || user.email.split('@')[0],
             isPremium: isPremium,
-            photo: user.photoURL || '',
+            avatarIcon,
             watched: watchHistory.length,
             xp: getUserXP(),
             level: getUserLevel().label,
@@ -3675,10 +3698,11 @@ async function loadLeaderboard() {
 
         const rankRows = topUsers.length ? topUsers.map((u, idx) => {
             const isSelf = u.id === user.uid;
+            const icon = u.avatarIcon || getDefaultAvatarIcon(u.id || u.name || '');
             return `<div class="lb-row${isSelf ? ' lb-row-self' : ''}">
                 <div class="lb-rank">${idx+1}</div>
                 <div class="lb-user">
-                    <div class="lb-avatar">${u.photo ? `<img src="${u.photo}" alt="">` : `<span>${(u.name||'?').charAt(0)}</span>`}</div>
+                    <div class="lb-avatar"><span class="lb-avatar-icon">${icon}</span></div>
                     <div class="lb-user-info">
                         <div class="lb-name">${u.name||'Usuario'}</div>
                         <div class="lb-sub">${u.xp||0} XP · ${u.watched||0} vistas</div>
@@ -3688,12 +3712,13 @@ async function loadLeaderboard() {
             </div>`;
         }).join('') : `<div class="lb-empty"><span>🌐</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
 
+        const ownIcon = own.avatarIcon || userAvatarIcon || getDefaultAvatarIcon(user.uid);
         inner.innerHTML = `
         <div class="lb-wrap">
             <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global · ランキング</div>
             <div class="lb-subtitle">Tu posición en la comunidad StreamFlex</div>
             <div class="lb-own-card">
-                <div class="lb-own-avatar">${own.photo ? `<img src="${own.photo}" alt="">` : `<span>${(own.name||'?').charAt(0)}</span>`}</div>
+                <div class="lb-own-avatar"><span class="lb-avatar-icon">${ownIcon}</span></div>
                 <div class="lb-own-info">
                     <div class="lb-own-name" style="${isPremium ? 'color:var(--gold);font-weight:700' : ''}">${own.name || user.email.split('@')[0]} ${isPremium ? '<span class="sf-premium-badge">⭐ PREMIUM</span>' : ''}</div>
                     <div class="lb-own-stats">${getUserXP()} XP · ${watchHistory.length} vistas · ${getUserLevel().icon} ${getUserLevel().label}</div>
@@ -3724,18 +3749,20 @@ function openEditProfile() {
     document.body.style.overflow = 'hidden';
     modal.style.display = 'block';
     const currentName = user.displayName || '';
-    const currentPhoto = user.photoURL || '';
+    const currentIcon = userAvatarIcon || getDefaultAvatarIcon(currentUid || user.uid || currentName || '');
     modalBody.innerHTML = `
     <div class="edit-profile-modal">
         <div class="modal-title-jp">プロフィール編集 · EDITAR PERFIL</div>
         <h2>Editar perfil</h2>
         <div class="ep-avatar-wrap">
             <div class="ep-avatar" id="epAvatarPreview">
-                ${currentPhoto ? `<img src="${currentPhoto}" alt="">` : `<span>${currentName.charAt(0)||'?'}</span>`}
+                ${currentIcon ? `<span class="ep-avatar-icon">${currentIcon}</span>` : `<span>${currentName.charAt(0)||'?'}</span>`}
             </div>
-            <div class="ep-avatar-btns">
-                <label class="ep-btn" style="cursor:pointer"><i class="fas fa-camera"></i> Cambiar foto<input type="file" id="epPhotoFile" accept="image/*" style="display:none"></label>
-                ${currentPhoto ? `<button class="ep-btn ep-btn-danger" id="epRemovePhoto"><i class="fas fa-trash"></i> Quitar foto</button>` : ''}
+        </div>
+        <div class="ep-icon-picker">
+            <label>Elige tu icono</label>
+            <div class="ep-icon-grid" id="epIconGrid">
+                ${AVATAR_ICONS.map(ic => `<button class="ep-icon-btn ${ic===currentIcon?'active':''}" data-icon="${ic}" type="button">${ic}</button>`).join('')}
             </div>
         </div>
         <div class="ep-field">
@@ -3751,24 +3778,14 @@ function openEditProfile() {
             <button class="ep-save-btn" id="epSaveBtn"><i class="fas fa-save"></i> Guardar cambios</button>
         </div>
     </div>`;
-
-    document.getElementById('epPhotoFile')?.addEventListener('change', async (e) => {
-        const file = e.target.files[0]; if (!file) return;
-        if (file.size > 2 * 1024 * 1024) {
-            document.getElementById('epError').textContent = 'La imagen debe ser menor de 2MB';
-            document.getElementById('epError').style.display = 'block'; return;
-        }
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            document.getElementById('epAvatarPreview').innerHTML = `<img src="${ev.target.result}" alt="">`;
-            document.getElementById('epAvatarPreview').dataset.newPhoto = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
-
-    document.getElementById('epRemovePhoto')?.addEventListener('click', () => {
-        document.getElementById('epAvatarPreview').innerHTML = `<span>${currentName.charAt(0)||'?'}</span>`;
-        document.getElementById('epAvatarPreview').dataset.newPhoto = '';
+    document.getElementById('epIconGrid')?.querySelectorAll('.ep-icon-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.ep-icon-btn').forEach(b => b.classList.toggle('active', b === btn));
+            const icon = btn.dataset.icon;
+            const preview = document.getElementById('epAvatarPreview');
+            preview.innerHTML = `<span class="ep-avatar-icon">${icon}</span>`;
+            preview.dataset.newIcon = icon;
+        });
     });
 
     document.getElementById('epSaveBtn')?.addEventListener('click', async () => {
@@ -3779,35 +3796,18 @@ function openEditProfile() {
         btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
         try {
             const avatarEl = document.getElementById('epAvatarPreview');
-            const newPhoto = avatarEl?.dataset?.newPhoto;
-            const updatePayload = { displayName: newName };
-
-            if (newPhoto !== undefined) {
-                if (newPhoto) {
-                    const { storage, storageRef, uploadString, getDownloadURL } = window._fb;
-                    const path = `avatars/${user.uid}/profile_${Date.now()}.jpg`;
-                    const imgRef = storageRef(storage, path);
-                    await uploadString(imgRef, newPhoto, 'data_url');
-                    updatePayload.photoURL = await getDownloadURL(imgRef);
-                } else {
-                    updatePayload.photoURL = '';
-                }
-            }
-
-            await window._fb.updateProfile(user, updatePayload);
+            const newIcon = avatarEl?.dataset?.newIcon || currentIcon || '';
+            await window._fb.updateProfile(user, { displayName: newName });
 
             if (window._sfSaveToCloud) {
-                const cloudPayload = { displayName: newName };
-                if (updatePayload.photoURL !== undefined) cloudPayload.photoURL = updatePayload.photoURL;
-                await window._sfSaveToCloud(cloudPayload);
+                await window._sfSaveToCloud({ displayName: newName, avatarIcon: newIcon });
             }
 
             document.getElementById('userBarName').textContent = newName.split(' ')[0];
             const userBarAvatar = document.getElementById('userBarAvatar');
-            if (userBarAvatar) {
-                if (updatePayload.photoURL) userBarAvatar.innerHTML = `<img src="${updatePayload.photoURL}" alt="${newName}">`;
-                else userBarAvatar.textContent = newName.charAt(0).toUpperCase();
-            }
+            if (userBarAvatar) userBarAvatar.textContent = newIcon || newName.charAt(0).toUpperCase();
+            userAvatarIcon = newIcon;
+            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
             showToast('<i class="fas fa-check"></i> Perfil actualizado');
             closeModalFn();
             if (currentView === 'profile') loadProfileView();
@@ -4337,7 +4337,7 @@ async function initReviews(itemId, mediaType) {
                 mediaType,
                 userId:      user.uid,
                 userName:    user.displayName || user.email.split('@')[0],
-                userPhoto:   user.photoURL || null,
+                userAvatarIcon: userAvatarIcon || getDefaultAvatarIcon(user.uid),
                 text,
                 rating,
                 isPremium,
@@ -4386,9 +4386,8 @@ async function loadReviews(itemId, currentUid) {
             const stars     = r.rating > 0 ? '<span class="sf-rev-stars">' + '★'.repeat(r.rating) + '<span style="opacity:0.3">' + '★'.repeat(5 - r.rating) + '</span></span>' : '';
             const isOwn     = r.userId === currentUid;
             const premBadge = r.isPremium ? '<span class="sf-rev-prem">⭐</span>' : '';
-            const avatar    = r.userPhoto
-                ? `<img src="${r.userPhoto}" alt="" class="sf-rev-avatar-img">`
-                : `<div class="sf-rev-avatar-letter">${(r.userName||'?').charAt(0).toUpperCase()}</div>`;
+            const avatarIcon = r.userAvatarIcon || getDefaultAvatarIcon(r.userId || r.userName || '');
+            const avatar    = `<div class="sf-rev-avatar-letter">${avatarIcon}</div>`;
             const dateStr   = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString('es-ES', {day:'2-digit',month:'short',year:'numeric'}) : '';
             return `<div class="sf-review-card ${isOwn ? 'sf-review-own' : ''}">
                 <div class="sf-rev-top">
@@ -4487,8 +4486,7 @@ async function searchUsers(query) {
             results.map(u => {
                 const isFriend = myFriends.includes(u._uid);
                 const hasSentReq = outgoing.includes(u._uid);
-                const initial  = (u.displayName || '?').charAt(0).toUpperCase();
-                const photo    = u.photoURL;
+                const icon     = u.avatarIcon || getDefaultAvatarIcon(u._uid || u.displayName || '');
                 let btnText, btnClass, btnIcon, btnAction;
                 if (isFriend) {
                     btnText = 'Amigo'; btnClass = 'sf-friend-btn-remove'; btnIcon = 'user-minus'; btnAction = 'remove';
@@ -4498,7 +4496,7 @@ async function searchUsers(query) {
                     btnText = 'Agregar'; btnClass = 'sf-friend-btn-add'; btnIcon = 'user-plus'; btnAction = 'add';
                 }
                 return `<div class="sf-friend-card" data-uid="${u._uid}">
-                    <div class="sf-friend-avatar">${photo ? `<img src="${photo}" alt="">` : `<span>${initial}</span>`}</div>
+                    <div class="sf-friend-avatar"><span>${icon}</span></div>
                     <div class="sf-friend-info">
                         <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">⭐</span>' : ''}</div>
                         <div class="sf-friend-meta">${(u.watchHistory||[]).length} vistas · ${getUserLevel_fromData(u).label}</div>
@@ -4539,7 +4537,7 @@ async function toggleFriend(targetUid, action) {
                 status: 'pending',
                 createdAt: fb.serverTimestamp(),
                 fromName: user.displayName || user.email.split('@')[0],
-                fromPhoto: user.photoURL || null
+                fromAvatarIcon: userAvatarIcon || getDefaultAvatarIcon(user.uid)
             });
             showToast('<i class="fas fa-paper-plane"></i> Solicitud de amistad enviada');
         } else {
@@ -4596,13 +4594,12 @@ async function renderFriendsList(uid) {
         const valid = profiles.filter(Boolean);
 
         el.innerHTML = valid.map(u => {
-            const initial = (u.displayName||'?').charAt(0).toUpperCase();
-            const photo   = u.photoURL;
+            const icon    = u.avatarIcon || getDefaultAvatarIcon(u._uid || u.displayName || '');
             const watched = (u.watchHistory||[]).length;
             const lastItem = (u.watchHistory||[])[0];
             const lastTitle = lastItem ? (lastItem.title||lastItem.name||'') : null;
             return `<div class="sf-friend-card">
-                <div class="sf-friend-avatar">${photo ? `<img src="${photo}" alt="">` : `<span>${initial}</span>`}</div>
+                <div class="sf-friend-avatar"><span>${icon}</span></div>
                 <div class="sf-friend-info">
                     <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">⭐</span>' : ''}</div>
                     <div class="sf-friend-meta">${watched} vistas · ${getUserLevel_fromData(u).label}
@@ -4646,7 +4643,7 @@ async function renderFriendsActivity(uid) {
                 events.push({
                     uid:    u._uid,
                     name:   u.displayName || 'Usuario',
-                    photo:  u.photoURL || null,
+                    avatarIcon: u.avatarIcon || getDefaultAvatarIcon(u._uid || u.displayName || ''),
                     action: 'vio',
                     item,
                     ts: item._watchedAt || 0,
@@ -4656,7 +4653,7 @@ async function renderFriendsActivity(uid) {
                 events.push({
                     uid:    u._uid,
                     name:   u.displayName || 'Usuario',
-                    photo:  u.photoURL || null,
+                    avatarIcon: u.avatarIcon || getDefaultAvatarIcon(u._uid || u.displayName || ''),
                     action: 'marcó favorita',
                     item,
                     ts: item._addedAt || 0,
@@ -4675,10 +4672,10 @@ async function renderFriendsActivity(uid) {
         el.innerHTML = recent.map(ev => {
             const title   = ev.item?.title || ev.item?.name || 'Título desconocido';
             const poster  = ev.item?.poster_path ? IMG_BASE + ev.item.poster_path : null;
-            const initial = ev.name.charAt(0).toUpperCase();
+            const icon = ev.avatarIcon || getDefaultAvatarIcon(ev.uid || ev.name || '');
             const timeStr = ev.ts ? timeAgo(ev.ts) : '';
             return `<div class="sf-activity-row" data-id="${ev.item?.id}" data-type="${ev.item?._type||'movie'}">
-                <div class="sf-act-avatar">${ev.photo ? `<img src="${ev.photo}" alt="">` : `<span>${initial}</span>`}</div>
+                <div class="sf-act-avatar"><span>${icon}</span></div>
                 <div class="sf-act-body">
                     <span class="sf-act-name">${ev.name}</span>
                     <span class="sf-act-verb"> ${ev.action} </span>
@@ -4715,9 +4712,9 @@ async function renderFriendRequests(uid) {
         }
 
         el.innerHTML = requests.map(req => {
-            const initial = (req.fromName || '?').charAt(0).toUpperCase();
+            const icon = req.fromAvatarIcon || getDefaultAvatarIcon(req.from || req.fromName || '');
             return `<div class="sf-friend-card">
-                <div class="sf-friend-avatar">${req.fromPhoto ? `<img src="${req.fromPhoto}" alt="">` : `<span>${initial}</span>`}</div>
+                <div class="sf-friend-avatar"><span>${icon}</span></div>
                 <div class="sf-friend-info">
                     <div class="sf-friend-name">${req.fromName || 'Usuario'}</div>
                     <div class="sf-friend-meta">Te envió una solicitud</div>
