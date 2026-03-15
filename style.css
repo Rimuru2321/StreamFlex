@@ -3507,6 +3507,7 @@ kbd {
     box-shadow: 0 0 0 4px rgba(204,0,0,0.12), 0 4px 20px rgba(0,0,0,0.5);
     overflow: hidden;
 }
+.pv-avatar-icon { font-size: 2rem; line-height: 1; }
 .pv-hero-eyebrow { font-size:0.58rem; letter-spacing:4px; color:var(--red); text-transform:uppercase; font-family:'Noto Serif JP',serif; margin-bottom:0.2rem; }
 .pv-hero-name { font-family:'Noto Serif JP',serif; font-size:1.5rem; color:var(--text); line-height:1.2; }
 .pv-hero-email { font-size:0.72rem; color:var(--text-muted); margin-top:0.1rem; margin-bottom:0.2rem; }
@@ -4353,13 +4354,13 @@ kbd {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-family: 'Bebas Neue', sans-serif;
+    line-height: 1;
     flex-shrink: 0;
     overflow: hidden;
     border: 1.5px solid rgba(204,0,0,0.5);
 }
-.user-bar-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .user-bar-name {
     font-size: 0.78rem;
     font-weight: 600;
@@ -4505,7 +4506,7 @@ kbd {
     overflow: hidden; font-size: 2rem; font-family: 'Bebas Neue', sans-serif; color: white;
     flex-shrink: 0; border: 3px solid #222;
 }
-.ep-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.ep-avatar-icon { font-size: 2.2rem; line-height: 1; }
 .ep-avatar-btns { display: flex; flex-direction: column; gap: .5rem; }
 .ep-btn {
     padding: .5rem 1rem; border: 1px solid #333; background: #1a1a1a;
@@ -4524,6 +4525,29 @@ kbd {
     box-sizing: border-box;
 }
 .ep-field input:focus { outline: none; border-color: var(--gold); }
+.ep-icon-picker { margin-bottom: 1.2rem; }
+.ep-icon-picker label {
+    display: block; font-size: .8rem; color: var(--text-muted);
+    margin-bottom: .4rem; letter-spacing: 1px;
+}
+.ep-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: .5rem;
+}
+.ep-icon-btn {
+    width: 44px; height: 44px; border-radius: 10px;
+    border: 1px solid #2a2a2a; background: #111;
+    color: #fff; font-size: 1.2rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .2s, transform .2s, box-shadow .2s, background .2s;
+}
+.ep-icon-btn:hover { border-color: var(--gold); transform: translateY(-1px); }
+.ep-icon-btn.active {
+    border-color: var(--red);
+    box-shadow: 0 0 0 2px rgba(204,0,0,0.2);
+    background: rgba(204,0,0,0.12);
+}
 .ep-error { color: #cc4444; font-size: .85rem; margin-bottom: 1rem; padding: .6rem 1rem; background: rgba(204,0,0,.1); border-radius: 6px; }
 .ep-actions { text-align: right; }
 .ep-save-btn {
@@ -4613,7 +4637,7 @@ kbd {
     display: flex; align-items: center; justify-content: center; overflow: hidden;
     font-size: 1.4rem; font-family: 'Bebas Neue', sans-serif; color: white; flex-shrink: 0;
 }
-.lb-own-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lb-avatar-icon { font-size: 1.3rem; line-height: 1; }
 .lb-own-info { flex: 1; }
 .lb-own-name { font-weight: 600; font-size: 1rem; margin-bottom: .2rem; }
 .lb-own-stats { font-size: .78rem; color: var(--text-muted); }
@@ -4658,7 +4682,6 @@ kbd {
     display: flex; align-items: center; justify-content: center; overflow: hidden;
     color: white; font-size: 1.2rem; flex-shrink: 0;
 }
-.lb-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .lb-user-info { display: flex; flex-direction: column; gap: .15rem; overflow: hidden; }
 .lb-name { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lb-sub { font-size: .75rem; color: var(--text-muted); }
@@ -6118,12 +6141,6 @@ kbd {
     margin-bottom: 0.6rem;
 }
 .sf-rev-avatar { flex-shrink: 0; }
-.sf-rev-avatar-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
 .sf-rev-avatar-letter {
     width: 32px;
     height: 32px;
@@ -6250,7 +6267,6 @@ kbd {
     background: var(--red);
     display: flex; align-items: center; justify-content: center;
 }
-.sf-friend-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .sf-friend-avatar span { color: white; font-weight: 700; font-size: 0.9rem; }
 
 .sf-friend-info { flex: 1; min-width: 0; }
@@ -6328,7 +6344,6 @@ kbd {
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
 }
-.sf-act-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 .sf-act-body { flex: 1; font-size: 0.82rem; line-height: 1.4; }
 .sf-act-name  { font-weight: 700; color: var(--text); }
