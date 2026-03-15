@@ -3781,13 +3781,24 @@ function openEditProfile() {
             const avatarEl = document.getElementById('epAvatarPreview');
             const newPhoto = avatarEl?.dataset?.newPhoto;
             const updatePayload = { displayName: newName };
-            if (newPhoto !== undefined) updatePayload.photoURL = newPhoto || '';
+
+            if (newPhoto !== undefined) {
+                if (newPhoto) {
+                    const { storage, storageRef, uploadString, getDownloadURL } = window._fb;
+                    const path = `avatars/${user.uid}/profile_${Date.now()}.jpg`;
+                    const imgRef = storageRef(storage, path);
+                    await uploadString(imgRef, newPhoto, 'data_url');
+                    updatePayload.photoURL = await getDownloadURL(imgRef);
+                } else {
+                    updatePayload.photoURL = '';
+                }
+            }
 
             await window._fb.updateProfile(user, updatePayload);
 
             if (window._sfSaveToCloud) {
                 const cloudPayload = { displayName: newName };
-                if (newPhoto !== undefined) cloudPayload.photoURL = newPhoto || '';
+                if (updatePayload.photoURL !== undefined) cloudPayload.photoURL = updatePayload.photoURL;
                 await window._sfSaveToCloud(cloudPayload);
             }
 
