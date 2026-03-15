@@ -1500,7 +1500,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         document.getElementById('trailerThumb')?.addEventListener('click', () => {
             const key = document.getElementById('trailerThumb').dataset.ytkey;
             const emb = document.getElementById('trailerEmbed');
-            emb.innerHTML=`<iframe src="https://www.youtube.com/embed/${key}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+            emb.innerHTML=`<iframe src="https://www.youtube.com/embed/${key}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>`;
             emb.style.display='block'; document.getElementById('trailerThumb').style.display='none';
         });
 
@@ -1541,7 +1541,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         function loadServer(index) {
             currentServerIndex = index;
             const c = document.getElementById('videoContainer');
-            c.innerHTML=`<iframe src="${SERVERS[index].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+            c.innerHTML=`<iframe src="${SERVERS[index].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>`;
             c.classList.add('visible');
             document.querySelectorAll('.server-btn').forEach((b,i)=>b.classList.toggle('active',i===index));
         }
@@ -2713,7 +2713,7 @@ function enterCinemaMode(item, type, serverIndex, servers) {
     document.getElementById('cinemaTitleBar').textContent = `${title} · StreamFlex`;
     document.getElementById('cinemaServerLabel').textContent = servers[serverIndex]?.label || 'Servidor 1';
 
-    player.innerHTML = `<iframe src="${servers[serverIndex].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>`;
+    player.innerHTML = `<iframe src="${servers[serverIndex].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>`;
 
     // Mostrar overlay de seguridad inicialmente
     const playerOverlay = document.getElementById('playerOverlay');
@@ -2750,7 +2750,7 @@ function changeCinemaServer(dir) {
     if (!cinemaMode.active) return;
     const { servers, item } = cinemaMode;
     cinemaMode.serverIndex = (cinemaMode.serverIndex + dir + servers.length) % servers.length;
-    document.getElementById('cinemaPlayer').innerHTML = `<iframe src="${servers[cinemaMode.serverIndex].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>`;
+    document.getElementById('cinemaPlayer').innerHTML = `<iframe src="${servers[cinemaMode.serverIndex].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>`;
     document.getElementById('cinemaServerLabel').textContent = servers[cinemaMode.serverIndex].label;
     document.getElementById('cinemaTopbar').classList.remove('hidden');
 
@@ -3497,7 +3497,7 @@ async function loadTVSeasons(item) {
                     <div class="ep-server-bar">
                         ${SERVERS_EP.map((sv,i)=>`<button class="ep-srv-btn ${i===0?'active':''}" data-url="${sv.url}">${sv.label}</button>`).join('')}
                     </div>
-                    <iframe src="${SERVERS_EP[0].url}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+                    <iframe src="${SERVERS_EP[0].url}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>`;
                     vc.classList.add('visible');
                     vc.querySelectorAll('.ep-srv-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
