@@ -1514,8 +1514,10 @@ async function openModal(itemId, autoPlay=false, type='movie') {
             const btn = document.getElementById('similarLoadMore');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando...'; btn.disabled = true;
             try {
-                    const d = await tmdbFetch(`${BASE_URL}/${ep}/${item.id}/similar?api_key=${API_KEY}&language=${LANGUAGE}&page=${simPage}`);
+                const d = await tmdbFetch(`${BASE_URL}/${ep}/${item.id}/similar?api_key=${API_KEY}&language=${LANGUAGE}&page=${simPage}`);
+                const newSims = d.results || [];
                 const grid = document.querySelector('.similar-grid');
+                if (!grid) return;
                 newSims.forEach(s => {
                     const st=s.title||s.name, sy=(s.release_date||s.first_air_date||'').split('-')[0];
                     const sp=s.poster_path?IMG_BASE+s.poster_path:'https://placehold.co/120x180/1a1a1a/666?text=N/A';
