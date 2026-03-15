@@ -1,10 +1,3 @@
-// ============================================================
-// firebase.js — StreamFlex Auth + Firestore Sync
-// ============================================================
-// ⚠️  REPLACE THE CONFIG BELOW WITH YOUR FIREBASE PROJECT KEYS
-//     (Firebase Console → Project Settings → Your apps → SDK setup)
-// ============================================================
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
     getAuth,
@@ -33,6 +26,13 @@ import {
     deleteDoc,
     updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+    getStorage,
+    ref as storageRef,
+    uploadString,
+    getDownloadURL,
+    deleteObject,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ── YOUR FIREBASE CONFIG (replace with yours) ────────────────
 const firebaseConfig = {
@@ -48,15 +48,17 @@ const firebaseConfig = {
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 // Force Google account selection for better UX
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Expose to global scope so script.js can use them
 window._fb = {
-    auth, db, googleProvider,
+    auth, db, storage, googleProvider,
     doc, getDoc, getDocs, setDoc, collection, query, where, orderBy, limit, onSnapshot, serverTimestamp,
     deleteDoc, updateDoc,
+    storageRef, uploadString, getDownloadURL, deleteObject,
     signOut, sendPasswordResetEmail, signInWithEmailAndPassword,
     createUserWithEmailAndPassword, signInWithPopup, updateProfile, onAuthStateChanged
 };
