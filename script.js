@@ -482,6 +482,8 @@ async function searchPerson(query) {
     showLoading();
     heroBanner.classList.remove('visible');
     isPersonSearch = true;
+    cleanupExtras();
+    moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
     try {
         const data = await tmdbFetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=${LANGUAGE}&page=1`);
         const persons = data.results || [];
