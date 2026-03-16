@@ -3698,13 +3698,14 @@ async function loadLeaderboard() {
 
         const rankRows = topUsers.length ? topUsers.map((u, idx) => {
             const isSelf = u.id === user.uid;
+            const isPrem = !!u.isPremium;
             const icon = u.avatarIcon || getDefaultAvatarIcon(u.id || u.name || '');
-            return `<div class="lb-row${isSelf ? ' lb-row-self' : ''}">
+            return `<div class="lb-row${isSelf ? ' lb-row-self' : ''}${isPrem ? ' lb-row-premium' : ''}">
                 <div class="lb-rank">${idx+1}</div>
                 <div class="lb-user">
                     <div class="lb-avatar"><span class="lb-avatar-icon">${icon}</span></div>
                     <div class="lb-user-info">
-                        <div class="lb-name">${u.name||'Usuario'}</div>
+                        <div class="lb-name">${u.name||'Usuario'}${isPrem ? ' <i class="fas fa-star lb-premium-star" title="Premium"></i>' : ''}</div>
                         <div class="lb-sub">${u.xp||0} XP · ${u.watched||0} vistas</div>
                     </div>
                 </div>
