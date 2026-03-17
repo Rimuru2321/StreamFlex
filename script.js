@@ -531,10 +531,10 @@ async function loadPersonMovies(personId, personName) {
         bioHeader.innerHTML = `
             ${photo ? `<img src="${photo}" alt="${personData.name}" class="person-bio-photo">` : ''}
             <div class="person-bio-info">
-                <div class="person-bio-label">人�?� · PERSONA</div>
+                <div class="person-bio-label">PERSONA</div>
                 <h2 class="person-bio-name">${personData.name}</h2>
                 <div class="person-bio-meta">
-                    <span><i class="fas fa-briefcase"></i> ${personData.known_for_department||'�?"'}</span>
+                    <span><i class="fas fa-briefcase"></i> ${personData.known_for_department||''}</span>
                     ${personData.birthday?`<span><i class="fas fa-calendar"></i> ${personData.birthday}</span>`:''}
                     ${personData.place_of_birth?`<span><i class="fas fa-map-marker-alt"></i> ${personData.place_of_birth}</span>`:''}
                 </div>
@@ -712,12 +712,12 @@ function toggleSearchMode() {
     const btn = document.getElementById('searchModeToggle');
     if (searchMode === 'person') {
         btn.innerHTML = '<i class="fas fa-user"></i>';
-        btn.title = 'Buscando personas �?" click para buscar títulos';
+        btn.title = 'Buscando personas - click para buscar títulos';
         btn.classList.add('person-mode');
         searchInput.placeholder = 'Buscar actor, director...';
     } else {
         btn.innerHTML = '<i class="fas fa-film"></i>';
-        btn.title = 'Buscando títulos �?" click para buscar personas';
+        btn.title = 'Buscando títulos - click para buscar personas';
         btn.classList.remove('person-mode');
         searchInput.placeholder = 'Buscar películas...';
     }
@@ -754,7 +754,7 @@ async function openCompareModal() {
     modalBody.innerHTML = `
         <div class="compare-container">
             <div class="compare-header">
-                <div class="compare-title-jp">�"�f · COMPARAR</div>
+                <div class="compare-title-jp">COMPARAR</div>
                 <h2>Comparar películas</h2>
                 <p class="compare-subtitle">Busca dos títulos para comparar lado a lado</p>
             </div>
@@ -825,9 +825,9 @@ async function renderComparison(id1, id2) {
             const win1 = higherIsBetter ? n1 > n2 : n1 < n2;
             const win2 = higherIsBetter ? n2 > n1 : n2 < n1;
             return `<tr>
-                <td class="compare-val ${win1&&n1!==n2?'compare-winner':''}">${val1||'�?"'}</td>
+                <td class="compare-val ${win1&&n1!==n2?'compare-winner':''}">${val1||''}</td>
                 <td class="compare-label">${label}</td>
-                <td class="compare-val ${win2&&n1!==n2?'compare-winner':''}">${val2||'�?"'}</td>
+                <td class="compare-val ${win2&&n1!==n2?'compare-winner':''}">${val2||''}</td>
             </tr>`;
         }
 
@@ -856,19 +856,19 @@ async function renderComparison(id1, id2) {
                         ${statRow('Presupuesto', m1.budget ? `$${(m1.budget/1e6).toFixed(0)}M` : null, m2.budget ? `$${(m2.budget/1e6).toFixed(0)}M` : null, true)}
                         ${statRow('Taquilla', m1.revenue ? `$${(m1.revenue/1e6).toFixed(0)}M` : null, m2.revenue ? `$${(m2.revenue/1e6).toFixed(0)}M` : null, true)}
                         <tr>
-                            <td class="compare-val compare-genres">${(m1.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'�?"'}</td>
+                            <td class="compare-val compare-genres">${(m1.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||''}</td>
                             <td class="compare-label">Géneros</td>
-                            <td class="compare-val compare-genres">${(m2.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'�?"'}</td>
+                            <td class="compare-val compare-genres">${(m2.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||''}</td>
                         </tr>
                         <tr>
-                            <td class="compare-val">${m1.original_language?.toUpperCase()||'�?"'}</td>
+                            <td class="compare-val">${m1.original_language?.toUpperCase()||''}</td>
                             <td class="compare-label">Idioma</td>
-                            <td class="compare-val">${m2.original_language?.toUpperCase()||'�?"'}</td>
+                            <td class="compare-val">${m2.original_language?.toUpperCase()||''}</td>
                         </tr>
                         <tr>
-                            <td class="compare-val">${m1.status||'�?"'}</td>
+                            <td class="compare-val">${m1.status||''}</td>
                             <td class="compare-label">Estado</td>
-                            <td class="compare-val">${m2.status||'�?"'}</td>
+                            <td class="compare-val">${m2.status||''}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -920,7 +920,7 @@ async function loadUpcoming() {
 
             return `<div class="movie-card upcoming-card" data-id="${item.id}" data-type="movie" style="animation-delay:${Math.min(i*0.04,0.8)}s">
                 <img src="${poster}" alt="${title}" loading="lazy" decoding="async">
-                <div class="movie-rating-badge">�~. ${rating}</div>
+                <div class="movie-rating-badge">⭐ ${rating}</div>
                 ${countdownHTML}
                 <div class="upcoming-date-badge"><i class="fas fa-calendar"></i> ${relStr}</div>
                 <div class="movie-info">
@@ -1200,7 +1200,7 @@ async function loadByGenre(genreId) {
 
 function setHero(item, type='movie') {
     if (!item) return;
-    const kanjiChars = ['�~�','�S?','夢','�.?','影','�~Y','�">','�,'];
+    const kanjiChars = ['夢','影','風','月','光','雪','桜','星'];
     document.getElementById('heroKanji').textContent = kanjiChars[Math.floor(Math.random()*kanjiChars.length)];
     const displayTitle = item.title||item.name;
     const displayDate  = item.release_date||item.first_air_date;
@@ -1221,7 +1221,7 @@ function setHero(item, type='movie') {
         document.getElementById('heroTitle').textContent    = displayTitle;
         document.getElementById('heroRating').innerHTML     = `<i class="fas fa-star"></i> ${item.vote_average?.toFixed(1)||'N/A'}`;
         document.getElementById('heroYear').innerHTML       = `<i class="fas fa-calendar"></i> ${displayDate?.split('-')[0]||'?'}`;
-        document.getElementById('heroRuntime').innerHTML    = type==='tv' ? `<i class="fas fa-tv"></i> Serie` : `<i class="fas fa-clock"></i> �?"`;
+        document.getElementById('heroRuntime').innerHTML    = type==='tv' ? `<i class="fas fa-tv"></i> Serie` : `<i class="fas fa-clock"></i>`;
         document.getElementById('heroOverview').textContent = item.overview||'Sin sinopsis disponible.';
         heroContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         heroContent.style.opacity='1'; heroContent.style.transform='translateY(0)';
@@ -1296,12 +1296,12 @@ function renderCard(item, i, type) {
     const tvBadge      = type==='tv' ? '<span class="type-badge">SERIE</span>' : '';
     const watchedBadge = watched ? '<span class="watched-badge"><i class="fas fa-check"></i></span>' : '';
     const userRating   = getUserRating(item.id);
-    const userRatingBadge = userRating > 0 ? `<span class="user-rating-badge">${'�~.'.repeat(userRating)}</span>` : '';
+    const userRatingBadge = userRating > 0 ? `<span class="user-rating-badge">${'⭐'.repeat(userRating)}</span>` : '';
     const hasNote      = getUserNote(item.id) ? '<span class="note-badge" title="Tiene nota"><i class="fas fa-sticky-note"></i></span>' : '';
     return `
         <div class="movie-card ${watched?'is-watched':''}" data-id="${item.id}" data-type="${type}" style="animation-delay:${Math.min(i*0.04,0.8)}s">
             <img src="${poster}" alt="${title}" loading="lazy">
-            <div class="movie-rating-badge">�~. ${rating}</div>
+            <div class="movie-rating-badge">⭐ ${rating}</div>
             ${tvBadge}${watchedBadge}${userRatingBadge}${hasNote}
             <div class="movie-info">
                 <h3>${title}</h3>
@@ -1480,7 +1480,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         const noteHTML = `
             <div class="note-section">
                 <div class="note-header">
-                    <h4><i class="fas fa-sticky-note"></i> Mi nota · �f��f�</h4>
+                    <h4><i class="fas fa-sticky-note"></i> Mi nota</h4>
                     <button class="note-save-btn" id="noteSaveBtn"><i class="fas fa-save"></i> Guardar</button>
                 </div>
                 <textarea class="note-textarea" id="noteTextarea" placeholder="Añade una nota personal... (ej: quiero verla con Ana)">${currentNote}</textarea>
@@ -1614,7 +1614,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                 });
                 if (simPage >= d.total_pages) btn.remove();
                 else { btn.innerHTML='<i class="fas fa-plus"></i> Ver más similares'; btn.disabled=false; }
-            } catch(e) { btn.innerHTML='Error �?" reintentar'; btn.disabled=false; }
+            } catch(e) { btn.innerHTML='Error - reintentar'; btn.disabled=false; }
         });
 
         let currentServerIndex = 0;
@@ -1625,7 +1625,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
             c.classList.add('visible');
             document.querySelectorAll('.server-btn').forEach((b,i)=>b.classList.toggle('active',i===index));
         }
-        // Watch timer �?" registers as "seen" after 10min or 20% of runtime
+        // Watch timer - registers as "seen" after 10min or 20% of runtime
         let watchRegistered = false;
         function startWatchTimer() {
             if (watchRegistered || _globalWatchTimer) return;
@@ -1769,7 +1769,7 @@ async function loadProfileView() {
                 <div class="prow-title">${title}</div>
                 <div class="prow-meta">${yr}${type==='tv'?' · Serie':' · Película'}${rating?' · ⭐'+rating:''}</div>
             </div>
-            ${stars?`<div class="prow-stars">${'�~.'.repeat(stars)}</div>`:''}
+            ${stars?`<div class="prow-stars">${'⭐'.repeat(stars)}</div>`:''}
             <div class="prow-actions">
                 <button class="prow-btn prow-fav ${isFavorite(item.id)?'active':''}" data-id="${item.id}" title="Favorito"><i class="fas fa-star"></i></button>
                 <button class="prow-btn prow-wl ${isWatchLater(item.id)?'active':''}" data-id="${item.id}" title="Ver después"><i class="fas fa-clock"></i></button>
@@ -1845,7 +1845,7 @@ async function loadProfileView() {
               <div class="sf-premium-active-icon">⭐</div>
               <div class="sf-premium-active-info">
                 <div class="sf-premium-active-title">Eres miembro Premium</div>
-                <div class="sf-premium-active-sub">Gracias por apoyar StreamFlex �YZ�</div>
+                <div class="sf-premium-active-sub">Gracias por apoyar StreamFlex</div>
                 <div class="sf-theme-picker">
                   <span class="sf-theme-label">Color de acento:</span>
                   <button class="sf-theme-dot ${premiumTheme==='red'?'active':''}"    data-theme="red"    style="background:#cc0000" title="Rojo"></button>
@@ -1880,7 +1880,7 @@ async function loadProfileView() {
                 <div class="pv-mini"><i class="fas fa-list"></i><span>${Object.keys(customLists).length} listas creadas</span></div>
                 <div class="pv-mini"><i class="fas fa-star-half-alt"></i><span>${Object.keys(userRatings).length} valoraciones dadas</span></div>
                 ${topDec?`<div class="pv-mini"><i class="fas fa-calendar-alt"></i><span>Década favorita: <strong>${topDec[0]}s</strong></span></div>`:''}
-                <div class="pv-mini">�Y"�<span>Racha actual: <strong>${streakData.streak} días</strong></span></div>
+                <div class="pv-mini">🔥<span>Racha actual: <strong>${streakData.streak} días</strong></span></div>
               </div>
             </div>
             <!-- Genre chart -->
@@ -1934,7 +1934,7 @@ async function loadProfileView() {
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: VER DESPU�?S �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: VER DESPUÉS -->
       <div class="pvp" id="pvp-verdespues">
         <div class="pvp-inner">
           ${totalWL?`
@@ -1944,11 +1944,11 @@ async function loadProfileView() {
           <div class="prow-list" id="pvWLList">
             ${watchLater.map(it=>cardRow(it)).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>�Y.�</span><p>Tu lista "Ver después" está vacía.</p><small>Pulsa <i class="fas fa-clock"></i> en cualquier película.</small></div>`}
+          <div class="pv-empty-tab"><span>⏰</span><p>Tu lista "Ver después" está vacía.</p><small>Pulsa <i class="fas fa-clock"></i> en cualquier película.</small></div>`}
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: HISTORIAL �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: HISTORIAL -->
       <div class="pvp" id="pvp-historial">
         <div class="pvp-inner">
           ${totalWatched?`
@@ -1971,16 +1971,16 @@ async function loadProfileView() {
                   <div class="prow-title">${title}</div>
                   <div class="prow-meta">${yr}${ds?' · '+ds:''}</div>
                 </div>
-                ${stars?`<div class="prow-stars">${'�~.'.repeat(stars)}</div>`:''}
+                ${stars?`<div class="prow-stars">${'⭐'.repeat(stars)}</div>`:''}
                 <button class="prow-del" data-id="${it.id}" title="Eliminar"><i class="fas fa-times"></i></button>
               </div>`;
             }).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>�YZ�</span><p>Tu historial está vacío.</p><small>Reproduce películas para que aparezcan aquí.</small></div>`}
+          <div class="pv-empty-tab"><span>📅</span><p>Tu historial está vacío.</p><small>Reproduce películas para que aparezcan aquí.</small></div>`}
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: DIARIO �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: DIARIO -->
       <div class="pvp" id="pvp-diario">
         <div class="pvp-inner">
           ${months.length?`
@@ -2006,21 +2006,21 @@ async function loadProfileView() {
                   return `<div class="pv-diary-card" data-id="${it.id}" data-type="${type}" title="${it.title||it.name||''}">
                     ${p?`<img src="${p}" alt="" loading="lazy">`:'<div class="pv-diary-blank"></div>'}
                     ${da?`<div class="pv-diary-day">${da}</div>`:''}
-                    ${stars?`<div class="pv-diary-star">${'�~.'.repeat(Math.min(stars,5))}</div>`:''}
+                    ${stars?`<div class="pv-diary-star">${'⭐'.repeat(Math.min(stars,5))}</div>`:''}
                   </div>`;
                 }).join('')}
               </div>
             </div>`;
           }).join('')}`:`
-          <div class="pv-empty-tab"><span>�Y".</span><p>Tu diario está vacío.</p><small>Empieza a ver películas para llenar tu diario.</small></div>`}
+          <div class="pv-empty-tab"><span>📅</span><p>Tu diario está vacío.</p><small>Empieza a ver películas para llenar tu diario.</small></div>`}
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: LOGROS �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: LOGROS -->
       <div class="pvp" id="pvp-logros">
         <div class="pvp-inner">
           <div class="pv-logros-header">
-            <div class="pv-logros-streak">�Y"� Racha: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
+            <div class="pv-logros-streak">🔥 Racha: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
             <div class="pv-logros-bar-wrap">
               <div class="pv-logros-bar"><div style="width:${Math.round(unlockedAch/ACHIEVEMENTS_DEF.length*100)}%"></div></div>
               <span>${unlockedAch}/${ACHIEVEMENTS_DEF.length} desbloqueados</span>
@@ -2041,12 +2041,12 @@ async function loadProfileView() {
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: ESTADÍSTICAS AVANZADAS �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: ESTADÍSTICAS AVANZADAS -->
       <div class="pvp" id="pvp-estadisticas">
         <div class="pvp-inner">
           ${!isPremium ? `
           <div class="sf-locked-feature">
-            <div class="sf-locked-icon">�Y"S</div>
+            <div class="sf-locked-icon">📊</div>
             <div class="sf-locked-title">Estadísticas Avanzadas</div>
             <div class="sf-locked-sub">Accede a tus estadísticas detalladas con Premium</div>
             <button class="sf-locked-btn" id="sfStatsUnlockBtn">⭐ Ver planes Premium</button>
@@ -2055,8 +2055,8 @@ async function loadProfileView() {
           ${isPremium ? '<div class="pv-stats-grid">' : ''}
             <div class="pv-stat-card"><div class="pv-stat-icon">⏱️</div><div class="pv-stat-val">${Math.round(stats.totalHrs)}h</div><div class="pv-stat-label">Tiempo total</div></div>
             <div class="pv-stat-card"><div class="pv-stat-icon">⭐</div><div class="pv-stat-val">${stats.avgRating}</div><div class="pv-stat-label">Valoración media</div></div>
-            <div class="pv-stat-card"><div class="pv-stat-icon">�Y".</div><div class="pv-stat-val">${stats.topMonth?stats.topMonth[0]:'�?"'}</div><div class="pv-stat-label">Mes más activo</div></div>
-            <div class="pv-stat-card"><div class="pv-stat-icon">�Y"�</div><div class="pv-stat-val">${stats.topDecade?stats.topDecade[0]+"s":'�?"'}</div><div class="pv-stat-label">Década favorita</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">📅</div><div class="pv-stat-val">${stats.topMonth?stats.topMonth[0]:''}</div><div class="pv-stat-label">Mes más activo</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">🔥</div><div class="pv-stat-val">${stats.topDecade?stats.topDecade[0]+"s":''}</div><div class="pv-stat-label">Década favorita</div></div>
           </div>
           ${stats.topGenreHours.length ? `
           <div class="pv-block-label" style="margin-top:1.5rem">⏱️ Horas por género</div>
@@ -2066,7 +2066,7 @@ async function loadProfileView() {
             ).join("")}
           </div>` : ""}
           ${stats.monthHistory.length > 1 ? `
-          <div class="pv-block-label" style="margin-top:1.5rem">�Y"^ Actividad mensual</div>
+          <div class="pv-block-label" style="margin-top:1.5rem">📈 Actividad mensual</div>
           <div class="pv-month-bars">
             ${stats.monthHistory.map(([month,count]) => {
               const mc = Math.max(...stats.monthHistory.map(m=>m[1]));
@@ -2077,10 +2077,10 @@ async function loadProfileView() {
       </div>
 
       ${isPremium ? '</div>' : ''}
-      <!-- �.��.��.� PANEL: RETOS SEMANALES �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: RETOS SEMANALES -->
       <div class="pvp" id="pvp-retos">
         <div class="pvp-inner">
-          <div class="pv-block-label">�Y"� Reto activo esta semana</div>
+          <div class="pv-block-label">🔥 Reto activo esta semana</div>
           <div class="pv-challenge-card ${chalPct >= 100 ? "pv-challenge-done" : ""}">
             <div class="pv-challenge-icon">${challenge.icon}</div>
             <div class="pv-challenge-info">
@@ -2088,11 +2088,11 @@ async function loadProfileView() {
               <div class="pv-challenge-desc">${challenge.desc}</div>
               <div class="pv-challenge-progress-wrap">
                 <div class="pv-challenge-bar"><div style="width:${chalPct}%"></div></div>
-                <span>${chalProgress}/${challenge.target}${chalPct>=100?" �o. ¡Completado!":""}</span>
+                <span>${chalProgress}/${challenge.target}${chalPct>=100?" ¡Completado!":""}</span>
               </div>
             </div>
           </div>
-          <div class="pv-block-label" style="margin-top:2rem">�Y"< Todos los retos</div>
+          <div class="pv-block-label" style="margin-top:2rem">📋 Todos los retos</div>
           <div class="pv-challenges-list">
             ${WEEKLY_CHALLENGES.map(c => {
               const isCurr = c.id === challenge.id;
@@ -2140,7 +2140,7 @@ async function loadProfileView() {
       <!-- PANEL: PERFIL+ PREMIUM -->
       <div class="pvp" id="pvp-perfil-bg"><div class="pvp-inner" id="pvPerfilBgInner"><div class="loading-spinner" style="padding:2rem 0"><div class="spinner"></div></div></div></div>
 
-      <!-- �.��.��.� PANEL: LEADERBOARD �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: LEADERBOARD -->
       <div class="pvp" id="pvp-leaderboard">
         <div class="pvp-inner">
           <div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Cargando ranking...</span></div>
@@ -2170,7 +2170,7 @@ async function loadProfileView() {
             if (!isPremium) return;
             applyPremiumTheme(dot.dataset.theme);
             document.querySelectorAll('.sf-theme-dot').forEach(d => d.classList.toggle('active', d === dot));
-            showToast('�YZ� Tema ' + dot.title + ' aplicado');
+            showToast('⭐ Tema ' + dot.title + ' aplicado');
         });
     });
 
@@ -2271,7 +2271,7 @@ function renderListsManager() {
     modalBody.innerHTML = `
         <div class="lists-container">
             <div class="lists-header">
-                <div class="lists-title-jp">�,��f��,��,��f��f� · COLECCIONES</div>
+                <div class="lists-title-jp">COLECCIONES</div>
                 <h2>Mis listas</h2>
             </div>
             <div class="lists-create-row">
@@ -2280,7 +2280,7 @@ function renderListsManager() {
             </div>
             <div class="lists-grid" id="listsGrid">
                 ${listIds.length === 0 ? `
-                    <div class="lists-empty"><span>�,��f��,��,��f��f�</span><p>No tienes listas todavía. ¡Crea una!</p></div>
+                    <div class="lists-empty"><span>📋</span><p>No tienes listas todavía. ¡Crea una!</p></div>
                 ` : listIds.map(id => {
                     const list = customLists[id];
                     const count = list.items.length;
@@ -2354,7 +2354,7 @@ function renderListDetail(listId) {
         <div class="lists-container">
             <button class="lists-back-btn" id="listsBackBtn"><i class="fas fa-arrow-left"></i> Mis listas</button>
             <div class="lists-detail-header">
-                <div class="lists-title-jp">�f��,��f^ · LISTA</div>
+                <div class="lists-title-jp">LISTA</div>
                 <h2>${list.name}</h2>
                 <span class="lists-count">${list.items.length} títulos</span>
             </div>
@@ -2433,7 +2433,7 @@ function openShareModal(item, type) {
 
     shareBody.innerHTML = `
         <div class="share-container">
-            <div class="share-title-jp">�,��,��,� · COMPARTIR</div>
+            <div class="share-title-jp">COMPARTIR</div>
             <h2>Compartir película</h2>
 
             <div class="share-card-preview" id="shareCardPreview">
@@ -2441,12 +2441,12 @@ function openShareModal(item, type) {
                     <div class="share-card-bg" style="${poster?`background-image:url(${poster});`:'background:#1a1a1a;'}"></div>
                     <div class="share-card-overlay"></div>
                     <div class="share-card-content">
-                        <div class="share-card-badge">StreamFlex · �~��"�</div>
+                        <div class="share-card-badge">StreamFlex</div>
                         ${poster ? `<img class="share-card-poster" src="${poster}" alt="${title}">` : ''}
                         <div class="share-card-info">
                             <div class="share-card-title">${title}</div>
                             <div class="share-card-meta">
-                                <span>�~. ${rating}</span>
+                                <span>⭐ ${rating}</span>
                                 <span>${year}</span>
                                 ${genres ? `<span>${genres}</span>` : ''}
                             </div>
@@ -2475,7 +2475,7 @@ function openShareModal(item, type) {
     });
 
     document.getElementById('copyTextBtn').addEventListener('click', () => {
-        const text = `�YZ� ${title} (${year})\n⭐ ${rating}/10\n${genres}\n\n${overview}\n\n�Y"- ${shareUrl}`;
+        const text = `🎬 ${title} (${year})\n⭐ ${rating}/10\n${genres}\n\n${overview}\n\n🔗 ${shareUrl}`;
         navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-check"></i> Texto copiado'));
     });
 
@@ -2531,7 +2531,7 @@ function downloadShareCard(item, type) {
         ctx.fillRect(210, 30, 120, 20);
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 10px sans-serif';
-        ctx.fillText('StreamFlex · �~��"�', 216, 44);
+        ctx.fillText('StreamFlex', 216, 44);
 
         ctx.fillStyle = '#f0ede8';
         ctx.font = 'bold 26px serif';
@@ -2544,7 +2544,7 @@ function downloadShareCard(item, type) {
 
         ctx.fillStyle = '#c9a84c';
         ctx.font = 'bold 18px sans-serif';
-        ctx.fillText(`�~. ${rating}`, 210, 145);
+        ctx.fillText(`⭐ ${rating}`, 210, 145);
 
         if (genres) {
             ctx.fillStyle = '#666';
@@ -2638,7 +2638,7 @@ async function loadDondeVer(itemId, type) {
         section.innerHTML = `
             <div class="donde-ver-content">
                 <div class="dv-header">
-                    <h4><i class="fas fa-tv"></i> Dónde ver · �-聴�.^</h4>
+                    <h4><i class="fas fa-tv"></i> Dónde ver</h4>
                     <a href="${justWatchLink}" target="_blank" rel="noopener" class="dv-justwatch-link">
                         <img src="https://www.justwatch.com/appassets/img/logo/JustWatch-logo-Large.png" alt="JustWatch" class="dv-justwatch-logo">
                     </a>
@@ -2672,7 +2672,7 @@ async function loadPorqueViste(currentItemId, type) {
         const basedTitle = historyItem.title || historyItem.name || '';
         container.innerHTML = `
             <div class="porque-viste-section">
-                <h4><i class="fas fa-history"></i> Porque viste <em>"${basedTitle}"</em> · �S�T�T�,�</h4>
+                <h4><i class="fas fa-history"></i> Porque viste <em>"${basedTitle}"</em></h4>
                 <div class="similar-grid">
                     ${items.map(s => {
                         const st = s.title||s.name, sy = (s.release_date||s.first_air_date||'').split('-')[0];
@@ -2692,7 +2692,7 @@ async function loadPorqueViste(currentItemId, type) {
     } catch(e) {  }
 }
 
-// ===== MODO "NO S�? QU�? VER" =====
+// ===== MODO "NO SÉ QUÉ VER" =====
 
 const MOODS = [
     { id: 'action', label: '💥 Adrenalina', emoji: '💥', desc: 'Acción y emoción', genres: [28, 12], sort: 'popularity.desc' },
@@ -2711,7 +2711,7 @@ function openMoodPicker() {
     modalBody.innerHTML = `
         <div class="mood-container">
             <div class="mood-header">
-                <div class="mood-title-jp">�~��"�選�Sz · ¿QU�? VER?</div>
+                <div class="mood-title-jp">¿QUÉ VER?</div>
                 <h2>¿Cómo te sientes hoy?</h2>
                 <p class="mood-subtitle">Elige un estado de ánimo y te recomendamos la película perfecta</p>
             </div>
@@ -2758,13 +2758,13 @@ async function loadMoodRecommendation(moodId, cardEl) {
 
         result.innerHTML = `
             <div class="mood-result-card">
-                <div class="mood-result-label">�o� Tu película para esta noche</div>
+                <div class="mood-result-label">🍿 Tu película para esta noche</div>
                 <div class="mood-result-inner">
                     ${poster ? `<img src="${poster}" alt="${pick.title}" class="mood-result-poster">` : ''}
                     <div class="mood-result-info">
                         <h3 class="mood-result-title">${pick.title}</h3>
                         <div class="mood-result-meta">
-                            <span>�~. ${pick.vote_average?.toFixed(1)}</span>
+                            <span>⭐ ${pick.vote_average?.toFixed(1)}</span>
                             <span>${year}</span>
                         </div>
                         <p class="mood-result-overview">${(pick.overview||'').slice(0,160)}${(pick.overview||'').length > 160 ? '...' : ''}</p>
@@ -2812,7 +2812,7 @@ function enterCinemaMode(item, type, serverIndex, servers) {
         const iframe = player.querySelector('iframe');
         if (iframe) iframe.style.pointerEvents = 'auto';
         playerOverlay.style.display = 'none';
-        showToast('<i class="fas fa-play"></i> Controles activados �?" usa con precaución');
+        showToast('<i class="fas fa-play"></i> Controles activados - usa con precaución');
     });
 
     modal.style.display = 'none';
@@ -2896,7 +2896,7 @@ function loadDiaryView() {
                                         <div class="diary-item-meta">
                                             <span>${yr}</span>
                                             ${dayStr ? `<span class="diary-item-date"><i class="fas fa-calendar"></i> ${dayStr}</span>` : ''}
-                                            ${rating ? `<span class="diary-item-rating">${'�~.'.repeat(rating)}</span>` : ''}
+                                            ${rating ? `<span class="diary-item-rating">${'⭐'.repeat(rating)}</span>` : ''}
                                         </div>
                                     </div>
                                 </div>`;
@@ -3005,7 +3005,7 @@ function setupCardSwipeGestures() {
                 showSwipeIndicator(activeCard, '⭐ Favorito', 'right');
             } else {
                 toggleWatchLater(id);
-                showSwipeIndicator(activeCard, '�Y.� Ver después', 'left');
+                showSwipeIndicator(activeCard, '⏰ Ver después', 'left');
             }
         }
         activeCard = null;
@@ -3088,7 +3088,7 @@ function openMarathonManager() {
     modalBody.innerHTML = `
         <div class="marathon-manager">
             <div class="marathon-mgr-header">
-                <div class="marathon-title-jp">�fz�f��,��f� · MARAT�"N</div>
+                <div class="marathon-title-jp">MARATÓN</div>
                 <h2>Modo Maratón</h2>
                 <p class="marathon-mgr-sub">Crea una sesión de películas en cola</p>
             </div>
@@ -3122,7 +3122,7 @@ function openMarathonManager() {
                 <button class="detail-btn detail-btn-secondary" id="clearMarathonBtn"><i class="fas fa-trash"></i> Limpiar cola</button>
             </div>` : `
             <div class="marathon-empty">
-                <span>�YZ�</span>
+                <span>🎬</span>
                 <p>Tu maratón está vacío. Añade películas usando el botón <strong>+ Maratón</strong> en cualquier película.</p>
                 <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.4rem">También puedes pulsar <strong>+</strong> en el hero banner.</p>
             </div>`}
@@ -3156,7 +3156,7 @@ function renderTop10() {
     modalBody.innerHTML = `
         <div class="top10-container">
             <div class="top10-header">
-                <div class="top10-jp">�f��f��,��f��,� · MI TOP 10</div>
+                <div class="top10-jp">MI TOP 10</div>
                 <h2>Mi Ranking Personal</h2>
                 <p class="top10-sub">Arrastra para reordenar · Haz click en + para añadir</p>
             </div>
@@ -3305,7 +3305,7 @@ async function loadCollection(collectionId, currentItemId) {
         if (parts.length <= 1) return;
         section.innerHTML = `
             <div class="collection-section">
-                <h4><i class="fas fa-layer-group"></i> Saga: ${data.name} · �,��f��,��,��f��f�</h4>
+                <h4><i class="fas fa-layer-group"></i> Saga: ${data.name}</h4>
                 <div class="collection-grid">
                     ${parts.map((p,i) => {
                         const poster = p.poster_path ? IMG_BASE+p.poster_path : 'https://placehold.co/80x120/1a1a1a/444?text=N/A';
@@ -3373,7 +3373,7 @@ function updateStreak() {
     localStorage.setItem('streakData', JSON.stringify(streakData));
     cloudSave();
 
-    if (streakData.streak > 1) showToast(`�Y"� ¡${streakData.streak} días de racha!`);
+    if (streakData.streak > 1) showToast(`🔥 ¡${streakData.streak} días de racha!`);
 }
 
 const ACHIEVEMENTS_DEF = [
@@ -3411,9 +3411,9 @@ const ACHIEVEMENTS_DEF = [
 
 
 
-    { id: 'premium_join',    icon: '?', label: 'Miembro Premium',    desc: 'Exclusivo Premium - Unete al club',   check: () => isPremium, premium: true },
-    { id: 'premium_200',     icon: '?', label: 'Centenario Premium', desc: 'Exclusivo - 200 peliculas vistas',    check: () => isPremium && watchHistory.length >= 200, premium: true },
-    { id: 'premium_streak50',icon: '?', label: 'Racha Legendaria',   desc: 'Exclusivo - Racha de 50 dias',        check: () => isPremium && streakData.streak >= 50, premium: true },
+    { id: 'premium_join',    icon: '⭐', label: 'Miembro Premium',    desc: 'Exclusivo Premium - Únete al club',   check: () => isPremium, premium: true },
+    { id: 'premium_200',     icon: '💎', label: 'Centenario Premium', desc: 'Exclusivo - 200 películas vistas',    check: () => isPremium && watchHistory.length >= 200, premium: true },
+    { id: 'premium_streak50',icon: '🔥', label: 'Racha Legendaria',   desc: 'Exclusivo - Racha de 50 días',        check: () => isPremium && streakData.streak >= 50, premium: true },
 ];
 
 function checkAchievements() {
@@ -3445,7 +3445,7 @@ function showAchievementPopup(a) {
     el.innerHTML = `
         <div class="aup-icon">${a.icon}</div>
         <div class="aup-info">
-            <div class="aup-eyebrow">�Y�? LOGRO DESBLOQUEADO</div>
+            <div class="aup-eyebrow">🎉 LOGRO DESBLOQUEADO</div>
             <div class="aup-label">${a.label}</div>
             <div class="aup-desc">${a.desc}</div>
         </div>`;
@@ -3465,8 +3465,8 @@ function loadAchievementsView() {
     moviesGrid.innerHTML = `
         <div class="achievements-container">
             <div class="ach-header">
-                <div class="ach-jp">�Y績 · LOGROS</div>
-                <div class="ach-streak">�Y"� Racha actual: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
+                <div class="ach-jp">LOGROS</div>
+                <div class="ach-streak">🔥 Racha actual: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
             </div>
             <div class="ach-grid">
                 ${ACHIEVEMENTS_DEF.map(a => {
@@ -3516,7 +3516,7 @@ async function loadTVSeasons(item) {
 
     container.innerHTML = `
     <div class="tv-seasons">
-        <h4><i class="fas fa-tv"></i> Temporadas y episodios · �,��f"�,��f��f?</h4>
+        <h4><i class="fas fa-tv"></i> Temporadas y episodios</h4>
         <div class="season-tabs">
             ${seasons.map((s,i) => `<button class="season-tab ${i===0?'active':''}" data-season="${s.season_number}">T${s.season_number}</button>`).join('')}
         </div>
@@ -3546,7 +3546,7 @@ async function loadTVSeasons(item) {
                         <div class="episode-info">
                             <div class="episode-title">${e.name || `Episodio ${e.episode_number}`}</div>
                             <div class="episode-meta">${air}${rating ? ` · ⭐ ${rating}` : ''}${e.runtime ? ` · ${e.runtime}min` : ''}</div>
-                            <div class="episode-overview">${(e.overview||'').slice(0,120)}${e.overview?.length>120?'�?�':''}</div>
+                            <div class="episode-overview">${(e.overview||'').slice(0,120)}${e.overview?.length>120?'...':''}</div>
                         </div>
                     </div>`;
                 }).join('')}
@@ -3558,11 +3558,11 @@ async function loadTVSeasons(item) {
                     const vc = document.getElementById('videoContainer');
                     if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; localStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
                     const SERVERS_EP = [
-                        { label:'Servidor 1 �YO�', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true` },
-                        { label:'Servidor 2 �YO�', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
-                        { label:'Servidor 3 �YO�', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Servidor 4 �YO�', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Servidor 5 �YO�', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
+                        { label:'Servidor 1', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true` },
+                        { label:'Servidor 2', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
+                        { label:'Servidor 3', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 4', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 5', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
                     ];
                     vc.innerHTML = `
                     <div class="ep-server-bar">
@@ -3633,10 +3633,10 @@ function getLevelProgress() {
 }
 
 const WEEKLY_CHALLENGES_PREMIUM = [
-    { id:'week_prem_doc',  label:'Semana Documental', desc:'Ve 3 documentales esta semana',    genre:99, target:3, icon:'?' },
-    { id:'week_prem_anim', label:'Semana Animacion',  desc:'Ve 3 animaciones esta semana',     genre:16, target:3, icon:'?' },
-    { id:'week_prem_10',   label:'Maraton Elite',     desc:'Ve 10 titulos esta semana',        genre:0,  target:10,icon:'?' },
-    { id:'week_prem_hist', label:'Historia Viva',     desc:'Ve 2 peliculas historicas',        genre:36, target:2, icon:'?' },
+    { id:'week_prem_doc',  label:'Semana Documental', desc:'Ve 3 documentales esta semana',    genre:99, target:3, icon:'📽️' },
+    { id:'week_prem_anim', label:'Semana Animacion',  desc:'Ve 3 animaciones esta semana',     genre:16, target:3, icon:'🐭' },
+    { id:'week_prem_10',   label:'Maraton Elite',     desc:'Ve 10 titulos esta semana',        genre:0,  target:10,icon:'🔥' },
+    { id:'week_prem_hist', label:'Historia Viva',     desc:'Ve 2 peliculas historicas',        genre:36, target:2, icon:'🏛️' },
 ];
 const WEEKLY_CHALLENGES = [
     { id:'week_horror',  label:'Terror semanal',   desc:'Ve 3 películas de Terror',        genre:27, target:3, icon:'👻' },
@@ -3721,12 +3721,12 @@ async function loadLeaderboard() {
                 </div>
                 <div class="lb-xp">${u.xp||0}</div>
             </div>`;
-        }).join('') : `<div class="lb-empty"><span>�YO�</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
+        }).join('') : `<div class="lb-empty"><span>🏆</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
 
         const ownIcon = own.avatarIcon || userAvatarIcon || getDefaultAvatarIcon(user.uid);
         inner.innerHTML = `
         <div class="lb-wrap">
-            <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global · �f��f��,��f��,�</div>
+            <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global</div>
             <div class="lb-subtitle">Tu posición en la comunidad StreamFlex</div>
             <div class="lb-own-card">
                 <div class="lb-own-avatar"><span class="lb-avatar-icon">${ownIcon}</span></div>
@@ -3746,11 +3746,11 @@ async function loadLeaderboard() {
         </div>`;
 
         document.getElementById('lbShareBtn')?.addEventListener('click', () => {
-            const text = `�YZ� Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} películas vistas. ¡Supérame!`;
+            const text = `🎬 Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} películas vistas. ¡Supérame!`;
             navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-share-alt"></i> Copiado para compartir'));
         });
     } catch(e) {
-        inner.innerHTML = `<div class="pv-empty-tab"><span>�YO�</span><p>No se pudo cargar la clasificación.</p><small>Verifica tu conexión a internet.</small></div>`;
+        inner.innerHTML = `<div class="pv-empty-tab"><span>🏆</span><p>No se pudo cargar la clasificación.</p><small>Verifica tu conexión a internet.</small></div>`;
     }
 }
 
@@ -3854,7 +3854,7 @@ function buildAdvancedStats() {
     const monthHistory = Object.entries(monthCounts).sort((a,b)=>a[0].localeCompare(b[0])).slice(-6);
 
     const ratings = Object.values(userRatings).filter(r => r > 0);
-    const avgRating = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : '�?"';
+    const avgRating = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : '?';
 
     const decCounts = {};
     watchHistory.forEach(h => {
@@ -3941,13 +3941,13 @@ function loadContinuarViendo() {
     const inner = document.getElementById('pvContinuarInner');
     if (!inner) return;
     if (!isPremium) {
-        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">&#9654;&#65039;</div><div class="sf-locked-title">Continuar viendo</div><div class="sf-locked-sub">Recuerda en que episodio quedaste en cada serie con Premium</div><button class="sf-locked-btn sf-open-premium">&#11088; Ver planes Premium</button></div>';
+        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">▶️</div><div class="sf-locked-title">Continuar viendo</div><div class="sf-locked-sub">Recuerda en que episodio quedaste en cada serie con Premium</div><button class="sf-locked-btn sf-open-premium">⭐ Ver planes Premium</button></div>';
         inner.querySelector('.sf-open-premium')?.addEventListener('click', () => { openPremiumModal(); });
         return;
     }
     const entries = Object.entries(seriesProgress).sort((a,b) => b[1].updatedAt - a[1].updatedAt);
     if (!entries.length) {
-        inner.innerHTML = '<div class="pv-empty-tab"><span>&#9654;&#65039;</span><p>Aqui apareceran las series que estes viendo.</p><small>Reproduce un episodio para registrar tu progreso.</small></div>';
+        inner.innerHTML = '<div class="pv-empty-tab"><span>▶️</span><p>Aqui apareceran las series que estes viendo.</p><small>Reproduce un episodio para registrar tu progreso.</small></div>';
         return;
     }
     let html = '<div class="pv-block-label"><i class="fas fa-play-circle"></i> Series en progreso</div><div class="prow-list">';
@@ -3957,8 +3957,8 @@ function loadContinuarViendo() {
         const poster = item?.poster_path ? IMG_BASE + item.poster_path : null;
         html += '<div class="prow-item sf-continue-item" data-id="' + sid + '" data-type="tv">' +
             (poster ? '<img src="' + poster + '" alt="" loading="lazy">' : '<div class="prow-noposter"></div>') +
-            '<div class="prow-info"><div class="prow-title">' + title + '</div><div class="prow-meta">Temporada ' + prog.s + ' &middot; Episodio ' + prog.ep + '</div></div>' +
-            '<span class="sf-continue-badge">&#9654; Continuar</span></div>';
+            '<div class="prow-info"><div class="prow-title">' + title + '</div><div class="prow-meta">Temporada ' + prog.s + ' · Episodio ' + prog.ep + '</div></div>' +
+            '<span class="sf-continue-badge">▶ Continuar</span></div>';
     });
     html += '</div>';
     inner.innerHTML = html;
@@ -3971,12 +3971,12 @@ async function loadRecomendados() {
     const inner = document.getElementById('pvRecomInner');
     if (!inner) return;
     if (!isPremium) {
-        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">&#127919;</div><div class="sf-locked-title">Recomendaciones Para Ti</div><div class="sf-locked-sub">Recomendaciones personalizadas basadas en tu historial con Premium</div><button class="sf-locked-btn sf-open-premium">&#11088; Ver planes Premium</button></div>';
+        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">🎯</div><div class="sf-locked-title">Recomendaciones Para Ti</div><div class="sf-locked-sub">Recomendaciones personalizadas basadas en tu historial con Premium</div><button class="sf-locked-btn sf-open-premium">⭐ Ver planes Premium</button></div>';
         inner.querySelector('.sf-open-premium')?.addEventListener('click', () => { openPremiumModal(); });
         return;
     }
     if (!watchHistory.length) {
-        inner.innerHTML = '<div class="pv-empty-tab"><span>&#127919;</span><p>Ve mas peliculas para recibir recomendaciones personalizadas.</p></div>';
+        inner.innerHTML = '<div class="pv-empty-tab"><span>🎯</span><p>Ve mas peliculas para recibir recomendaciones personalizadas.</p></div>';
         return;
     }
     inner.innerHTML = '<div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Calculando tus gustos...</span></div>';
@@ -3990,8 +3990,8 @@ async function loadRecomendados() {
         const lastItem = watchHistory[0];
         const type = lastItem._type === 'tv' ? 'tv' : 'movie';
         const [simRes, genreRes] = await Promise.all([
-            fetch(`https://api.themoviedb.org/3/${type}/${lastItem.id}/recommendations?api_key=${TMDB_KEY}&language=es-ES&page=1`),
-            topGenreId ? fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&language=es-ES&with_genres=${topGenreId}&sort_by=popularity.desc&page=1`) : Promise.resolve(null)
+            fetch(`https://api.themoviedb.org/3/${type}/${lastItem.id}/recommendations?api_key=${API_KEY}&language=es-ES&page=1`),
+            topGenreId ? fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=es-ES&with_genres=${topGenreId}&sort_by=popularity.desc&page=1`) : Promise.resolve(null)
         ]);
         const simData = await simRes.json();
         const genreData = genreRes ? await genreRes.json() : { results: [] };
@@ -4021,13 +4021,13 @@ async function loadRecomendados() {
             });
             html += '</div>';
         }
-        if (!html) html = '<div class="pv-empty-tab"><span>&#127919;</span><p>No encontramos recomendaciones por ahora.</p></div>';
+        if (!html) html = '<div class="pv-empty-tab"><span>🎯</span><p>No encontramos recomendaciones por ahora.</p></div>';
         inner.innerHTML = html;
         inner.querySelectorAll('.pv-rec-thumb').forEach(el => {
             el.addEventListener('click', () => openModal(parseInt(el.dataset.id), false, el.dataset.type));
         });
     } catch(e) {
-        inner.innerHTML = '<div class="pv-empty-tab"><span>&#127919;</span><p>Error cargando recomendaciones.</p></div>';
+        inner.innerHTML = '<div class="pv-empty-tab"><span>🎯</span><p>Error cargando recomendaciones.</p></div>';
     }
 }
 
@@ -4035,14 +4035,14 @@ function loadPerfilBg() {
     const inner = document.getElementById('pvPerfilBgInner');
     if (!inner) return;
     if (!isPremium) {
-        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">&#127775;</div><div class="sf-locked-title">Perfil Personalizado</div><div class="sf-locked-sub">Agrega una bio y fondo personalizado a tu perfil</div><button class="sf-locked-btn sf-open-premium">&#11088; Ver planes Premium</button></div>';
+        inner.innerHTML = '<div class="sf-locked-feature"><div class="sf-locked-icon">⭐</div><div class="sf-locked-title">Perfil Personalizado</div><div class="sf-locked-sub">Agrega una bio y fondo personalizado a tu perfil</div><button class="sf-locked-btn sf-open-premium">⭐ Ver planes Premium</button></div>';
         inner.querySelector('.sf-open-premium')?.addEventListener('click', () => { openPremiumModal(); });
         return;
     }
     inner.innerHTML = '<div class="sf-perfil-bg-wrap">' +
         '<div class="pv-block-label"><i class="fas fa-image"></i> Fondo de perfil</div>' +
         '<div class="sf-bg-preview" id="sfBgPreview" style="background-image:url(' + (profileBg||'') + ')">' +
-        (profileBg ? '' : '<span class="sf-bg-placeholder">Sin fondo &mdash; Sube una imagen</span>') + '</div>' +
+        (profileBg ? '' : '<span class="sf-bg-placeholder">Sin fondo — Sube una imagen</span>') + '</div>' +
         '<label class="sf-bg-upload-btn"><i class="fas fa-upload"></i> Subir imagen<input type="file" id="sfBgInput" accept="image/*" style="display:none"></label>' +
         (profileBg ? '<button class="sf-bg-remove-btn" id="sfBgRemove"><i class="fas fa-trash"></i> Quitar fondo</button>' : '') +
         '<div class="pv-block-label" style="margin-top:1.5rem"><i class="fas fa-pen"></i> Bio personal</div>' +
@@ -4162,7 +4162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const weekMs = 7 * 24 * 60 * 60 * 1000;
         if (Date.now() - lastNotif > weekMs) {
             localStorage.setItem('sf_last_notif', Date.now().toString());
-            fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=' + TMDB_KEY + '&language=es-ES&page=1')
+            fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=' + API_KEY + '&language=es-ES&page=1')
                 .then(r => r.json())
                 .then(data => {
                     const latest = data.results?.[0];
@@ -4203,7 +4203,7 @@ function openPremiumModal() {
         <div class="sf-prem-modal">
           <button class="sf-prem-close" id="sfPremClose"><i class="fas fa-times"></i></button>
           <div class="sf-prem-header">
-            <div class="sf-prem-star">&#11088;</div>
+            <div class="sf-prem-star">⭐</div>
             <div class="sf-prem-title">StreamFlex Premium</div>
             <div class="sf-prem-sub">Apoya el proyecto y desbloquea funciones pro</div>
           </div>
@@ -4228,21 +4228,21 @@ function openPremiumModal() {
           </div>
           <div class="sf-prem-actions">
             <a href="https://www.patreon.com/streamflex" target="_blank" class="sf-prem-btn sf-prem-patreon">
-              <i class="fab fa-patreon"></i> Patreon &mdash; $5/mes
+              <i class="fab fa-patreon"></i> Patreon — $5/mes
             </a>
             <a href="https://ko-fi.com/streamflex" target="_blank" class="sf-prem-btn sf-prem-kofi">
-              <i class="fas fa-coffee"></i> Ko-fi &mdash; Donacion unica
+              <i class="fas fa-coffee"></i> Ko-fi — Donacion unica
             </a>
           </div>
           <div class="sf-prem-code-section">
-            <div class="sf-prem-code-label">&#128273; Ya tienes un codigo?</div>
+            <div class="sf-prem-code-label">🔑 Ya tienes un codigo?</div>
             <div class="sf-prem-code-row">
               <input type="text" id="sfPremCodeInput" placeholder="Introduce tu codigo Premium" class="sf-prem-code-input">
               <button id="sfPremCodeBtn" class="sf-prem-code-btn">Activar</button>
             </div>
             <div id="sfPremCodeMsg" class="sf-prem-code-msg"></div>
           </div>
-          ${isPremium ? '<div class="sf-prem-active-note">&#11088; Ya eres miembro Premium &mdash; Gracias por apoyar StreamFlex!</div>' : ''}
+          ${isPremium ? '<div class="sf-prem-active-note">⭐ Ya eres miembro Premium — Gracias por apoyar StreamFlex!</div>' : ''}
         </div>`;
         document.body.appendChild(overlay);
 
@@ -4404,7 +4404,7 @@ async function loadReviews(itemId, currentUid) {
         }
 
         list.innerHTML = reviews.map(r => {
-            const stars     = r.rating > 0 ? '<span class="sf-rev-stars">' + '�~.'.repeat(r.rating) + '<span style="opacity:0.3">' + '�~.'.repeat(5 - r.rating) + '</span></span>' : '';
+            const stars     = r.rating > 0 ? '<span class="sf-rev-stars">' + '⭐'.repeat(r.rating) + '<span style="opacity:0.3">' + '⭐'.repeat(5 - r.rating) + '</span></span>' : '';
             const isOwn     = r.userId === currentUid;
             const premBadge = r.isPremium ? '<span class="sf-rev-prem">⭐</span>' : '';
             const avatarIcon = r.userAvatarIcon || getDefaultAvatarIcon(r.userId || r.userName || '');
@@ -4624,7 +4624,7 @@ async function renderFriendsList(uid) {
                 <div class="sf-friend-info">
                     <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">⭐</span>' : ''}</div>
                     <div class="sf-friend-meta">${watched} vistas · ${getUserLevel_fromData(u).label}
-                        ${lastTitle ? `<span class="sf-friend-last"> · Vio: ${lastTitle.substring(0,28)}${lastTitle.length>28?'�?�':''}</span>` : ''}
+                        ${lastTitle ? `<span class="sf-friend-last"> · Vio: ${lastTitle.substring(0,28)}${lastTitle.length>28?'...':''}</span>` : ''}
                     </div>
                 </div>
                 <button class="sf-friend-btn sf-friend-btn-remove" data-uid="${u._uid}" data-action="remove">
