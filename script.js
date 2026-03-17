@@ -15,12 +15,12 @@
     const countdown = document.getElementById('introCountdown');
 
     const steps = [
-        { pct: 15,  text: '読み込み中...', delay: 400 },
-        { pct: 35,  text: 'リソースを取得中...', delay: 300 },
-        { pct: 55,  text: 'データを準備中...', delay: 250 },
-        { pct: 75,  text: 'ほぼ完了...', delay: 200 },
-        { pct: 92,  text: '起動中...', delay: 150 },
-        { pct: 100, text: '準備完了 · LISTO', delay: 100 },
+        { pct: 15,  text: 'èª­ã¿è¾¼ã¿ä¸­...', delay: 400 },
+        { pct: 35,  text: 'ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ä¸­...', delay: 300 },
+        { pct: 55,  text: 'ãƒ‡ãƒ¼ã‚¿ã‚’æº–å‚™ä¸­...', delay: 250 },
+        { pct: 75,  text: 'ã»ã¼å®Œäº†...', delay: 200 },
+        { pct: 92,  text: 'èµ·å‹•ä¸­...', delay: 150 },
+        { pct: 100, text: 'æº–å‚™å®Œäº† Â· LISTO', delay: 100 },
     ];
 
     let t = 2300;
@@ -71,14 +71,14 @@ async function tmdbFetch(url) {
 
 const I18N = {
     'es-ES': {
-        search:      'Buscar películas...',
+        search:      'Buscar pelÃ­culas...',
         all:         'Todo',
         forYou:      'Para ti',
         upcoming:    'Estrenos',
         profile:     'Perfil',
-        popular:     '⭐ Populares',
+        popular:     'â­ Populares',
         favorites:   'Favoritos',
-        watchLater:  'Ver después',
+        watchLater:  'Ver despuÃ©s',
         history:     'Historial',
         stats:       'Stats',
         challenges:  'Retos',
@@ -87,12 +87,12 @@ const I18N = {
         friends:     'Amigos',
         play:        'Reproducir',
         noRating:    'Sin valorar',
-        myRating:    'Tu valoración',
-        myNote:      'Mi nota · メモ',
-        notePlaceholder: 'Añade una nota personal...',
+        myRating:    'Tu valoraciÃ³n',
+        myNote:      'Mi nota Â· ãƒ¡ãƒ¢',
+        notePlaceholder: 'AÃ±ade una nota personal...',
         saveNote:    'Guardar',
-        popularMovies: 'Películas populares',
-        sectionUpcoming: 'Próximos estrenos',
+        popularMovies: 'PelÃ­culas populares',
+        sectionUpcoming: 'PrÃ³ximos estrenos',
         home:        'Inicio',
         lang:        'ES',
         synopsis:    'Sinopsis no disponible.',
@@ -108,7 +108,7 @@ function applyLang(lang) {
     loadGenres().then(() => refreshCurrentView());
 }
 
-function sfConfirm({ icon='🗑️', kanji='確認', title='¿Estás seguro?', body='', confirmText='Confirmar', cancelText='Cancelar', variant='danger' } = {}) {
+function sfConfirm({ icon='ðŸ—‘ï¸', kanji='ç¢ºèª', title='Â¿EstÃ¡s seguro?', body='', confirmText='Confirmar', cancelText='Cancelar', variant='danger' } = {}) {
     return new Promise(resolve => {
         const overlay = document.getElementById('sfDialogOverlay');
         const dialog  = document.getElementById('sfDialog');
@@ -193,7 +193,7 @@ let marathonQueue    = JSON.parse(localStorage.getItem('marathonQueue'))    || [
 let seriesProgress   = JSON.parse(localStorage.getItem('seriesProgress'))   || {};
 let userBio          = localStorage.getItem('sf_bio') || '';
 let profileBg        = localStorage.getItem('sf_profileBg') || '';
-const AVATAR_ICONS = ['🐶','🐱','🦊','🐼','🐵','🦁','🐯','🐸','🐰','🐻','🐧','🦉','🦄','🐙','🐢','🐬'];
+const AVATAR_ICONS = ['ðŸ¶','ðŸ±','ðŸ¦Š','ðŸ¼','ðŸµ','ðŸ¦','ðŸ¯','ðŸ¸','ðŸ°','ðŸ»','ðŸ§','ðŸ¦‰','ðŸ¦„','ðŸ™','ðŸ¢','ðŸ¬'];
 let userAvatarIcon   = localStorage.getItem('sf_avatarIcon') || '';
 let top10List        = JSON.parse(localStorage.getItem('top10List'))        || [];
 let searchHistory    = JSON.parse(localStorage.getItem('searchHistory'))    || [];
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyTheme(localStorage.getItem('theme') || 'dark');
 
     const savedLang = localStorage.getItem('sf_lang') || 'es-ES';
-    // Idioma fijo en español (no hay selección de idioma)
+    // Idioma fijo en espaÃ±ol (no hay selecciÃ³n de idioma)
     LANGUAGE = 'es-ES';
     REGION = 'ES';
     const si = document.getElementById('searchInput');
@@ -377,7 +377,7 @@ function importData(file) {
     reader.onload = e => {
         try {
             const data = JSON.parse(e.target.result);
-            if (!data.version) throw new Error('Formato inválido');
+            if (!data.version) throw new Error('Formato invÃ¡lido');
             if (data.favorites)    { favorites    = data.favorites;    localStorage.setItem('favorites',    JSON.stringify(favorites)); }
             if (data.watchLater)   { watchLater   = data.watchLater;   localStorage.setItem('watchLater',   JSON.stringify(watchLater)); }
             if (data.watchHistory) { watchHistory = data.watchHistory; localStorage.setItem('watchHistory', JSON.stringify(watchHistory)); }
@@ -386,7 +386,7 @@ function importData(file) {
             showToast('<i class="fas fa-check"></i> Datos importados correctamente');
             refreshCurrentView();
         } catch(err) {
-            showToast('<i class="fas fa-exclamation-triangle"></i> Error: archivo inválido');
+            showToast('<i class="fas fa-exclamation-triangle"></i> Error: archivo invÃ¡lido');
         }
     };
     reader.readAsText(file);
@@ -415,13 +415,13 @@ function renderListToolbar(view) {
                 <label><i class="fas fa-sort"></i> Ordenar</label>
                 <select id="listSortSelect">
                     <option value="default" ${listSortBy==='default'?'selected':''}>Por defecto</option>
-                    <option value="added_asc" ${listSortBy==='added_asc'?'selected':''}>Más antiguos primero</option>
-                    <option value="title_asc" ${listSortBy==='title_asc'?'selected':''}>Título A→Z</option>
-                    <option value="title_desc" ${listSortBy==='title_desc'?'selected':''}>Título Z→A</option>
-                    <option value="year_desc" ${listSortBy==='year_desc'?'selected':''}>Año ↓</option>
-                    <option value="year_asc" ${listSortBy==='year_asc'?'selected':''}>Año ↑</option>
-                    <option value="rating_desc" ${listSortBy==='rating_desc'?'selected':''}>Puntuación ↓</option>
-                    <option value="myrating_desc" ${listSortBy==='myrating_desc'?'selected':''}>Mi valoración ↓</option>
+                    <option value="added_asc" ${listSortBy==='added_asc'?'selected':''}>MÃ¡s antiguos primero</option>
+                    <option value="title_asc" ${listSortBy==='title_asc'?'selected':''}>TÃ­tulo Aâ†’Z</option>
+                    <option value="title_desc" ${listSortBy==='title_desc'?'selected':''}>TÃ­tulo Zâ†’A</option>
+                    <option value="year_desc" ${listSortBy==='year_desc'?'selected':''}>AÃ±o â†“</option>
+                    <option value="year_asc" ${listSortBy==='year_asc'?'selected':''}>AÃ±o â†‘</option>
+                    <option value="rating_desc" ${listSortBy==='rating_desc'?'selected':''}>PuntuaciÃ³n â†“</option>
+                    <option value="myrating_desc" ${listSortBy==='myrating_desc'?'selected':''}>Mi valoraciÃ³n â†“</option>
                 </select>
             </div>
             <div class="list-actions-group">
@@ -450,8 +450,8 @@ async function loadRecommendations() {
     const sectionHeader = document.querySelector('.section-header');
     if (sectionHeader) sectionHeader.style.display = 'flex';
     if (!topGenres.length) {
-        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">好</span><p>Añade películas a favoritos para recibir recomendaciones personalizadas</p></div>`;
-        sectionTitle.textContent = '✨ Recomendado para ti';
+        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">å¥½</span><p>AÃ±ade pelÃ­culas a favoritos para recibir recomendaciones personalizadas</p></div>`;
+        sectionTitle.textContent = 'âœ¨ Recomendado para ti';
         sectionCount.textContent = '';
         return;
     }
@@ -469,11 +469,11 @@ async function loadRecommendations() {
             .slice(0, 40);
         currentData = filtered;
         displayItems(filtered, 'movie');
-        sectionTitle.textContent = '✨ Recomendado para ti';
+        sectionTitle.textContent = 'âœ¨ Recomendado para ti';
         const usedNames = topGenres.map(id=>genresList.find(g=>g.id==id)?.name).filter(Boolean).join(', ');
         const subtitle = document.createElement('p');
         subtitle.className = 'reco-subtitle';
-        subtitle.textContent = `Basado en tus géneros favoritos: ${usedNames}`;
+        subtitle.textContent = `Basado en tus gÃ©neros favoritos: ${usedNames}`;
         document.querySelector('.section-header').after(subtitle);
     } catch(e) { console.error('Error recomendaciones:', e); }
 }
@@ -488,16 +488,16 @@ async function searchPerson(query) {
         const data = await tmdbFetch(`${BASE_URL}/search/person?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=${LANGUAGE}&page=1`);
         const persons = data.results || [];
         if (!persons.length) {
-            moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">人</span><p>No se encontraron personas</p></div>`;
+            moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">äºº</span><p>No se encontraron personas</p></div>`;
             sectionTitle.textContent = `Persona: "${query}"`;
             sectionCount.textContent = '';
             return;
         }
         renderPersonResults(persons, query);
-    } catch(e) { console.error('Error búsqueda persona:', e); }
+    } catch(e) { console.error('Error bÃºsqueda persona:', e); }
 }
 function renderPersonResults(persons, query) {
-    sectionTitle.textContent = `Personas · "${query}"`;
+    sectionTitle.textContent = `Personas Â· "${query}"`;
     sectionCount.textContent = `${persons.length} resultados`;
     moviesGrid.innerHTML = persons.slice(0,12).map((p,i) => {
         const photo = p.profile_path ? `https://image.tmdb.org/t/p/w185${p.profile_path}` : 'https://placehold.co/185x278/1a1a1a/666?text=?';
@@ -531,10 +531,10 @@ async function loadPersonMovies(personId, personName) {
         bioHeader.innerHTML = `
             ${photo ? `<img src="${photo}" alt="${personData.name}" class="person-bio-photo">` : ''}
             <div class="person-bio-info">
-                <div class="person-bio-label">人物 · PERSONA</div>
+                <div class="person-bio-label">äººç‰© Â· PERSONA</div>
                 <h2 class="person-bio-name">${personData.name}</h2>
                 <div class="person-bio-meta">
-                    <span><i class="fas fa-briefcase"></i> ${personData.known_for_department||'—'}</span>
+                    <span><i class="fas fa-briefcase"></i> ${personData.known_for_department||'â€”'}</span>
                     ${personData.birthday?`<span><i class="fas fa-calendar"></i> ${personData.birthday}</span>`:''}
                     ${personData.place_of_birth?`<span><i class="fas fa-map-marker-alt"></i> ${personData.place_of_birth}</span>`:''}
                 </div>
@@ -545,13 +545,13 @@ async function loadPersonMovies(personId, personName) {
             .filter(m => { if (seen.has(m.id)) return false; seen.add(m.id); return true; })
             .sort((a,b)=>(b.popularity||0)-(a.popularity||0)).slice(0,40);
         currentData = unique;
-        sectionTitle.textContent = `🎬 Filmografía: ${personData.name}`;
-        sectionCount.textContent = `${unique.length} títulos`;
+        sectionTitle.textContent = `ðŸŽ¬ FilmografÃ­a: ${personData.name}`;
+        sectionCount.textContent = `${unique.length} tÃ­tulos`;
         document.querySelector('.person-bio-header')?.remove();
         document.querySelector('.section-header').after(bioHeader);
         moviesGrid.innerHTML = unique.map((m,i) => renderCard(m, i, m.media_type||(m.first_air_date?'tv':'movie'))).join('');
         bindCardEvents();
-    } catch(e) { console.error('Error filmografía:', e); }
+    } catch(e) { console.error('Error filmografÃ­a:', e); }
 }
 
 function setupEventListeners() {
@@ -701,7 +701,7 @@ function setupEventListeners() {
         resetAndReload();
     });
 
-    document.getElementById('noSéBtn').addEventListener('click', openMoodPicker);
+    document.getElementById('noSÃ©Btn').addEventListener('click', openMoodPicker);
 
     document.getElementById('cinemaExitBtn').addEventListener('click', exitCinemaMode);
     document.getElementById('cinemaPrevServer').addEventListener('click', () => changeCinemaServer(-1));
@@ -712,14 +712,14 @@ function toggleSearchMode() {
     const btn = document.getElementById('searchModeToggle');
     if (searchMode === 'person') {
         btn.innerHTML = '<i class="fas fa-user"></i>';
-        btn.title = 'Buscando personas — click para buscar títulos';
+        btn.title = 'Buscando personas â€” click para buscar tÃ­tulos';
         btn.classList.add('person-mode');
         searchInput.placeholder = 'Buscar actor, director...';
     } else {
         btn.innerHTML = '<i class="fas fa-film"></i>';
-        btn.title = 'Buscando títulos — click para buscar personas';
+        btn.title = 'Buscando tÃ­tulos â€” click para buscar personas';
         btn.classList.remove('person-mode');
-        searchInput.placeholder = 'Buscar películas...';
+        searchInput.placeholder = 'Buscar pelÃ­culas...';
     }
 }
 
@@ -731,7 +731,7 @@ async function handleRuleta() {
     let pool = [];
     if (watchLater.length > 0) {
         pool = watchLater;
-        showToast('<i class="fas fa-dice"></i> Ruleta: eligiendo de "Ver después"...');
+        showToast('<i class="fas fa-dice"></i> Ruleta: eligiendo de "Ver despuÃ©s"...');
     } else if (currentData.length > 0) {
         pool = currentData;
         showToast('<i class="fas fa-dice"></i> Ruleta: eligiendo de populares...');
@@ -740,9 +740,9 @@ async function handleRuleta() {
         try {
             const data = await tmdbFetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=${LANGUAGE}&region=${REGION}&page=1`);
             pool = data.results || [];
-        } catch(e) { showToast('<i class="fas fa-exclamation-triangle"></i> Error al cargar películas'); return; }
+        } catch(e) { showToast('<i class="fas fa-exclamation-triangle"></i> Error al cargar pelÃ­culas'); return; }
     }
-    if (!pool.length) { showToast('<i class="fas fa-dice"></i> No hay películas disponibles'); return; }
+    if (!pool.length) { showToast('<i class="fas fa-dice"></i> No hay pelÃ­culas disponibles'); return; }
     const item = pool[Math.floor(Math.random() * pool.length)];
     const type = item._type || (item.first_air_date ? 'tv' : 'movie');
     setTimeout(() => openModal(item.id, false, type), 400);
@@ -754,18 +754,18 @@ async function openCompareModal() {
     modalBody.innerHTML = `
         <div class="compare-container">
             <div class="compare-header">
-                <div class="compare-title-jp">比較 · COMPARAR</div>
-                <h2>Comparar películas</h2>
-                <p class="compare-subtitle">Busca dos títulos para comparar lado a lado</p>
+                <div class="compare-title-jp">æ¯”è¼ƒ Â· COMPARAR</div>
+                <h2>Comparar pelÃ­culas</h2>
+                <p class="compare-subtitle">Busca dos tÃ­tulos para comparar lado a lado</p>
             </div>
             <div class="compare-search-row">
                 <div class="compare-search-col">
-                    <input type="text" class="compare-input" id="compareInput1" placeholder="Película 1...">
+                    <input type="text" class="compare-input" id="compareInput1" placeholder="PelÃ­cula 1...">
                     <div class="compare-suggestions" id="compareSuggestions1"></div>
                 </div>
                 <div class="compare-vs">VS</div>
                 <div class="compare-search-col">
-                    <input type="text" class="compare-input" id="compareInput2" placeholder="Película 2...">
+                    <input type="text" class="compare-input" id="compareInput2" placeholder="PelÃ­cula 2...">
                     <div class="compare-suggestions" id="compareSuggestions2"></div>
                 </div>
             </div>
@@ -825,9 +825,9 @@ async function renderComparison(id1, id2) {
             const win1 = higherIsBetter ? n1 > n2 : n1 < n2;
             const win2 = higherIsBetter ? n2 > n1 : n2 < n1;
             return `<tr>
-                <td class="compare-val ${win1&&n1!==n2?'compare-winner':''}">${val1||'—'}</td>
+                <td class="compare-val ${win1&&n1!==n2?'compare-winner':''}">${val1||'â€”'}</td>
                 <td class="compare-label">${label}</td>
-                <td class="compare-val ${win2&&n1!==n2?'compare-winner':''}">${val2||'—'}</td>
+                <td class="compare-val ${win2&&n1!==n2?'compare-winner':''}">${val2||'â€”'}</td>
             </tr>`;
         }
 
@@ -849,26 +849,26 @@ async function renderComparison(id1, id2) {
                 </div>
                 <table class="compare-table">
                     <tbody>
-                        ${statRow('Puntuación TMDB', m1.vote_average?.toFixed(1), m2.vote_average?.toFixed(1), true)}
+                        ${statRow('PuntuaciÃ³n TMDB', m1.vote_average?.toFixed(1), m2.vote_average?.toFixed(1), true)}
                         ${statRow('Votos', m1.vote_count?.toLocaleString(), m2.vote_count?.toLocaleString(), true)}
-                        ${statRow('Año', (m1.release_date||'').split('-')[0], (m2.release_date||'').split('-')[0], false)}
-                        ${statRow('Duración (min)', m1.runtime, m2.runtime, false)}
+                        ${statRow('AÃ±o', (m1.release_date||'').split('-')[0], (m2.release_date||'').split('-')[0], false)}
+                        ${statRow('DuraciÃ³n (min)', m1.runtime, m2.runtime, false)}
                         ${statRow('Presupuesto', m1.budget ? `$${(m1.budget/1e6).toFixed(0)}M` : null, m2.budget ? `$${(m2.budget/1e6).toFixed(0)}M` : null, true)}
                         ${statRow('Taquilla', m1.revenue ? `$${(m1.revenue/1e6).toFixed(0)}M` : null, m2.revenue ? `$${(m2.revenue/1e6).toFixed(0)}M` : null, true)}
                         <tr>
-                            <td class="compare-val compare-genres">${(m1.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'—'}</td>
-                            <td class="compare-label">Géneros</td>
-                            <td class="compare-val compare-genres">${(m2.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'—'}</td>
+                            <td class="compare-val compare-genres">${(m1.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'â€”'}</td>
+                            <td class="compare-label">GÃ©neros</td>
+                            <td class="compare-val compare-genres">${(m2.genres||[]).map(g=>`<span>${g.name}</span>`).join('')||'â€”'}</td>
                         </tr>
                         <tr>
-                            <td class="compare-val">${m1.original_language?.toUpperCase()||'—'}</td>
+                            <td class="compare-val">${m1.original_language?.toUpperCase()||'â€”'}</td>
                             <td class="compare-label">Idioma</td>
-                            <td class="compare-val">${m2.original_language?.toUpperCase()||'—'}</td>
+                            <td class="compare-val">${m2.original_language?.toUpperCase()||'â€”'}</td>
                         </tr>
                         <tr>
-                            <td class="compare-val">${m1.status||'—'}</td>
+                            <td class="compare-val">${m1.status||'â€”'}</td>
                             <td class="compare-label">Estado</td>
-                            <td class="compare-val">${m2.status||'—'}</td>
+                            <td class="compare-val">${m2.status||'â€”'}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -885,7 +885,7 @@ async function renderComparison(id1, id2) {
 async function loadUpcoming() {
     showLoading();
     heroBanner.classList.remove('visible');
-    sectionTitle.textContent = '🚀 Próximos estrenos';
+    sectionTitle.textContent = 'ðŸš€ PrÃ³ximos estrenos';
     filterBar.style.display = 'none';
 
     moviesGrid.className = 'movies-grid';
@@ -910,17 +910,17 @@ async function loadUpcoming() {
             let countdownHTML = '';
             if (diffDays > 0) {
                 countdownHTML = `<div class="upcoming-countdown" data-release="${item.release_date}">
-                    <i class="fas fa-rocket"></i> <span class="countdown-days">${diffDays}</span> día${diffDays!==1?'s':''}
+                    <i class="fas fa-rocket"></i> <span class="countdown-days">${diffDays}</span> dÃ­a${diffDays!==1?'s':''}
                 </div>`;
             } else if (diffDays === 0) {
-                countdownHTML = `<div class="upcoming-countdown today"><i class="fas fa-star"></i> ¡Hoy!</div>`;
+                countdownHTML = `<div class="upcoming-countdown today"><i class="fas fa-star"></i> Â¡Hoy!</div>`;
             } else {
                 countdownHTML = `<div class="upcoming-countdown past"><i class="fas fa-check"></i> En cines</div>`;
             }
 
             return `<div class="movie-card upcoming-card" data-id="${item.id}" data-type="movie" style="animation-delay:${Math.min(i*0.04,0.8)}s">
                 <img src="${poster}" alt="${title}" loading="lazy" decoding="async">
-                <div class="movie-rating-badge">★ ${rating}</div>
+                <div class="movie-rating-badge">â˜… ${rating}</div>
                 ${countdownHTML}
                 <div class="upcoming-date-badge"><i class="fas fa-calendar"></i> ${relStr}</div>
                 <div class="movie-info">
@@ -928,9 +928,9 @@ async function loadUpcoming() {
                     <span class="movie-year">${relStr.split('-')[0]}</span>
                 </div>
                 <div class="movie-actions">
-                    <button class="action-btn wl-btn ${watchLater.some(f=>f.id===item.id)?'watchlater-active':''}" data-id="${item.id}" title="Ver después"><i class="fas fa-clock"></i></button>
+                    <button class="action-btn wl-btn ${watchLater.some(f=>f.id===item.id)?'watchlater-active':''}" data-id="${item.id}" title="Ver despuÃ©s"><i class="fas fa-clock"></i></button>
                     <button class="action-btn fav-btn ${favorites.some(f=>f.id===item.id)?'active':''}" data-id="${item.id}" title="Favoritos"><i class="fas fa-star"></i></button>
-                    <button class="action-btn play-quick-btn" data-id="${item.id}" data-type="movie" title="Más info"><i class="fas fa-info-circle"></i></button>
+                    <button class="action-btn play-quick-btn" data-id="${item.id}" data-type="movie" title="MÃ¡s info"><i class="fas fa-info-circle"></i></button>
                 </div>
             </div>`;
         }).join('');
@@ -939,7 +939,7 @@ async function loadUpcoming() {
         startCountdowns();
     } catch(e) {
         console.error('Error upcoming:', e);
-        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">誤</span><p>Error al cargar próximos estrenos</p></div>`;
+        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">èª¤</span><p>Error al cargar prÃ³ximos estrenos</p></div>`;
     }
 }
 
@@ -1012,12 +1012,12 @@ async function loadGenres() {
         genresList   = (await mr.json()).genres || [];
         tvGenresList = (await tr.json()).genres || [];
         rebuildGenreButtons();
-    } catch(e) { console.error('Error géneros:', e); }
+    } catch(e) { console.error('Error gÃ©neros:', e); }
 }
 function rebuildGenreButtons() {
     genresContainer.innerHTML = '';
     const pop = document.createElement('button');
-    pop.className = 'genre-btn active'; pop.dataset.genre = 'popular'; pop.textContent = '⭐ Populares';
+    pop.className = 'genre-btn active'; pop.dataset.genre = 'popular'; pop.textContent = 'â­ Populares';
     pop.addEventListener('click', () => selectGenre('popular'));
     genresContainer.appendChild(pop);
     (currentMediaType==='movie' ? genresList : tvGenresList).forEach(genre => {
@@ -1065,8 +1065,8 @@ async function loadMoreContent() {
         const newItems = data.results || [];
         currentData = [...currentData, ...newItems];
         appendItems(newItems, type);
-        sectionCount.textContent = `${currentData.length} títulos`;
-    } catch(e) { console.error('Error cargando más:', e); }
+        sectionCount.textContent = `${currentData.length} tÃ­tulos`;
+    } catch(e) { console.error('Error cargando mÃ¡s:', e); }
     finally { isLoadingMore=false; removeLoadMoreSpinner(); }
 }
 function buildDiscoverURL(type, genreId, page=1) {
@@ -1085,7 +1085,7 @@ function buildDiscoverURL(type, genreId, page=1) {
 function showLoadMoreSpinner() {
     if (document.getElementById('loadMoreSpinner')) return;
     const s = document.createElement('div'); s.id='loadMoreSpinner'; s.className='load-more-spinner';
-    s.innerHTML='<div class="spinner"></div><span>読み込み中</span>'; moviesGrid.after(s);
+    s.innerHTML='<div class="spinner"></div><span>èª­ã¿è¾¼ã¿ä¸­</span>'; moviesGrid.after(s);
 }
 function removeLoadMoreSpinner() { document.getElementById('loadMoreSpinner')?.remove(); }
 
@@ -1146,7 +1146,7 @@ function renderListView(items, view) {
 
     const sorted = sortList(items, listSortBy);
     displayItems(sorted, view === 'history' ? undefined : 'movie');
-    sectionCount.textContent = `${items.length} títulos`;
+    sectionCount.textContent = `${items.length} tÃ­tulos`;
 }
 function getListForView(view) {
     if (view==='favorites') return favorites;
@@ -1164,7 +1164,7 @@ async function loadPopularMovies() {
         totalPages = data.total_pages||1;
         currentData = [...currentData, ...(data.results||[])];
         displayItems(currentData, 'movie');
-        sectionTitle.textContent = 'Películas populares';
+        sectionTitle.textContent = 'PelÃ­culas populares';
         setHero(data.results[0], 'movie');
         heroBanner.classList.add('visible');
     } catch(e) { console.error('Error populares:', e); }
@@ -1192,15 +1192,15 @@ async function loadByGenre(genreId) {
         currentData = [...currentData, ...(data.results||[])];
         displayItems(currentData, type);
         const list = type==='movie' ? genresList : tvGenresList;
-        sectionTitle.textContent = `${type==='movie'?'Películas':'Series'} de ${list.find(g=>g.id==genreId)?.name||''}`;
+        sectionTitle.textContent = `${type==='movie'?'PelÃ­culas':'Series'} de ${list.find(g=>g.id==genreId)?.name||''}`;
         setHero(data.results[0], type);
         heroBanner.classList.add('visible');
-    } catch(e) { console.error('Error género:', e); }
+    } catch(e) { console.error('Error gÃ©nero:', e); }
 }
 
 function setHero(item, type='movie') {
     if (!item) return;
-    const kanjiChars = ['映','劇','夢','光','影','星','愛','魂'];
+    const kanjiChars = ['æ˜ ','åŠ‡','å¤¢','å…‰','å½±','æ˜Ÿ','æ„›','é­‚'];
     document.getElementById('heroKanji').textContent = kanjiChars[Math.floor(Math.random()*kanjiChars.length)];
     const displayTitle = item.title||item.name;
     const displayDate  = item.release_date||item.first_air_date;
@@ -1221,7 +1221,7 @@ function setHero(item, type='movie') {
         document.getElementById('heroTitle').textContent    = displayTitle;
         document.getElementById('heroRating').innerHTML     = `<i class="fas fa-star"></i> ${item.vote_average?.toFixed(1)||'N/A'}`;
         document.getElementById('heroYear').innerHTML       = `<i class="fas fa-calendar"></i> ${displayDate?.split('-')[0]||'?'}`;
-        document.getElementById('heroRuntime').innerHTML    = type==='tv' ? `<i class="fas fa-tv"></i> Serie` : `<i class="fas fa-clock"></i> —`;
+        document.getElementById('heroRuntime').innerHTML    = type==='tv' ? `<i class="fas fa-tv"></i> Serie` : `<i class="fas fa-clock"></i> â€”`;
         document.getElementById('heroOverview').textContent = item.overview||'Sin sinopsis disponible.';
         heroContent.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         heroContent.style.opacity='1'; heroContent.style.transform='translateY(0)';
@@ -1249,21 +1249,21 @@ async function handleSearch() {
         const data = await tmdbFetch(`${BASE_URL}/search/${type}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=${LANGUAGE}&page=1`);
         totalPages = data.total_pages||1; currentData = data.results||[];
         displayItems(currentData, type);
-        sectionTitle.textContent = `結果 · "${query}"`;
-    } catch(e) { console.error('Error búsqueda:', e); }
+        sectionTitle.textContent = `çµæžœ Â· "${query}"`;
+    } catch(e) { console.error('Error bÃºsqueda:', e); }
 }
 
 function showLoading() {
-    moviesGrid.innerHTML = `<div class="loading-spinner"><div class="spinner"></div><span>読み込み中 · CARGANDO</span></div>`;
+    moviesGrid.innerHTML = `<div class="loading-spinner"><div class="spinner"></div><span>èª­ã¿è¾¼ã¿ä¸­ Â· CARGANDO</span></div>`;
 }
 function displayItems(items, type) {
     type = type||currentMediaType;
     moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
     if (!items||items.length===0) {
-        moviesGrid.innerHTML=`<div class="empty-state"><span class="empty-kanji">空</span><p>No hay elementos</p></div>`;
+        moviesGrid.innerHTML=`<div class="empty-state"><span class="empty-kanji">ç©º</span><p>No hay elementos</p></div>`;
         sectionCount.textContent=''; return;
     }
-    sectionCount.textContent = `${items.length} títulos`;
+    sectionCount.textContent = `${items.length} tÃ­tulos`;
 
     const frag = document.createDocumentFragment();
     items.forEach((item,i) => {
@@ -1296,12 +1296,12 @@ function renderCard(item, i, type) {
     const tvBadge      = type==='tv' ? '<span class="type-badge">SERIE</span>' : '';
     const watchedBadge = watched ? '<span class="watched-badge"><i class="fas fa-check"></i></span>' : '';
     const userRating   = getUserRating(item.id);
-    const userRatingBadge = userRating > 0 ? `<span class="user-rating-badge">${'★'.repeat(userRating)}</span>` : '';
+    const userRatingBadge = userRating > 0 ? `<span class="user-rating-badge">${'â˜…'.repeat(userRating)}</span>` : '';
     const hasNote      = getUserNote(item.id) ? '<span class="note-badge" title="Tiene nota"><i class="fas fa-sticky-note"></i></span>' : '';
     return `
         <div class="movie-card ${watched?'is-watched':''}" data-id="${item.id}" data-type="${type}" style="animation-delay:${Math.min(i*0.04,0.8)}s">
             <img src="${poster}" alt="${title}" loading="lazy">
-            <div class="movie-rating-badge">★ ${rating}</div>
+            <div class="movie-rating-badge">â˜… ${rating}</div>
             ${tvBadge}${watchedBadge}${userRatingBadge}${hasNote}
             <div class="movie-info">
                 <h3>${title}</h3>
@@ -1309,7 +1309,7 @@ function renderCard(item, i, type) {
             </div>
             <div class="movie-actions">
                 <button class="action-btn fav-btn ${isFav?'active':''}" data-id="${item.id}" title="Favoritos"><i class="fas fa-star"></i></button>
-                <button class="action-btn wl-btn ${isWL?'watchlater-active':''}" data-id="${item.id}" title="Ver después"><i class="fas fa-clock"></i></button>
+                <button class="action-btn wl-btn ${isWL?'watchlater-active':''}" data-id="${item.id}" title="Ver despuÃ©s"><i class="fas fa-clock"></i></button>
                 <button class="action-btn play-quick-btn" data-id="${item.id}" data-type="${type}" title="Reproducir"><i class="fas fa-play"></i></button>
             </div>
         </div>`;
@@ -1341,7 +1341,7 @@ function isWatchLater(id) { return watchLater.some(f => f.id === Number(id)); }
 function toggleFavorite(itemId) {
     const item = findItemById(itemId); if (!item) return;
     const idx = favorites.findIndex(f=>f.id===item.id);
-    if (idx===-1) { favorites.push(item); showToast(`<i class="fas fa-star"></i> Añadido a favoritos`); }
+    if (idx===-1) { favorites.push(item); showToast(`<i class="fas fa-star"></i> AÃ±adido a favoritos`); }
     else { favorites.splice(idx,1); showToast(`<i class="fas fa-star"></i> Eliminado de favoritos`); }
     localStorage.setItem('favorites', JSON.stringify(favorites));
     cloudSave();
@@ -1350,8 +1350,8 @@ function toggleFavorite(itemId) {
 function toggleWatchLater(itemId) {
     const item = findItemById(itemId); if (!item) return;
     const idx = watchLater.findIndex(f=>f.id===item.id);
-    if (idx===-1) { watchLater.push(item); showToast(`<i class="fas fa-clock"></i> Añadido a ver después`); }
-    else { watchLater.splice(idx,1); showToast(`<i class="fas fa-clock"></i> Eliminado de ver después`); }
+    if (idx===-1) { watchLater.push(item); showToast(`<i class="fas fa-clock"></i> AÃ±adido a ver despuÃ©s`); }
+    else { watchLater.splice(idx,1); showToast(`<i class="fas fa-clock"></i> Eliminado de ver despuÃ©s`); }
     localStorage.setItem('watchLater', JSON.stringify(watchLater));
     cloudSave();
     if (currentView==='watchlater') renderListView(watchLater,'watchlater'); else refreshCurrentView();
@@ -1375,23 +1375,23 @@ function showToast(message) {
 }
 
 const SERVERS_MOVIE = [
-    { label:'Servidor 1 🌐', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
-    { label:'Servidor 2 🌐', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
-    { label:'Servidor 3 🌐', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
-    { label:'Servidor 4 🌐', url: id=>`https://embed.su/embed/movie/${id}` },
-    { label:'Servidor 5 🌐', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
+    { label:'Servidor 1 ðŸŒ', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
+    { label:'Servidor 2 ðŸŒ', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
+    { label:'Servidor 3 ðŸŒ', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
+    { label:'Servidor 4 ðŸŒ', url: id=>`https://embed.su/embed/movie/${id}` },
+    { label:'Servidor 5 ðŸŒ', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
 ];
 const SERVERS_TV = [
-    { label:'Servidor 1 🌐', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
-    { label:'Servidor 2 🌐', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
-    { label:'Servidor 3 🌐', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
-    { label:'Servidor 4 🌐', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
-    { label:'Servidor 5 🌐', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
+    { label:'Servidor 1 ðŸŒ', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
+    { label:'Servidor 2 ðŸŒ', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
+    { label:'Servidor 3 ðŸŒ', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
+    { label:'Servidor 4 ðŸŒ', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
+    { label:'Servidor 5 ðŸŒ', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
     document.body.style.overflow='hidden'; modal.style.display='block';
-    modalBody.innerHTML=`<div class="loading-spinner" style="padding:4rem 0"><div class="spinner"></div><span>読み込み中</span></div>`;
+    modalBody.innerHTML=`<div class="loading-spinner" style="padding:4rem 0"><div class="spinner"></div><span>èª­ã¿è¾¼ã¿ä¸­</span></div>`;
     try {
         const ep = type==='tv'?'tv':'movie';
         const [detailRes, creditsRes, similarRes] = await Promise.all([
@@ -1422,18 +1422,18 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         const trailer = videos.find(v=>v.type==='Trailer'&&v.site==='YouTube')||videos.find(v=>v.site==='YouTube');
         const trailerHTML = trailer ? `
             <div class="trailer-section">
-                <h4>Tráiler oficial · 予告編</h4>
+                <h4>TrÃ¡iler oficial Â· äºˆå‘Šç·¨</h4>
                 <div class="trailer-thumb" id="trailerThumb" data-ytkey="${trailer.key}">
-                    <img src="https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg" alt="Tráiler">
+                    <img src="https://img.youtube.com/vi/${trailer.key}/hqdefault.jpg" alt="TrÃ¡iler">
                     <div class="trailer-play-btn"><i class="fas fa-play"></i></div>
-                    <div class="trailer-label">Tráiler oficial</div>
+                    <div class="trailer-label">TrÃ¡iler oficial</div>
                 </div>
                 <div class="trailer-embed" id="trailerEmbed" style="display:none"></div>
             </div>` : '';
 
         const castHTML = cast.length ? `
             <div class="cast-section">
-                <h4>Reparto · キャスト</h4>
+                <h4>Reparto Â· ã‚­ãƒ£ã‚¹ãƒˆ</h4>
                 <div class="cast-list">
                     ${cast.map(p=>`
                         <div class="cast-item clickable-cast" data-person-name="${p.name}">
@@ -1455,7 +1455,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
 
         const starsHTML = `
             <div class="user-rating-section">
-                <div class="user-rating-label"><i class="fas fa-user-star"></i> Tu valoración</div>
+                <div class="user-rating-label"><i class="fas fa-user-star"></i> Tu valoraciÃ³n</div>
                 ${renderStars(item.id, true)}
                 <span class="user-rating-value" id="ratingValue">${getUserRating(item.id)>0?getUserRating(item.id)+'/5':t('noRating')}</span>
             </div>`;
@@ -1464,27 +1464,27 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         const noteHTML = `
             <div class="note-section">
                 <div class="note-header">
-                    <h4><i class="fas fa-sticky-note"></i> Mi nota · メモ</h4>
+                    <h4><i class="fas fa-sticky-note"></i> Mi nota Â· ãƒ¡ãƒ¢</h4>
                     <button class="note-save-btn" id="noteSaveBtn"><i class="fas fa-save"></i> Guardar</button>
                 </div>
-                <textarea class="note-textarea" id="noteTextarea" placeholder="Añade una nota personal... (ej: quiero verla con Ana)">${currentNote}</textarea>
+                <textarea class="note-textarea" id="noteTextarea" placeholder="AÃ±ade una nota personal... (ej: quiero verla con Ana)">${currentNote}</textarea>
             </div>`;
 
         const reviewsHTML = `
             <div class="sf-reviews-section" id="sfReviewsSection">
                 <div class="sf-reviews-header">
-                    <h4><i class="fas fa-comments"></i> Reseñas de la comunidad</h4>
+                    <h4><i class="fas fa-comments"></i> ReseÃ±as de la comunidad</h4>
                     <span class="sf-reviews-count" id="sfReviewsCount"></span>
                 </div>
                 <div class="sf-review-write" id="sfReviewWrite">
-                    <textarea class="sf-review-textarea" id="sfReviewText" maxlength="300" placeholder="Escribe tu reseña (max 300 caracteres)..."></textarea>
+                    <textarea class="sf-review-textarea" id="sfReviewText" maxlength="300" placeholder="Escribe tu reseÃ±a (max 300 caracteres)..."></textarea>
                     <div class="sf-review-actions">
                         <span class="sf-review-chars" id="sfReviewChars">0/300</span>
-                        <button class="sf-review-submit" id="sfReviewSubmit"><i class="fas fa-paper-plane"></i> Publicar reseña</button>
+                        <button class="sf-review-submit" id="sfReviewSubmit"><i class="fas fa-paper-plane"></i> Publicar reseÃ±a</button>
                     </div>
                 </div>
                 <div class="sf-reviews-list" id="sfReviewsList">
-                    <div class="sf-reviews-loading"><i class="fas fa-spinner fa-spin"></i> Cargando reseñas...</div>
+                    <div class="sf-reviews-loading"><i class="fas fa-spinner fa-spin"></i> Cargando reseÃ±as...</div>
                 </div>
             </div>`;
 
@@ -1494,7 +1494,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                 <div class="movie-detail-header">
                     <img class="movie-detail-poster" src="${item.poster_path?IMG_BASE+item.poster_path:'https://placehold.co/175x263/1a1a1a/444?text=N/A'}" alt="${displayTitle}">
                     <div class="movie-detail-info">
-                        <div class="modal-title-jp">${type==='tv'?'テレビシリーズ · SERIE':'映画詳細 · DETALLES'}</div>
+                        <div class="modal-title-jp">${type==='tv'?'ãƒ†ãƒ¬ãƒ“ã‚·ãƒªãƒ¼ã‚º Â· SERIE':'æ˜ ç”»è©³ç´° Â· DETALLES'}</div>
                         <h2>${displayTitle} <span style="font-weight:300;opacity:0.5;font-size:0.7em">(${releaseYear})</span></h2>
                         <div class="movie-meta-row">
                             <span class="meta-item highlight"><i class="fas fa-star"></i> ${item.vote_average?.toFixed(1)} <span style="font-size:.75em;color:#888">(${item.vote_count?.toLocaleString()} votos)</span></span>
@@ -1504,17 +1504,17 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                             ${watchedLabel}
                         </div>
                         <div class="genres-tags">${(item.genres||[]).map(g=>`<span class="genre-tag">${g.name}</span>`).join('')}</div>
-                        ${director ? `<div class="director-row"><span class="director-label">Director</span> <button class="director-link clickable-cast" data-person-name="${director.name}"><i class="fas fa-video"></i> ${director.name}</button>${writers.length ? ` <span class="director-label" style="margin-left:1rem">Guión</span> ${writers.map(w=>`<button class="director-link clickable-cast" data-person-name="${w.name}">${w.name}</button>`).join(', ')}` : ''}</div>` : ''}
+                        ${director ? `<div class="director-row"><span class="director-label">Director</span> <button class="director-link clickable-cast" data-person-name="${director.name}"><i class="fas fa-video"></i> ${director.name}</button>${writers.length ? ` <span class="director-label" style="margin-left:1rem">GuiÃ³n</span> ${writers.map(w=>`<button class="director-link clickable-cast" data-person-name="${w.name}">${w.name}</button>`).join(', ')}` : ''}</div>` : ''}
                         <p class="movie-overview">${item.overview||'Sinopsis no disponible.'}</p>
                         ${starsHTML}
                         <div class="movie-detail-actions">
                             <button class="detail-btn detail-btn-primary" id="playBtn"><i class="fas fa-play"></i> Reproducir</button>
                             <button class="detail-btn detail-btn-secondary" id="cinemaBtn" style="display:none"><i class="fas fa-expand"></i> Vista Cine</button>
                             <button class="detail-btn detail-btn-secondary ${isFav?'active-btn':''}" id="favDetailBtn"><i class="fas fa-star"></i> ${isFav?'En favoritos':'Favoritos'}</button>
-                            <button class="detail-btn detail-btn-secondary ${isWL?'active-btn':''}" id="wlDetailBtn"><i class="fas fa-clock"></i> ${isWL?'En lista':'Ver después'}</button>
+                            <button class="detail-btn detail-btn-secondary ${isWL?'active-btn':''}" id="wlDetailBtn"><i class="fas fa-clock"></i> ${isWL?'En lista':'Ver despuÃ©s'}</button>
                             <button class="detail-btn detail-btn-secondary" id="shareDetailBtn"><i class="fas fa-share-alt"></i> Compartir</button>
-                            <button class="detail-btn detail-btn-secondary" id="addToListDetailBtn"><i class="fas fa-list-ul"></i> Añadir a lista</button>
-                            <button class="detail-btn detail-btn-secondary" id="addToMarathonBtn"><i class="fas fa-film"></i> + Maratón</button>
+                            <button class="detail-btn detail-btn-secondary" id="addToListDetailBtn"><i class="fas fa-list-ul"></i> AÃ±adir a lista</button>
+                            <button class="detail-btn detail-btn-secondary" id="addToMarathonBtn"><i class="fas fa-film"></i> + MaratÃ³n</button>
                         </div>
                     </div>
                 </div>
@@ -1522,11 +1522,11 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                 ${reviewsHTML}
                 ${trailerHTML}
                 <div class="server-selector" id="serverSelector">
-                    <h4>Servidor de reproducción · サーバー</h4>
+                    <h4>Servidor de reproducciÃ³n Â· ã‚µãƒ¼ãƒãƒ¼</h4>
                     <div class="server-list">${serverListHTML}</div>
                 </div>
                 <div class="video-container" id="videoContainer"></div>
-                <div class="donde-ver-section" id="dondeVerSection"><div class="donde-ver-loading"><div class="spinner" style="width:20px;height:20px;border-width:2px"></div> Buscando dónde ver...</div></div>
+                <div class="donde-ver-section" id="dondeVerSection"><div class="donde-ver-loading"><div class="spinner" style="width:20px;height:20px;border-width:2px"></div> Buscando dÃ³nde ver...</div></div>
                 <div id="collectionSection"></div>
                 <div id="triviaSection"></div>
                 ${castHTML}
@@ -1556,7 +1556,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                 setUserRating(id, newRating);
                 document.querySelectorAll('.star-btn').forEach((b,idx) => b.classList.toggle('filled', idx<newRating));
                 document.getElementById('ratingValue').textContent = newRating>0 ? `${newRating}/5` : 'Sin valorar';
-                showToast(newRating>0 ? `<i class="fas fa-star"></i> Valorado con ${newRating} estrella${newRating>1?'s':''}` : `<i class="fas fa-star"></i> Valoración eliminada`);
+                showToast(newRating>0 ? `<i class="fas fa-star"></i> Valorado con ${newRating} estrella${newRating>1?'s':''}` : `<i class="fas fa-star"></i> ValoraciÃ³n eliminada`);
                 refreshCurrentView();
             });
         });
@@ -1583,7 +1583,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                 const grid = document.querySelector('.similar-grid');
                 const newSims = d.results || [];
                 if (!grid || !newSims.length) {
-                    btn.innerHTML = '<i class="fas fa-plus"></i> Ver más similares';
+                    btn.innerHTML = '<i class="fas fa-plus"></i> Ver mÃ¡s similares';
                     btn.disabled = false;
                     return;
                 }
@@ -1592,13 +1592,13 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                     const sp=s.poster_path?IMG_BASE+s.poster_path:'https://placehold.co/120x180/1a1a1a/666?text=N/A';
                     const card = document.createElement('div');
                     card.className='similar-card'; card.dataset.id=s.id; card.dataset.type=type;
-                    card.innerHTML=`<img src="${sp}" alt="${st}" loading="lazy"><div class="similar-rating">★ ${s.vote_average?.toFixed(1)||'N/A'}</div><div class="similar-title">${st}</div><div class="similar-year">${sy}</div>`;
+                    card.innerHTML=`<img src="${sp}" alt="${st}" loading="lazy"><div class="similar-rating">â˜… ${s.vote_average?.toFixed(1)||'N/A'}</div><div class="similar-title">${st}</div><div class="similar-year">${sy}</div>`;
                     card.addEventListener('click', ()=>openModal(s.id, false, type));
                     grid.appendChild(card);
                 });
                 if (simPage >= d.total_pages) btn.remove();
-                else { btn.innerHTML='<i class="fas fa-plus"></i> Ver más similares'; btn.disabled=false; }
-            } catch(e) { btn.innerHTML='Error — reintentar'; btn.disabled=false; }
+                else { btn.innerHTML='<i class="fas fa-plus"></i> Ver mÃ¡s similares'; btn.disabled=false; }
+            } catch(e) { btn.innerHTML='Error â€” reintentar'; btn.disabled=false; }
         });
 
         let currentServerIndex = 0;
@@ -1609,20 +1609,20 @@ async function openModal(itemId, autoPlay=false, type='movie') {
             c.classList.add('visible');
             document.querySelectorAll('.server-btn').forEach((b,i)=>b.classList.toggle('active',i===index));
         }
-        // Watch timer — registers as "seen" after 10min or 20% of runtime
+        // Watch timer â€” registers as "seen" after 10min or 20% of runtime
         let watchRegistered = false;
         function startWatchTimer() {
             if (watchRegistered || _globalWatchTimer) return;
             const runtimeMs = (item.runtime || 50) * 60 * 1000;
             const threshold = Math.max(10 * 60 * 1000, runtimeMs * 0.2);
             const mins = Math.round(threshold / 60000);
-            showToast(`<i class="fas fa-clock"></i> Se registrará como vista en ${mins} min`);
+            showToast(`<i class="fas fa-clock"></i> Se registrarÃ¡ como vista en ${mins} min`);
             _globalWatchTimer = setTimeout(() => {
                 _globalWatchTimer = null;
                 if (!watchRegistered) {
                     watchRegistered = true;
                     addToHistory(item, type);
-                    showToast('<i class="fas fa-check-circle"></i> ¡Registrada como vista!');
+                    showToast('<i class="fas fa-check-circle"></i> Â¡Registrada como vista!');
                 }
             }, threshold);
         }
@@ -1642,7 +1642,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         document.getElementById('wlDetailBtn').addEventListener('click',()=>{
             toggleWatchLater(item.id);
             const b=document.getElementById('wlDetailBtn'); const now=watchLater.some(f=>f.id===item.id);
-            b.innerHTML=`<i class="fas fa-clock"></i> ${now?'En lista':'Ver después'}`; b.classList.toggle('active-btn',now);
+            b.innerHTML=`<i class="fas fa-clock"></i> ${now?'En lista':'Ver despuÃ©s'}`; b.classList.toggle('active-btn',now);
         });
 
         document.getElementById('shareDetailBtn').addEventListener('click', () => openShareModal(item, type));
@@ -1671,7 +1671,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         }
     } catch(e) {
         console.error('Error modal:', e);
-        modalBody.innerHTML=`<div class="empty-state"><span class="empty-kanji">誤</span><p>Error al cargar los datos.</p></div>`;
+        modalBody.innerHTML=`<div class="empty-state"><span class="empty-kanji">èª¤</span><p>Error al cargar los datos.</p></div>`;
     }
 }
 
@@ -1682,16 +1682,16 @@ function buildSimilarHTML(items, type, page, totalPages, itemId) {
         const sp=s.poster_path?IMG_BASE+s.poster_path:'https://placehold.co/120x180/1a1a1a/666?text=N/A';
         return `<div class="similar-card" data-id="${s.id}" data-type="${type}">
             <img src="${sp}" alt="${st}" loading="lazy">
-            <div class="similar-rating">★ ${s.vote_average?.toFixed(1)||'N/A'}</div>
+            <div class="similar-rating">â˜… ${s.vote_average?.toFixed(1)||'N/A'}</div>
             <div class="similar-title">${st}</div>
             <div class="similar-year">${sy}</div>
         </div>`;
     }).join('');
     const moreBtn = page < totalPages
-        ? `<button class="load-more-similar-btn" id="similarLoadMore"><i class="fas fa-plus"></i> Ver más similares</button>` : '';
+        ? `<button class="load-more-similar-btn" id="similarLoadMore"><i class="fas fa-plus"></i> Ver mÃ¡s similares</button>` : '';
     return `
         <div class="similar-section">
-            <h4>${type==='tv'?'Series similares':'Películas similares'} · 関連作品</h4>
+            <h4>${type==='tv'?'Series similares':'PelÃ­culas similares'} Â· é–¢é€£ä½œå“</h4>
             <div class="similar-grid">${cards}</div>
             ${moreBtn}
         </div>`;
@@ -1751,18 +1751,18 @@ async function loadProfileView() {
             ${poster?`<img src="${poster}" alt="" loading="lazy">`:'<div class="prow-noposter"></div>'}
             <div class="prow-info">
                 <div class="prow-title">${title}</div>
-                <div class="prow-meta">${yr}${type==='tv'?' · Serie':' · Película'}${rating?' · ⭐'+rating:''}</div>
+                <div class="prow-meta">${yr}${type==='tv'?' Â· Serie':' Â· PelÃ­cula'}${rating?' Â· â­'+rating:''}</div>
             </div>
-            ${stars?`<div class="prow-stars">${'★'.repeat(stars)}</div>`:''}
+            ${stars?`<div class="prow-stars">${'â˜…'.repeat(stars)}</div>`:''}
             <div class="prow-actions">
                 <button class="prow-btn prow-fav ${isFavorite(item.id)?'active':''}" data-id="${item.id}" title="Favorito"><i class="fas fa-star"></i></button>
-                <button class="prow-btn prow-wl ${isWatchLater(item.id)?'active':''}" data-id="${item.id}" title="Ver después"><i class="fas fa-clock"></i></button>
+                <button class="prow-btn prow-wl ${isWatchLater(item.id)?'active':''}" data-id="${item.id}" title="Ver despuÃ©s"><i class="fas fa-clock"></i></button>
             </div>
         </div>`;
     };
 
     const fbUser    = window._fb?.auth?.currentUser;
-    const fbName    = fbUser?.displayName || fbUser?.email?.split('@')[0] || 'Cinéfilo';
+    const fbName    = fbUser?.displayName || fbUser?.email?.split('@')[0] || 'CinÃ©filo';
     const fbEmail   = fbUser?.email || '';
     const fbInitial = fbName.charAt(0).toUpperCase();
     const avatarHtml = userAvatarIcon
@@ -1785,7 +1785,7 @@ async function loadProfileView() {
         <div class="pv-hero-identity">
           <div class="pv-avatar">${avatarHtml}</div>
           <div>
-            <div class="pv-hero-eyebrow">プロフィール · PERFIL</div>
+            <div class="pv-hero-eyebrow">ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ« Â· PERFIL</div>
             <div class="pv-hero-name">${fbName} <button class="pv-edit-btn" id="pvEditProfileBtn" title="Editar perfil"><i class="fas fa-pen"></i></button></div>
             <div class="pv-hero-email">${fbEmail}</div>
             <div class="pv-level-badge" style="color:${level.color}">${level.icon} ${level.label}</div>
@@ -1793,7 +1793,7 @@ async function loadProfileView() {
                 <div class="pv-level-bar"><div class="pv-level-fill" style="width:${lvlPct}%;background:${level.color}"></div></div>
                 <span class="pv-level-xp">${xp} XP</span>
             </div>
-            <div class="pv-hero-streak">🔥 Racha <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord <strong>${streakData.longest}</strong></div>
+            <div class="pv-hero-streak">ðŸ”¥ Racha <strong>${streakData.streak}</strong> dÃ­a${streakData.streak!==1?'s':''} Â· RÃ©cord <strong>${streakData.longest}</strong></div>
           </div>
         </div>
         <div class="pv-hero-kpis">
@@ -1809,9 +1809,9 @@ async function loadProfileView() {
       <div class="pv-tabs">
         <button class="pvt active" data-tab="resumen"><i class="fas fa-chart-pie"></i> Resumen</button>
         <button class="pvt" data-tab="favoritos"><i class="fas fa-star"></i> Favoritos <em>${totalFavs}</em></button>
-        <button class="pvt" data-tab="verdespues"><i class="fas fa-clock"></i> Ver después <em>${totalWL}</em></button>
+        <button class="pvt" data-tab="verdespues"><i class="fas fa-clock"></i> Ver despuÃ©s <em>${totalWL}</em></button>
         <button class="pvt" data-tab="historial"><i class="fas fa-history"></i> Historial <em>${totalWatched}</em></button>
-        <button class="pvt" data-tab="estadisticas"><i class="fas fa-chart-bar"></i> Stats ${isPremium ? '' : '<span class="pv-lock-badge">⭐</span>'}</button>
+        <button class="pvt" data-tab="estadisticas"><i class="fas fa-chart-bar"></i> Stats ${isPremium ? '' : '<span class="pv-lock-badge">â­</span>'}</button>
         <button class="pvt" data-tab="retos"><i class="fas fa-fire"></i> Retos</button>
         <button class="pvt" data-tab="logros"><i class="fas fa-trophy"></i> Logros <em>${unlockedAch}</em></button>
         <button class="pvt" data-tab="leaderboard"><i class="fas fa-crown"></i> Ranking</button>
@@ -1819,17 +1819,17 @@ async function loadProfileView() {
         ${isPremium ? '<button class="pvt sf-prem-tab" data-tab="continuar"><i class="fas fa-play-circle"></i> Continuar</button><button class="pvt sf-prem-tab" data-tab="recomendados"><i class="fas fa-magic"></i> Para ti</button><button class="pvt sf-prem-tab" data-tab="perfil-bg"><i class="fas fa-image"></i> Mi Perfil+</button>' : ''}
       </div>
 
-      <!-- ═══ PANEL: RESUMEN ═══════════════════════════════ -->
+      <!-- â•â•â• PANEL: RESUMEN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp active" id="pvp-resumen">
         <div class="pvp-inner">
 
           <!-- PREMIUM CARD -->
           ${isPremium ?
             `<div class="sf-premium-active-card">
-              <div class="sf-premium-active-icon">⭐</div>
+              <div class="sf-premium-active-icon">â­</div>
               <div class="sf-premium-active-info">
                 <div class="sf-premium-active-title">Eres miembro Premium</div>
-                <div class="sf-premium-active-sub">Gracias por apoyar StreamFlex 🎬</div>
+                <div class="sf-premium-active-sub">Gracias por apoyar StreamFlex ðŸŽ¬</div>
                 <div class="sf-theme-picker">
                   <span class="sf-theme-label">Color de acento:</span>
                   <button class="sf-theme-dot ${premiumTheme==='red'?'active':''}"    data-theme="red"    style="background:#cc0000" title="Rojo"></button>
@@ -1843,9 +1843,9 @@ async function loadProfileView() {
             </div>` :
             `<div class="sf-premium-banner">
               <div class="sf-premium-banner-left">
-                <div class="sf-premium-banner-title">⭐ StreamFlex Premium</div>
+                <div class="sf-premium-banner-title">â­ StreamFlex Premium</div>
                 <div class="sf-premium-banner-perks">
-                  <span>✓ Sin popups</span><span>✓ Temas exclusivos</span><span>✓ Stats avanzadas</span><span>✓ Listas ilimitadas</span>
+                  <span>âœ“ Sin popups</span><span>âœ“ Perfil+</span><span>âœ“ Recomendaciones pro</span><span>âœ“ Stats avanzadas</span>
                 </div>
               </div>
               <button class="sf-premium-banner-btn" id="sfPremiumOpenBtn">Ver planes</button>
@@ -1855,22 +1855,22 @@ async function loadProfileView() {
           <div class="pv-row-2col">
             <!-- Mini stats -->
             <div class="pv-miniblock">
-              <div class="pv-block-label">Estadísticas generales</div>
+              <div class="pv-block-label">EstadÃ­sticas generales</div>
               <div class="pv-minis">
-                <div class="pv-mini"><i class="fas fa-eye"></i><span>${totalWatched} películas vistas</span></div>
+                <div class="pv-mini"><i class="fas fa-eye"></i><span>${totalWatched} pelÃ­culas vistas</span></div>
                 <div class="pv-mini"><i class="fas fa-clock"></i><span>${timeStr} de contenido</span></div>
                 <div class="pv-mini"><i class="fas fa-star"></i><span>${totalFavs} en favoritos</span></div>
                 <div class="pv-mini"><i class="fas fa-clock"></i><span>${totalWL} por ver</span></div>
                 <div class="pv-mini"><i class="fas fa-list"></i><span>${Object.keys(customLists).length} listas creadas</span></div>
                 <div class="pv-mini"><i class="fas fa-star-half-alt"></i><span>${Object.keys(userRatings).length} valoraciones dadas</span></div>
-                ${topDec?`<div class="pv-mini"><i class="fas fa-calendar-alt"></i><span>Década favorita: <strong>${topDec[0]}s</strong></span></div>`:''}
-                <div class="pv-mini">🔥<span>Racha actual: <strong>${streakData.streak} días</strong></span></div>
+                ${topDec?`<div class="pv-mini"><i class="fas fa-calendar-alt"></i><span>DÃ©cada favorita: <strong>${topDec[0]}s</strong></span></div>`:''}
+                <div class="pv-mini">ðŸ”¥<span>Racha actual: <strong>${streakData.streak} dÃ­as</strong></span></div>
               </div>
             </div>
             <!-- Genre chart -->
             ${topGenres.length?`
             <div class="pv-miniblock">
-              <div class="pv-block-label">Géneros más vistos</div>
+              <div class="pv-block-label">GÃ©neros mÃ¡s vistos</div>
               <div class="pv-chart-wrap"><canvas id="pvGenreChart" height="220"></canvas></div>
             </div>`:''}
           </div>
@@ -1893,7 +1893,7 @@ async function loadProfileView() {
 
           <!-- Data actions -->
           <div class="pv-data-section">
-            <div class="pv-block-label">Datos y sincronización</div>
+            <div class="pv-block-label">Datos y sincronizaciÃ³n</div>
             <div class="pv-data-btns">
               <button class="pv-dbtn" id="pvExport"><i class="fas fa-download"></i> Exportar</button>
               <label class="pv-dbtn" style="cursor:pointer"><i class="fas fa-upload"></i> Importar<input type="file" id="pvImport" accept=".json" style="display:none"></label>
@@ -1904,40 +1904,40 @@ async function loadProfileView() {
         </div>
       </div>
 
-      <!-- ═══ PANEL: FAVORITOS ═════════════════════════════ -->
+      <!-- â•â•â• PANEL: FAVORITOS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-favoritos">
         <div class="pvp-inner">
           ${totalFavs?`
           <div class="pv-list-hdr">
-            <span class="pv-list-count"><i class="fas fa-star"></i> ${totalFavs} película${totalFavs!==1?'s':''}</span>
+            <span class="pv-list-count"><i class="fas fa-star"></i> ${totalFavs} pelÃ­cula${totalFavs!==1?'s':''}</span>
           </div>
           <div class="prow-list" id="pvFavList">
             ${favorites.map(it=>cardRow(it)).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>⭐</span><p>No tienes favoritos todavía.</p><small>Pulsa <i class="fas fa-star"></i> en cualquier película.</small></div>`}
+          <div class="pv-empty-tab"><span>â­</span><p>No tienes favoritos todavÃ­a.</p><small>Pulsa <i class="fas fa-star"></i> en cualquier pelÃ­cula.</small></div>`}
         </div>
       </div>
 
-      <!-- ═══ PANEL: VER DESPUÉS ═══════════════════════════ -->
+      <!-- â•â•â• PANEL: VER DESPUÃ‰S â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-verdespues">
         <div class="pvp-inner">
           ${totalWL?`
           <div class="pv-list-hdr">
-            <span class="pv-list-count"><i class="fas fa-clock"></i> ${totalWL} pendiente${totalWL!==1?'s':''} · ~${Math.round(totalWL*110/60)}h estimadas</span>
+            <span class="pv-list-count"><i class="fas fa-clock"></i> ${totalWL} pendiente${totalWL!==1?'s':''} Â· ~${Math.round(totalWL*110/60)}h estimadas</span>
           </div>
           <div class="prow-list" id="pvWLList">
             ${watchLater.map(it=>cardRow(it)).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>🕐</span><p>Tu lista "Ver después" está vacía.</p><small>Pulsa <i class="fas fa-clock"></i> en cualquier película.</small></div>`}
+          <div class="pv-empty-tab"><span>ðŸ•</span><p>Tu lista "Ver despuÃ©s" estÃ¡ vacÃ­a.</p><small>Pulsa <i class="fas fa-clock"></i> en cualquier pelÃ­cula.</small></div>`}
         </div>
       </div>
 
-      <!-- ═══ PANEL: HISTORIAL ══════════════════════════════ -->
+      <!-- â•â•â• PANEL: HISTORIAL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-historial">
         <div class="pvp-inner">
           ${totalWatched?`
           <div class="pv-list-hdr">
-            <span class="pv-list-count"><i class="fas fa-history"></i> ${totalWatched} vista${totalWatched!==1?'s':''} · ${timeStr}</span>
+            <span class="pv-list-count"><i class="fas fa-history"></i> ${totalWatched} vista${totalWatched!==1?'s':''} Â· ${timeStr}</span>
           </div>
           <div class="prow-list prow-history" id="pvHistList">
             ${watchHistory.map((it,i) => {
@@ -1953,18 +1953,18 @@ async function loadProfileView() {
                 ${poster?`<img src="${poster}" alt="" loading="lazy">`:'<div class="prow-noposter"></div>'}
                 <div class="prow-info">
                   <div class="prow-title">${title}</div>
-                  <div class="prow-meta">${yr}${ds?' · '+ds:''}</div>
+                  <div class="prow-meta">${yr}${ds?' Â· '+ds:''}</div>
                 </div>
-                ${stars?`<div class="prow-stars">${'★'.repeat(stars)}</div>`:''}
+                ${stars?`<div class="prow-stars">${'â˜…'.repeat(stars)}</div>`:''}
                 <button class="prow-del" data-id="${it.id}" title="Eliminar"><i class="fas fa-times"></i></button>
               </div>`;
             }).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>🎬</span><p>Tu historial está vacío.</p><small>Reproduce películas para que aparezcan aquí.</small></div>`}
+          <div class="pv-empty-tab"><span>ðŸŽ¬</span><p>Tu historial estÃ¡ vacÃ­o.</p><small>Reproduce pelÃ­culas para que aparezcan aquÃ­.</small></div>`}
         </div>
       </div>
 
-      <!-- ═══ PANEL: DIARIO ═════════════════════════════════ -->
+      <!-- â•â•â• PANEL: DIARIO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-diario">
         <div class="pvp-inner">
           ${months.length?`
@@ -1990,21 +1990,21 @@ async function loadProfileView() {
                   return `<div class="pv-diary-card" data-id="${it.id}" data-type="${type}" title="${it.title||it.name||''}">
                     ${p?`<img src="${p}" alt="" loading="lazy">`:'<div class="pv-diary-blank"></div>'}
                     ${da?`<div class="pv-diary-day">${da}</div>`:''}
-                    ${stars?`<div class="pv-diary-star">${'★'.repeat(Math.min(stars,5))}</div>`:''}
+                    ${stars?`<div class="pv-diary-star">${'â˜…'.repeat(Math.min(stars,5))}</div>`:''}
                   </div>`;
                 }).join('')}
               </div>
             </div>`;
           }).join('')}`:`
-          <div class="pv-empty-tab"><span>📅</span><p>Tu diario está vacío.</p><small>Empieza a ver películas para llenar tu diario.</small></div>`}
+          <div class="pv-empty-tab"><span>ðŸ“…</span><p>Tu diario estÃ¡ vacÃ­o.</p><small>Empieza a ver pelÃ­culas para llenar tu diario.</small></div>`}
         </div>
       </div>
 
-      <!-- ═══ PANEL: LOGROS ═════════════════════════════════ -->
+      <!-- â•â•â• PANEL: LOGROS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-logros">
         <div class="pvp-inner">
           <div class="pv-logros-header">
-            <div class="pv-logros-streak">🔥 Racha: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
+            <div class="pv-logros-streak">ðŸ”¥ Racha: <strong>${streakData.streak}</strong> dÃ­a${streakData.streak!==1?'s':''} Â· RÃ©cord: <strong>${streakData.longest}</strong></div>
             <div class="pv-logros-bar-wrap">
               <div class="pv-logros-bar"><div style="width:${Math.round(unlockedAch/ACHIEVEMENTS_DEF.length*100)}%"></div></div>
               <span>${unlockedAch}/${ACHIEVEMENTS_DEF.length} desbloqueados</span>
@@ -2015,7 +2015,7 @@ async function loadProfileView() {
               const ok = !!achievements[a.id];
               const dt = ok?new Date(achievements[a.id]).toLocaleDateString('es-ES'):null;
               return `<div class="pv-logro-card ${ok?'pv-logro-ok':'pv-logro-locked'}">
-                <div class="pv-logro-icon">${ok?a.icon:'🔒'}</div>
+                <div class="pv-logro-icon">${ok?a.icon:'ðŸ”’'}</div>
                 <div class="pv-logro-label">${a.label}</div>
                 <div class="pv-logro-desc">${a.desc}</div>
                 ${dt?`<div class="pv-logro-date">${dt}</div>`:''}
@@ -2025,32 +2025,32 @@ async function loadProfileView() {
         </div>
       </div>
 
-      <!-- ═══ PANEL: ESTADÍSTICAS AVANZADAS ════════════════ -->
+      <!-- â•â•â• PANEL: ESTADÃSTICAS AVANZADAS â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-estadisticas">
         <div class="pvp-inner">
           ${!isPremium ? `
           <div class="sf-locked-feature">
-            <div class="sf-locked-icon">📊</div>
-            <div class="sf-locked-title">Estadísticas Avanzadas</div>
-            <div class="sf-locked-sub">Accede a tus estadísticas detalladas con Premium</div>
-            <button class="sf-locked-btn" id="sfStatsUnlockBtn">⭐ Ver planes Premium</button>
+            <div class="sf-locked-icon">ðŸ“Š</div>
+            <div class="sf-locked-title">EstadÃ­sticas Avanzadas</div>
+            <div class="sf-locked-sub">Accede a tus estadÃ­sticas detalladas con Premium</div>
+            <button class="sf-locked-btn" id="sfStatsUnlockBtn">â­ Ver planes Premium</button>
           </div>` : `<div class="pv-stats-grid">` }
           ${isPremium ? `` : ``}
           ${isPremium ? '<div class="pv-stats-grid">' : ''}
-            <div class="pv-stat-card"><div class="pv-stat-icon">⏱️</div><div class="pv-stat-val">${Math.round(stats.totalHrs)}h</div><div class="pv-stat-label">Tiempo total</div></div>
-            <div class="pv-stat-card"><div class="pv-stat-icon">⭐</div><div class="pv-stat-val">${stats.avgRating}</div><div class="pv-stat-label">Valoración media</div></div>
-            <div class="pv-stat-card"><div class="pv-stat-icon">📅</div><div class="pv-stat-val">${stats.topMonth?stats.topMonth[0]:'—'}</div><div class="pv-stat-label">Mes más activo</div></div>
-            <div class="pv-stat-card"><div class="pv-stat-icon">📼</div><div class="pv-stat-val">${stats.topDecade?stats.topDecade[0]+"s":'—'}</div><div class="pv-stat-label">Década favorita</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">â±ï¸</div><div class="pv-stat-val">${Math.round(stats.totalHrs)}h</div><div class="pv-stat-label">Tiempo total</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">â­</div><div class="pv-stat-val">${stats.avgRating}</div><div class="pv-stat-label">ValoraciÃ³n media</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">ðŸ“…</div><div class="pv-stat-val">${stats.topMonth?stats.topMonth[0]:'â€”'}</div><div class="pv-stat-label">Mes mÃ¡s activo</div></div>
+            <div class="pv-stat-card"><div class="pv-stat-icon">ðŸ“¼</div><div class="pv-stat-val">${stats.topDecade?stats.topDecade[0]+"s":'â€”'}</div><div class="pv-stat-label">DÃ©cada favorita</div></div>
           </div>
           ${stats.topGenreHours.length ? `
-          <div class="pv-block-label" style="margin-top:1.5rem">⏱️ Horas por género</div>
+          <div class="pv-block-label" style="margin-top:1.5rem">â±ï¸ Horas por gÃ©nero</div>
           <div class="pv-genre-hours">
             ${stats.topGenreHours.map(([name,hrs]) =>
               "<div class=\"pv-gh-row\"><span class=\"pv-gh-name\">"+name+"</span><div class=\"pv-gh-bar-wrap\"><div class=\"pv-gh-bar\" style=\"width:"+Math.round(hrs/stats.topGenreHours[0][1]*100)+"%\"></div></div><span class=\"pv-gh-val\">"+hrs.toFixed(1)+"h</span></div>"
             ).join("")}
           </div>` : ""}
           ${stats.monthHistory.length > 1 ? `
-          <div class="pv-block-label" style="margin-top:1.5rem">📈 Actividad mensual</div>
+          <div class="pv-block-label" style="margin-top:1.5rem">ðŸ“ˆ Actividad mensual</div>
           <div class="pv-month-bars">
             ${stats.monthHistory.map(([month,count]) => {
               const mc = Math.max(...stats.monthHistory.map(m=>m[1]));
@@ -2061,10 +2061,10 @@ async function loadProfileView() {
       </div>
 
       ${isPremium ? '</div>' : ''}
-      <!-- ═══ PANEL: RETOS SEMANALES ════════════════════════ -->
+      <!-- â•â•â• PANEL: RETOS SEMANALES â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-retos">
         <div class="pvp-inner">
-          <div class="pv-block-label">🔥 Reto activo esta semana</div>
+          <div class="pv-block-label">ðŸ”¥ Reto activo esta semana</div>
           <div class="pv-challenge-card ${chalPct >= 100 ? "pv-challenge-done" : ""}">
             <div class="pv-challenge-icon">${challenge.icon}</div>
             <div class="pv-challenge-info">
@@ -2072,11 +2072,11 @@ async function loadProfileView() {
               <div class="pv-challenge-desc">${challenge.desc}</div>
               <div class="pv-challenge-progress-wrap">
                 <div class="pv-challenge-bar"><div style="width:${chalPct}%"></div></div>
-                <span>${chalProgress}/${challenge.target}${chalPct>=100?" ✅ ¡Completado!":""}</span>
+                <span>${chalProgress}/${challenge.target}${chalPct>=100?" âœ… Â¡Completado!":""}</span>
               </div>
             </div>
           </div>
-          <div class="pv-block-label" style="margin-top:2rem">📋 Todos los retos</div>
+          <div class="pv-block-label" style="margin-top:2rem">ðŸ“‹ Todos los retos</div>
           <div class="pv-challenges-list">
             ${WEEKLY_CHALLENGES.map(c => {
               const isCurr = c.id === challenge.id;
@@ -2124,7 +2124,7 @@ async function loadProfileView() {
       <!-- PANEL: PERFIL+ PREMIUM -->
       <div class="pvp" id="pvp-perfil-bg"><div class="pvp-inner" id="pvPerfilBgInner"><div class="loading-spinner" style="padding:2rem 0"><div class="spinner"></div></div></div></div>
 
-      <!-- ═══ PANEL: LEADERBOARD ════════════════════════════ -->
+      <!-- â•â•â• PANEL: LEADERBOARD â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
       <div class="pvp" id="pvp-leaderboard">
         <div class="pvp-inner">
           <div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Cargando ranking...</span></div>
@@ -2154,7 +2154,7 @@ async function loadProfileView() {
             if (!isPremium) return;
             applyPremiumTheme(dot.dataset.theme);
             document.querySelectorAll('.sf-theme-dot').forEach(d => d.classList.toggle('active', d === dot));
-            showToast('🎨 Tema ' + dot.title + ' aplicado');
+            showToast('ðŸŽ¨ Tema ' + dot.title + ' aplicado');
         });
     });
 
@@ -2199,9 +2199,9 @@ async function loadProfileView() {
         navigator.clipboard.writeText(generateSyncURL()).then(()=>showToast('<i class="fas fa-link"></i> URL de sync copiada')));
     document.getElementById('pvClear')?.addEventListener('click', async ()=>{
         const ok = await sfConfirm({
-            icon: '🗑️', kanji: '削除確認',
+            icon: 'ðŸ—‘ï¸', kanji: 'å‰Šé™¤ç¢ºèª',
             title: 'Borrar historial',
-            body: 'Se eliminará todo tu historial de visualización. Esta acción no se puede deshacer.',
+            body: 'Se eliminarÃ¡ todo tu historial de visualizaciÃ³n. Esta acciÃ³n no se puede deshacer.',
             confirmText: '<i class="fas fa-trash"></i> Borrar todo',
             cancelText: 'Cancelar',
             variant: 'danger'
@@ -2230,7 +2230,7 @@ function drawGenreChart(topGenres) {
         },
         options: { responsive:true, plugins:{ legend:{display:false},
             tooltip:{ backgroundColor:'#1a1a1a', titleColor:'#f0ede8', bodyColor:'#888',
-                callbacks:{ label: c=>` ${c.raw} películas` } } },
+                callbacks:{ label: c=>` ${c.raw} pelÃ­culas` } } },
             scales: {
                 x:{ ticks:{color:dark?'#888':'#555', font:{family:'Noto Sans JP',size:11}}, grid:{color:'transparent'} },
                 y:{ ticks:{color:dark?'#888':'#555', stepSize:1}, grid:{color:dark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)'} }
@@ -2255,7 +2255,7 @@ function renderListsManager() {
     modalBody.innerHTML = `
         <div class="lists-container">
             <div class="lists-header">
-                <div class="lists-title-jp">コレクション · COLECCIONES</div>
+                <div class="lists-title-jp">ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ Â· COLECCIONES</div>
                 <h2>Mis listas</h2>
             </div>
             <div class="lists-create-row">
@@ -2264,7 +2264,7 @@ function renderListsManager() {
             </div>
             <div class="lists-grid" id="listsGrid">
                 ${listIds.length === 0 ? `
-                    <div class="lists-empty"><span>コレクション</span><p>No tienes listas todavía. ¡Crea una!</p></div>
+                    <div class="lists-empty"><span>ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³</span><p>No tienes listas todavÃ­a. Â¡Crea una!</p></div>
                 ` : listIds.map(id => {
                     const list = customLists[id];
                     const count = list.items.length;
@@ -2275,7 +2275,7 @@ function renderListsManager() {
                         <div class="list-card-posters">${previewPosters}</div>
                         <div class="list-card-info">
                             <div class="list-card-name">${list.name}</div>
-                            <div class="list-card-count">${count} título${count!==1?'s':''}</div>
+                            <div class="list-card-count">${count} tÃ­tulo${count!==1?'s':''}</div>
                         </div>
                         <div class="list-card-actions">
                             <button class="list-card-btn open-list-btn" data-list-id="${id}"><i class="fas fa-folder-open"></i></button>
@@ -2290,7 +2290,7 @@ function renderListsManager() {
         const name = document.getElementById('newListNameInput').value.trim();
         if (!name) return;
         if (!isPremium && Object.keys(customLists).length >= 3) {
-            showToast('⭐ Límite de 3 listas. Hazte Premium para listas ilimitadas.');
+            showToast('â­ LÃ­mite de 3 listas. Hazte Premium para listas ilimitadas.');
             return;
         }
         const id = 'list_' + Date.now();
@@ -2315,9 +2315,9 @@ function renderListsManager() {
             e.stopPropagation();
             const name = customLists[btn.dataset.listId]?.name;
             const delOk = await sfConfirm({
-                icon: '📋', kanji: '削除',
+                icon: 'ðŸ“‹', kanji: 'å‰Šé™¤',
                 title: 'Eliminar lista',
-                body: `¿Eliminar la lista "${name}"? Se perderán todas las películas guardadas en ella.`,
+                body: `Â¿Eliminar la lista "${name}"? Se perderÃ¡n todas las pelÃ­culas guardadas en ella.`,
                 confirmText: '<i class="fas fa-trash"></i> Eliminar',
                 cancelText: 'Cancelar',
                 variant: 'danger'
@@ -2338,11 +2338,11 @@ function renderListDetail(listId) {
         <div class="lists-container">
             <button class="lists-back-btn" id="listsBackBtn"><i class="fas fa-arrow-left"></i> Mis listas</button>
             <div class="lists-detail-header">
-                <div class="lists-title-jp">リスト · LISTA</div>
+                <div class="lists-title-jp">ãƒªã‚¹ãƒˆ Â· LISTA</div>
                 <h2>${list.name}</h2>
-                <span class="lists-count">${list.items.length} títulos</span>
+                <span class="lists-count">${list.items.length} tÃ­tulos</span>
             </div>
-            ${list.items.length === 0 ? `<div class="lists-empty"><span>空</span><p>Esta lista está vacía. Abre una película y añádela.</p></div>` :
+            ${list.items.length === 0 ? `<div class="lists-empty"><span>ç©º</span><p>Esta lista estÃ¡ vacÃ­a. Abre una pelÃ­cula y aÃ±Ã¡dela.</p></div>` :
             `<div class="movies-grid" style="padding:0">
                 ${list.items.map((item,i) => renderCard(item, i, item._type||(item.first_air_date?'tv':'movie'))).join('')}
             </div>`}
@@ -2357,8 +2357,8 @@ function openAddToListPicker(item, type) {
     const popup = document.createElement('div');
     popup.className = 'add-to-list-popup';
     popup.innerHTML = `
-        <div class="atl-header"><i class="fas fa-list-ul"></i> Añadir a lista</div>
-        ${listIds.length === 0 ? `<div class="atl-empty">No tienes listas. Créalas con el botón <i class="fas fa-list-ul"></i></div>` :
+        <div class="atl-header"><i class="fas fa-list-ul"></i> AÃ±adir a lista</div>
+        ${listIds.length === 0 ? `<div class="atl-empty">No tienes listas. CrÃ©alas con el botÃ³n <i class="fas fa-list-ul"></i></div>` :
         listIds.map(id => {
             const l = customLists[id];
             const inList = l.items.some(it => it.id === item.id);
@@ -2379,7 +2379,7 @@ function openAddToListPicker(item, type) {
                 l.items.push({ ...item, _type: type });
                 btn.innerHTML = `<i class="fas fa-check"></i> ${l.name}`;
                 btn.classList.add('in-list');
-                showToast(`<i class="fas fa-list-ul"></i> Añadido a "${l.name}"`);
+                showToast(`<i class="fas fa-list-ul"></i> AÃ±adido a "${l.name}"`);
             } else {
                 l.items.splice(idx, 1);
                 btn.innerHTML = `<i class="fas fa-plus"></i> ${l.name}`;
@@ -2417,20 +2417,20 @@ function openShareModal(item, type) {
 
     shareBody.innerHTML = `
         <div class="share-container">
-            <div class="share-title-jp">シェア · COMPARTIR</div>
-            <h2>Compartir película</h2>
+            <div class="share-title-jp">ã‚·ã‚§ã‚¢ Â· COMPARTIR</div>
+            <h2>Compartir pelÃ­cula</h2>
 
             <div class="share-card-preview" id="shareCardPreview">
                 <div class="share-card" id="shareCard">
                     <div class="share-card-bg" style="${poster?`background-image:url(${poster});`:'background:#1a1a1a;'}"></div>
                     <div class="share-card-overlay"></div>
                     <div class="share-card-content">
-                        <div class="share-card-badge">StreamFlex · 映画</div>
+                        <div class="share-card-badge">StreamFlex Â· æ˜ ç”»</div>
                         ${poster ? `<img class="share-card-poster" src="${poster}" alt="${title}">` : ''}
                         <div class="share-card-info">
                             <div class="share-card-title">${title}</div>
                             <div class="share-card-meta">
-                                <span>★ ${rating}</span>
+                                <span>â˜… ${rating}</span>
                                 <span>${year}</span>
                                 ${genres ? `<span>${genres}</span>` : ''}
                             </div>
@@ -2459,7 +2459,7 @@ function openShareModal(item, type) {
     });
 
     document.getElementById('copyTextBtn').addEventListener('click', () => {
-        const text = `🎬 ${title} (${year})\n⭐ ${rating}/10\n${genres}\n\n${overview}\n\n🔗 ${shareUrl}`;
+        const text = `ðŸŽ¬ ${title} (${year})\nâ­ ${rating}/10\n${genres}\n\n${overview}\n\nðŸ”— ${shareUrl}`;
         navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-check"></i> Texto copiado'));
     });
 
@@ -2478,8 +2478,8 @@ function downloadShareCard(item, type) {
     const title = item.title || item.name || '';
     const year = (item.release_date||item.first_air_date||'').split('-')[0];
     const rating = item.vote_average?.toFixed(1) || 'N/A';
-    const genres = (item.genres||[]).map(g=>g.name).slice(0,2).join(' · ') ||
-        (item.genre_ids||[]).slice(0,2).map(id => genresList.find(g=>g.id==id)?.name).filter(Boolean).join(' · ');
+    const genres = (item.genres||[]).map(g=>g.name).slice(0,2).join(' Â· ') ||
+        (item.genre_ids||[]).slice(0,2).map(id => genresList.find(g=>g.id==id)?.name).filter(Boolean).join(' Â· ');
     const overview = (item.overview||'').slice(0,100);
     const poster = item.poster_path ? `${IMG_BASE}${item.poster_path}` : null;
 
@@ -2515,7 +2515,7 @@ function downloadShareCard(item, type) {
         ctx.fillRect(210, 30, 120, 20);
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 10px sans-serif';
-        ctx.fillText('StreamFlex · 映画', 216, 44);
+        ctx.fillText('StreamFlex Â· æ˜ ç”»', 216, 44);
 
         ctx.fillStyle = '#f0ede8';
         ctx.font = 'bold 26px serif';
@@ -2528,7 +2528,7 @@ function downloadShareCard(item, type) {
 
         ctx.fillStyle = '#c9a84c';
         ctx.font = 'bold 18px sans-serif';
-        ctx.fillText(`★ ${rating}`, 210, 145);
+        ctx.fillText(`â˜… ${rating}`, 210, 145);
 
         if (genres) {
             ctx.fillStyle = '#666';
@@ -2555,7 +2555,7 @@ function downloadShareCard(item, type) {
         ctx.fillRect(0, 300, 600, 40);
         ctx.fillStyle = '#fff';
         ctx.font = '11px sans-serif';
-        ctx.fillText('streamflex.app · themoviedb.org', 210, 325);
+        ctx.fillText('streamflex.app Â· themoviedb.org', 210, 325);
 
         const a = document.createElement('a');
         a.download = `streamflex-${title.replace(/[^a-z0-9]/gi,'_').toLowerCase()}.png`;
@@ -2622,7 +2622,7 @@ async function loadDondeVer(itemId, type) {
         section.innerHTML = `
             <div class="donde-ver-content">
                 <div class="dv-header">
-                    <h4><i class="fas fa-tv"></i> Dónde ver · 視聴先</h4>
+                    <h4><i class="fas fa-tv"></i> DÃ³nde ver Â· è¦–è´å…ˆ</h4>
                     <a href="${justWatchLink}" target="_blank" rel="noopener" class="dv-justwatch-link">
                         <img src="https://www.justwatch.com/appassets/img/logo/JustWatch-logo-Large.png" alt="JustWatch" class="dv-justwatch-logo">
                     </a>
@@ -2631,7 +2631,7 @@ async function loadDondeVer(itemId, type) {
                     ${renderProviders(streaming, '<i class="fas fa-play-circle"></i> Streaming incluido')}
                     ${renderProviders(rent, '<i class="fas fa-euro-sign"></i> Alquiler')}
                     ${renderProviders(buy, '<i class="fas fa-shopping-cart"></i> Compra')}
-                ` : '<div class="donde-ver-empty">No disponible en plataformas de streaming en tu región</div>'}
+                ` : '<div class="donde-ver-empty">No disponible en plataformas de streaming en tu regiÃ³n</div>'}
             </div>`;
     } catch(e) {
         const section = document.getElementById('dondeVerSection');
@@ -2656,7 +2656,7 @@ async function loadPorqueViste(currentItemId, type) {
         const basedTitle = historyItem.title || historyItem.name || '';
         container.innerHTML = `
             <div class="porque-viste-section">
-                <h4><i class="fas fa-history"></i> Porque viste <em>"${basedTitle}"</em> · おすすめ</h4>
+                <h4><i class="fas fa-history"></i> Porque viste <em>"${basedTitle}"</em> Â· ãŠã™ã™ã‚</h4>
                 <div class="similar-grid">
                     ${items.map(s => {
                         const st = s.title||s.name, sy = (s.release_date||s.first_air_date||'').split('-')[0];
@@ -2664,7 +2664,7 @@ async function loadPorqueViste(currentItemId, type) {
                         const mt = s.media_type || type;
                         return `<div class="similar-card" data-id="${s.id}" data-type="${mt}">
                             <img src="${sp}" alt="${st}" loading="lazy">
-                            <div class="similar-rating">★ ${s.vote_average?.toFixed(1)||'N/A'}</div>
+                            <div class="similar-rating">â˜… ${s.vote_average?.toFixed(1)||'N/A'}</div>
                             <div class="similar-title">${st}</div>
                             <div class="similar-year">${sy}</div>
                         </div>`;
@@ -2676,17 +2676,17 @@ async function loadPorqueViste(currentItemId, type) {
     } catch(e) {  }
 }
 
-// ===== MODO "NO SÉ QUÉ VER" =====
+// ===== MODO "NO SÃ‰ QUÃ‰ VER" =====
 
 const MOODS = [
-    { id: 'action', label: '⚡ Adrenalina', emoji: '⚡', desc: 'Acción y emoción', genres: [28, 12], sort: 'popularity.desc' },
-    { id: 'laugh', label: '😂 Reír', emoji: '😂', desc: 'Comedia ligera', genres: [35], sort: 'vote_average.desc' },
-    { id: 'cry', label: '😢 Llorar', emoji: '😢', desc: 'Drama emotivo', genres: [18, 10749], sort: 'vote_average.desc' },
-    { id: 'think', label: '🤔 Pensar', emoji: '🤔', desc: 'Thriller e intriga', genres: [9648, 53], sort: 'vote_average.desc' },
-    { id: 'fear', label: '😱 Miedo', emoji: '😱', desc: 'Terror puro', genres: [27], sort: 'popularity.desc' },
-    { id: 'wonder', label: '✨ Asombro', emoji: '✨', desc: 'Fantasia y ciencia ficción', genres: [878, 14], sort: 'vote_average.desc' },
-    { id: 'relax', label: '😌 Relajar', emoji: '😌', desc: 'Animación y familia', genres: [16, 10751], sort: 'popularity.desc' },
-    { id: 'short', label: '⏱ Rápida', emoji: '⏱', desc: 'Menos de 90 min', genres: [35, 28], sort: 'popularity.desc', runtimeMax: 90 },
+    { id: 'action', label: 'âš¡ Adrenalina', emoji: 'âš¡', desc: 'AcciÃ³n y emociÃ³n', genres: [28, 12], sort: 'popularity.desc' },
+    { id: 'laugh', label: 'ðŸ˜‚ ReÃ­r', emoji: 'ðŸ˜‚', desc: 'Comedia ligera', genres: [35], sort: 'vote_average.desc' },
+    { id: 'cry', label: 'ðŸ˜¢ Llorar', emoji: 'ðŸ˜¢', desc: 'Drama emotivo', genres: [18, 10749], sort: 'vote_average.desc' },
+    { id: 'think', label: 'ðŸ¤” Pensar', emoji: 'ðŸ¤”', desc: 'Thriller e intriga', genres: [9648, 53], sort: 'vote_average.desc' },
+    { id: 'fear', label: 'ðŸ˜± Miedo', emoji: 'ðŸ˜±', desc: 'Terror puro', genres: [27], sort: 'popularity.desc' },
+    { id: 'wonder', label: 'âœ¨ Asombro', emoji: 'âœ¨', desc: 'Fantasia y ciencia ficciÃ³n', genres: [878, 14], sort: 'vote_average.desc' },
+    { id: 'relax', label: 'ðŸ˜Œ Relajar', emoji: 'ðŸ˜Œ', desc: 'AnimaciÃ³n y familia', genres: [16, 10751], sort: 'popularity.desc' },
+    { id: 'short', label: 'â± RÃ¡pida', emoji: 'â±', desc: 'Menos de 90 min', genres: [35, 28], sort: 'popularity.desc', runtimeMax: 90 },
 ];
 
 function openMoodPicker() {
@@ -2695,9 +2695,9 @@ function openMoodPicker() {
     modalBody.innerHTML = `
         <div class="mood-container">
             <div class="mood-header">
-                <div class="mood-title-jp">映画選択 · ¿QUÉ VER?</div>
-                <h2>¿Cómo te sientes hoy?</h2>
-                <p class="mood-subtitle">Elige un estado de ánimo y te recomendamos la película perfecta</p>
+                <div class="mood-title-jp">æ˜ ç”»é¸æŠž Â· Â¿QUÃ‰ VER?</div>
+                <h2>Â¿CÃ³mo te sientes hoy?</h2>
+                <p class="mood-subtitle">Elige un estado de Ã¡nimo y te recomendamos la pelÃ­cula perfecta</p>
             </div>
             <div class="mood-grid">
                 ${MOODS.map(m => `
@@ -2723,7 +2723,7 @@ async function loadMoodRecommendation(moodId, cardEl) {
 
     const result = document.getElementById('moodResult');
     result.style.display = 'block';
-    result.innerHTML = `<div class="mood-result-loading"><div class="spinner"></div><span>Buscando la película perfecta...</span></div>`;
+    result.innerHTML = `<div class="mood-result-loading"><div class="spinner"></div><span>Buscando la pelÃ­cula perfecta...</span></div>`;
 
     try {
         const page = Math.floor(Math.random() * 5) + 1;
@@ -2734,7 +2734,7 @@ async function loadMoodRecommendation(moodId, cardEl) {
         const res = await fetch(url);
         const data = await res.json();
         const items = data.results || [];
-        if (!items.length) { result.innerHTML = `<div class="mood-result-empty">No se encontraron películas. ¡Inténtalo de nuevo!</div>`; return; }
+        if (!items.length) { result.innerHTML = `<div class="mood-result-empty">No se encontraron pelÃ­culas. Â¡IntÃ©ntalo de nuevo!</div>`; return; }
 
         const pick = items[Math.floor(Math.random() * Math.min(items.length, 10))];
         const poster = pick.poster_path ? IMG_BASE+pick.poster_path : null;
@@ -2742,19 +2742,19 @@ async function loadMoodRecommendation(moodId, cardEl) {
 
         result.innerHTML = `
             <div class="mood-result-card">
-                <div class="mood-result-label">✨ Tu película para esta noche</div>
+                <div class="mood-result-label">âœ¨ Tu pelÃ­cula para esta noche</div>
                 <div class="mood-result-inner">
                     ${poster ? `<img src="${poster}" alt="${pick.title}" class="mood-result-poster">` : ''}
                     <div class="mood-result-info">
                         <h3 class="mood-result-title">${pick.title}</h3>
                         <div class="mood-result-meta">
-                            <span>★ ${pick.vote_average?.toFixed(1)}</span>
+                            <span>â˜… ${pick.vote_average?.toFixed(1)}</span>
                             <span>${year}</span>
                         </div>
                         <p class="mood-result-overview">${(pick.overview||'').slice(0,160)}${(pick.overview||'').length > 160 ? '...' : ''}</p>
                         <div class="mood-result-actions">
                             <button class="detail-btn detail-btn-primary" id="moodOpenBtn"><i class="fas fa-info-circle"></i> Ver detalles</button>
-                            <button class="detail-btn detail-btn-secondary" id="moodRerollBtn"><i class="fas fa-dice"></i> Otra película</button>
+                            <button class="detail-btn detail-btn-secondary" id="moodRerollBtn"><i class="fas fa-dice"></i> Otra pelÃ­cula</button>
                         </div>
                     </div>
                 </div>
@@ -2763,7 +2763,7 @@ async function loadMoodRecommendation(moodId, cardEl) {
         document.getElementById('moodOpenBtn').addEventListener('click', () => openModal(pick.id, false, 'movie'));
         document.getElementById('moodRerollBtn').addEventListener('click', () => loadMoodRecommendation(moodId, cardEl));
     } catch(e) {
-        result.innerHTML = `<div class="mood-result-empty">Error buscando películas. Inténtalo de nuevo.</div>`;
+        result.innerHTML = `<div class="mood-result-empty">Error buscando pelÃ­culas. IntÃ©ntalo de nuevo.</div>`;
     }
 }
 
@@ -2773,7 +2773,7 @@ function enterCinemaMode(item, type, serverIndex, servers) {
     const title = item.title || item.name || '';
 
     cinemaMode = { active: true, item, type, serverIndex, servers };
-    document.getElementById('cinemaTitleBar').textContent = `${title} · StreamFlex`;
+    document.getElementById('cinemaTitleBar').textContent = `${title} Â· StreamFlex`;
     document.getElementById('cinemaServerLabel').textContent = servers[serverIndex]?.label || 'Servidor 1';
 
     player.innerHTML = `<iframe src="${servers[serverIndex].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>`;
@@ -2796,7 +2796,7 @@ function enterCinemaMode(item, type, serverIndex, servers) {
         const iframe = player.querySelector('iframe');
         if (iframe) iframe.style.pointerEvents = 'auto';
         playerOverlay.style.display = 'none';
-        showToast('<i class="fas fa-play"></i> Controles activados — usa con precaución');
+        showToast('<i class="fas fa-play"></i> Controles activados â€” usa con precauciÃ³n');
     });
 
     modal.style.display = 'none';
@@ -2825,12 +2825,12 @@ function changeCinemaServer(dir) {
 }
 
 function loadDiaryView() {
-    sectionTitle.textContent = '📅 Diario de cine';
+    sectionTitle.textContent = 'ðŸ“… Diario de cine';
     sectionCount.textContent = '';
     cleanupExtras();
 
     if (!watchHistory.length) {
-        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">日</span><p>Tu diario está vacío. Empieza a ver películas.</p></div>`;
+        moviesGrid.innerHTML = `<div class="empty-state"><span class="empty-kanji">æ—¥</span><p>Tu diario estÃ¡ vacÃ­o. Empieza a ver pelÃ­culas.</p></div>`;
         return;
     }
 
@@ -2848,7 +2848,7 @@ function loadDiaryView() {
     moviesGrid.innerHTML = `
         <div class="diary-container">
             <div class="diary-stats-bar">
-                <span><i class="fas fa-film"></i> ${watchHistory.length} películas vistas</span>
+                <span><i class="fas fa-film"></i> ${watchHistory.length} pelÃ­culas vistas</span>
                 <span><i class="fas fa-calendar"></i> ${sortedMonths.length} mese${sortedMonths.length!==1?'s':''} de actividad</span>
             </div>
             ${sortedMonths.map(monthKey => {
@@ -2880,7 +2880,7 @@ function loadDiaryView() {
                                         <div class="diary-item-meta">
                                             <span>${yr}</span>
                                             ${dayStr ? `<span class="diary-item-date"><i class="fas fa-calendar"></i> ${dayStr}</span>` : ''}
-                                            ${rating ? `<span class="diary-item-rating">${'★'.repeat(rating)}</span>` : ''}
+                                            ${rating ? `<span class="diary-item-rating">${'â˜…'.repeat(rating)}</span>` : ''}
                                         </div>
                                     </div>
                                 </div>`;
@@ -2929,7 +2929,7 @@ function showSearchHistory() {
     if (!searchHistory.length) return;
     const dd = document.getElementById('searchHistoryDropdown');
     dd.innerHTML = `
-        <div class="sh-header"><span>Búsquedas recientes</span><button id="shClearBtn"><i class="fas fa-trash"></i></button></div>
+        <div class="sh-header"><span>BÃºsquedas recientes</span><button id="shClearBtn"><i class="fas fa-trash"></i></button></div>
         ${searchHistory.map(q => `<div class="sh-item" data-q="${q}"><i class="fas fa-history"></i> ${q}</div>`).join('')}`;
     dd.style.display = 'block';
     dd.querySelectorAll('.sh-item').forEach(el => {
@@ -2948,7 +2948,7 @@ function showSearchHistory() {
 
 function startVoiceSearch() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) { showToast('<i class="fas fa-microphone-slash"></i> Tu navegador no soporta búsqueda por voz'); return; }
+    if (!SpeechRecognition) { showToast('<i class="fas fa-microphone-slash"></i> Tu navegador no soporta bÃºsqueda por voz'); return; }
     const recognition = new SpeechRecognition();
     recognition.lang = 'es-ES';
     recognition.interimResults = false;
@@ -2986,10 +2986,10 @@ function setupCardSwipeGestures() {
             const id = activeCard.dataset.id;
             if (dx > 0) {
                 toggleFavorite(id);
-                showSwipeIndicator(activeCard, '⭐ Favorito', 'right');
+                showSwipeIndicator(activeCard, 'â­ Favorito', 'right');
             } else {
                 toggleWatchLater(id);
-                showSwipeIndicator(activeCard, '🕐 Ver después', 'left');
+                showSwipeIndicator(activeCard, 'ðŸ• Ver despuÃ©s', 'left');
             }
         }
         activeCard = null;
@@ -3007,11 +3007,11 @@ function showSwipeIndicator(card, text, dir) {
 function saveMarathon() { localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue)); cloudSave(); }
 
 function addToMarathon(item, type) {
-    if (marathonQueue.find(m => m.id === item.id)) { showToast('<i class="fas fa-film"></i> Ya está en el maratón'); return; }
+    if (marathonQueue.find(m => m.id === item.id)) { showToast('<i class="fas fa-film"></i> Ya estÃ¡ en el maratÃ³n'); return; }
     marathonQueue.push({ ...item, _type: type });
     saveMarathon();
     updateMarathonPanel();
-    showToast(`<i class="fas fa-film"></i> "${item.title||item.name}" añadida al maratón`);
+    showToast(`<i class="fas fa-film"></i> "${item.title||item.name}" aÃ±adida al maratÃ³n`);
 }
 
 function closeMarathon() {
@@ -3072,13 +3072,13 @@ function openMarathonManager() {
     modalBody.innerHTML = `
         <div class="marathon-manager">
             <div class="marathon-mgr-header">
-                <div class="marathon-title-jp">マラソン · MARATÓN</div>
-                <h2>Modo Maratón</h2>
-                <p class="marathon-mgr-sub">Crea una sesión de películas en cola</p>
+                <div class="marathon-title-jp">ãƒžãƒ©ã‚½ãƒ³ Â· MARATÃ“N</div>
+                <h2>Modo MaratÃ³n</h2>
+                <p class="marathon-mgr-sub">Crea una sesiÃ³n de pelÃ­culas en cola</p>
             </div>
             ${marathonQueue.length ? `
             <div class="marathon-mgr-stats">
-                <span><i class="fas fa-film"></i> ${marathonQueue.length} películas</span>
+                <span><i class="fas fa-film"></i> ${marathonQueue.length} pelÃ­culas</span>
                 <span><i class="fas fa-clock"></i> ~${h}h ${m}min</span>
                 <span><i class="fas fa-check"></i> ${watched} vistas</span>
             </div>
@@ -3092,7 +3092,7 @@ function openMarathonManager() {
                         ${poster ? `<img src="${poster}" alt="">` : ''}
                         <div class="marathon-mgr-info">
                             <div class="marathon-mgr-title">${item.title||item.name||''}</div>
-                            <div class="marathon-mgr-meta">${yr} · ~110 min ${watched?'<span class="marathon-seen">✓ Vista</span>':''}</div>
+                            <div class="marathon-mgr-meta">${yr} Â· ~110 min ${watched?'<span class="marathon-seen">âœ“ Vista</span>':''}</div>
                         </div>
                         <div class="marathon-mgr-actions">
                             <button class="mgr-play-btn" data-id="${item.id}" data-type="${item._type||'movie'}"><i class="fas fa-play"></i> Ver</button>
@@ -3106,9 +3106,9 @@ function openMarathonManager() {
                 <button class="detail-btn detail-btn-secondary" id="clearMarathonBtn"><i class="fas fa-trash"></i> Limpiar cola</button>
             </div>` : `
             <div class="marathon-empty">
-                <span>🎬</span>
-                <p>Tu maratón está vacío. Añade películas usando el botón <strong>+ Maratón</strong> en cualquier película.</p>
-                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.4rem">También puedes pulsar <strong>+</strong> en el hero banner.</p>
+                <span>ðŸŽ¬</span>
+                <p>Tu maratÃ³n estÃ¡ vacÃ­o. AÃ±ade pelÃ­culas usando el botÃ³n <strong>+ MaratÃ³n</strong> en cualquier pelÃ­cula.</p>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.4rem">TambiÃ©n puedes pulsar <strong>+</strong> en el hero banner.</p>
             </div>`}
         </div>`;
 
@@ -3122,7 +3122,7 @@ function openMarathonManager() {
     document.getElementById('playNextMarathonBtn')?.addEventListener('click', () => {
         const next = marathonQueue.find(i => !isWatched(i.id));
         if (next) openModal(next.id, true, next._type||'movie');
-        else showToast('<i class="fas fa-check"></i> ¡Maratón completado!');
+        else showToast('<i class="fas fa-check"></i> Â¡MaratÃ³n completado!');
     });
     document.getElementById('clearMarathonBtn')?.addEventListener('click', () => {
         marathonQueue = []; saveMarathon(); updateMarathonPanel(); closeModalFn();
@@ -3140,13 +3140,13 @@ function renderTop10() {
     modalBody.innerHTML = `
         <div class="top10-container">
             <div class="top10-header">
-                <div class="top10-jp">ランキング · MI TOP 10</div>
+                <div class="top10-jp">ãƒ©ãƒ³ã‚­ãƒ³ã‚° Â· MI TOP 10</div>
                 <h2>Mi Ranking Personal</h2>
-                <p class="top10-sub">Arrastra para reordenar · Haz click en + para añadir</p>
+                <p class="top10-sub">Arrastra para reordenar Â· Haz click en + para aÃ±adir</p>
             </div>
             <div class="top10-layout">
                 <div class="top10-list" id="top10List">
-                    ${top10List.length === 0 ? '<div class="top10-empty">Añade películas desde la lista de la derecha</div>' :
+                    ${top10List.length === 0 ? '<div class="top10-empty">AÃ±ade pelÃ­culas desde la lista de la derecha</div>' :
                     top10List.map((item,i) => `
                         <div class="top10-item" draggable="true" data-id="${item.id}" data-idx="${i}">
                             <div class="top10-rank">${i+1}</div>
@@ -3159,7 +3159,7 @@ function renderTop10() {
                         </div>`).join('')}
                 </div>
                 <div class="top10-picker">
-                    <div class="top10-picker-label">Añadir película</div>
+                    <div class="top10-picker-label">AÃ±adir pelÃ­cula</div>
                     <div class="top10-picker-list">
                         ${allItems.filter(i => !top10List.find(t=>t.id===i.id)).slice(0,15).map(item => `
                             <div class="top10-pick-item" data-id="${item.id}">
@@ -3180,7 +3180,7 @@ function renderTop10() {
 
     document.querySelectorAll('.top10-add-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (top10List.length >= 10) { showToast('Ya tienes 10 películas en tu ranking'); return; }
+            if (top10List.length >= 10) { showToast('Ya tienes 10 pelÃ­culas en tu ranking'); return; }
             const item = allItems.find(i => i.id === parseInt(btn.dataset.id));
             if (item) { top10List.push(item); localStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10(); }
         });
@@ -3234,7 +3234,7 @@ function exportTop10Image() {
     ctx.fillStyle = '#f0ede8';
     ctx.font = 'bold 24px serif';
     ctx.textAlign = 'center';
-    ctx.fillText('Mi Top 10 · StreamFlex', canvas.width/2, 40);
+    ctx.fillText('Mi Top 10 Â· StreamFlex', canvas.width/2, 40);
     ctx.fillStyle = '#888';
     ctx.font = '11px sans-serif';
     ctx.fillText(new Date().toLocaleDateString('es-ES', {year:'numeric',month:'long'}), canvas.width/2, 62);
@@ -3260,7 +3260,7 @@ function exportTop10Image() {
 
     let loaded = 0;
     const items = top10List.slice(0,10);
-    if (!items.length) { showToast('Añade películas al ranking primero'); return; }
+    if (!items.length) { showToast('AÃ±ade pelÃ­culas al ranking primero'); return; }
 
     items.forEach((item, i) => {
         if (!item.poster_path) { drawItem(item, i, null); loaded++; if (loaded===items.length) finalize(); return; }
@@ -3289,7 +3289,7 @@ async function loadCollection(collectionId, currentItemId) {
         if (parts.length <= 1) return;
         section.innerHTML = `
             <div class="collection-section">
-                <h4><i class="fas fa-layer-group"></i> Saga: ${data.name} · コレクション</h4>
+                <h4><i class="fas fa-layer-group"></i> Saga: ${data.name} Â· ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³</h4>
                 <div class="collection-grid">
                     ${parts.map((p,i) => {
                         const poster = p.poster_path ? IMG_BASE+p.poster_path : 'https://placehold.co/80x120/1a1a1a/444?text=N/A';
@@ -3313,28 +3313,28 @@ function loadTrivia(item) {
     if (!section) return;
     const facts = [];
     const budget = item.budget || 0, revenue = item.revenue || 0;
-    if (budget > 0) facts.push(`💰 Presupuesto: <strong>$${(budget/1e6).toFixed(0)}M</strong>`);
-    if (revenue > 0) facts.push(`🎟️ Taquilla mundial: <strong>$${(revenue/1e6).toFixed(0)}M</strong>`);
+    if (budget > 0) facts.push(`ðŸ’° Presupuesto: <strong>$${(budget/1e6).toFixed(0)}M</strong>`);
+    if (revenue > 0) facts.push(`ðŸŽŸï¸ Taquilla mundial: <strong>$${(revenue/1e6).toFixed(0)}M</strong>`);
     if (budget > 0 && revenue > 0) {
         const roi = ((revenue - budget) / budget * 100).toFixed(0);
         const profit = revenue - budget;
         facts.push(profit > 0
-            ? `📈 Beneficio: <strong>$${(profit/1e6).toFixed(0)}M</strong> (${roi}% ROI)`
-            : `📉 Pérdidas estimadas: <strong>$${(Math.abs(profit)/1e6).toFixed(0)}M</strong>`);
+            ? `ðŸ“ˆ Beneficio: <strong>$${(profit/1e6).toFixed(0)}M</strong> (${roi}% ROI)`
+            : `ðŸ“‰ PÃ©rdidas estimadas: <strong>$${(Math.abs(profit)/1e6).toFixed(0)}M</strong>`);
     }
     if (item.runtime > 0) {
         const h = Math.floor(item.runtime/60), m = item.runtime % 60;
-        facts.push(`⏱️ Duración: <strong>${h}h ${m}min</strong> (${item.runtime} minutos)`);
+        facts.push(`â±ï¸ DuraciÃ³n: <strong>${h}h ${m}min</strong> (${item.runtime} minutos)`);
     }
-    if (item.vote_count > 0) facts.push(`🗳️ Valoraciones: <strong>${item.vote_count?.toLocaleString()}</strong> votos en TMDB`);
-    if (item.spoken_languages?.length > 1) facts.push(`🗣️ Idiomas: <strong>${item.spoken_languages.map(l=>l.name).join(', ')}</strong>`);
-    if (item.production_countries?.length) facts.push(`🌍 País: <strong>${item.production_countries.map(c=>c.name).join(', ')}</strong>`);
-    if (item.production_companies?.length) facts.push(`🎬 Producción: <strong>${item.production_companies.slice(0,2).map(c=>c.name).join(', ')}</strong>`);
+    if (item.vote_count > 0) facts.push(`ðŸ—³ï¸ Valoraciones: <strong>${item.vote_count?.toLocaleString()}</strong> votos en TMDB`);
+    if (item.spoken_languages?.length > 1) facts.push(`ðŸ—£ï¸ Idiomas: <strong>${item.spoken_languages.map(l=>l.name).join(', ')}</strong>`);
+    if (item.production_countries?.length) facts.push(`ðŸŒ PaÃ­s: <strong>${item.production_countries.map(c=>c.name).join(', ')}</strong>`);
+    if (item.production_companies?.length) facts.push(`ðŸŽ¬ ProducciÃ³n: <strong>${item.production_companies.slice(0,2).map(c=>c.name).join(', ')}</strong>`);
 
     if (!facts.length) return;
     section.innerHTML = `
         <div class="trivia-section">
-            <h4><i class="fas fa-chart-bar"></i> Datos de producción · 製作データ</h4>
+            <h4><i class="fas fa-chart-bar"></i> Datos de producciÃ³n Â· è£½ä½œãƒ‡ãƒ¼ã‚¿</h4>
             <div class="trivia-grid">
                 ${facts.map(f => `<div class="trivia-item">${f}</div>`).join('')}
             </div>
@@ -3357,50 +3357,50 @@ function updateStreak() {
     localStorage.setItem('streakData', JSON.stringify(streakData));
     cloudSave();
 
-    if (streakData.streak > 1) showToast(`🔥 ¡${streakData.streak} días de racha!`);
+    if (streakData.streak > 1) showToast(`ðŸ”¥ Â¡${streakData.streak} dÃ­as de racha!`);
 }
 
 const ACHIEVEMENTS_DEF = [
 
-    { id: 'first_watch',    icon: '🎬', label: 'Primera vez',        desc: 'Ve tu primera película',                  check: () => watchHistory.length >= 1 },
-    { id: 'ten_movies',     icon: '🍿', label: 'Cinéfilo',           desc: '10 películas vistas',                     check: () => watchHistory.length >= 10 },
-    { id: 'fifty_movies',   icon: '🏆', label: 'Maratonista',        desc: '50 películas vistas',                     check: () => watchHistory.length >= 50 },
-    { id: 'hundred_movies', icon: '💯', label: 'Centenario',         desc: '100 películas vistas',                    check: () => watchHistory.length >= 100 },
-    { id: 'twofit_movies',  icon: '🌟', label: 'Leyenda',            desc: '250 películas vistas',                    check: () => watchHistory.length >= 250 },
+    { id: 'first_watch',    icon: 'ðŸŽ¬', label: 'Primera vez',        desc: 'Ve tu primera pelÃ­cula',                  check: () => watchHistory.length >= 1 },
+    { id: 'ten_movies',     icon: 'ðŸ¿', label: 'CinÃ©filo',           desc: '10 pelÃ­culas vistas',                     check: () => watchHistory.length >= 10 },
+    { id: 'fifty_movies',   icon: 'ðŸ†', label: 'Maratonista',        desc: '50 pelÃ­culas vistas',                     check: () => watchHistory.length >= 50 },
+    { id: 'hundred_movies', icon: 'ðŸ’¯', label: 'Centenario',         desc: '100 pelÃ­culas vistas',                    check: () => watchHistory.length >= 100 },
+    { id: 'twofit_movies',  icon: 'ðŸŒŸ', label: 'Leyenda',            desc: '250 pelÃ­culas vistas',                    check: () => watchHistory.length >= 250 },
 
-    { id: 'streak_3',       icon: '🔥', label: 'Racha de fuego',     desc: '3 días consecutivos',                     check: () => streakData.streak >= 3 },
-    { id: 'streak_7',       icon: '💥', label: 'Semana perfecta',    desc: '7 días consecutivos',                     check: () => streakData.streak >= 7 },
-    { id: 'streak_30',      icon: '🌙', label: 'Mes de cine',        desc: '30 días consecutivos',                    check: () => streakData.streak >= 30 },
+    { id: 'streak_3',       icon: 'ðŸ”¥', label: 'Racha de fuego',     desc: '3 dÃ­as consecutivos',                     check: () => streakData.streak >= 3 },
+    { id: 'streak_7',       icon: 'ðŸ’¥', label: 'Semana perfecta',    desc: '7 dÃ­as consecutivos',                     check: () => streakData.streak >= 7 },
+    { id: 'streak_30',      icon: 'ðŸŒ™', label: 'Mes de cine',        desc: '30 dÃ­as consecutivos',                    check: () => streakData.streak >= 30 },
 
-    { id: 'five_favs',      icon: '⭐', label: 'Coleccionista',      desc: '5 películas en favoritos',                check: () => favorites.length >= 5 },
-    { id: 'twenty_favs',    icon: '💝', label: 'Gran colección',     desc: '20 películas en favoritos',               check: () => favorites.length >= 20 },
-    { id: 'lister',         icon: '📋', label: 'Organizador',        desc: 'Crea 3 listas personalizadas',            check: () => Object.keys(customLists).length >= 3 },
-    { id: 'ten_lists',      icon: '🗂️', label: 'Archivista',        desc: '10 listas personalizadas',                check: () => Object.keys(customLists).length >= 10 },
+    { id: 'five_favs',      icon: 'â­', label: 'Coleccionista',      desc: '5 pelÃ­culas en favoritos',                check: () => favorites.length >= 5 },
+    { id: 'twenty_favs',    icon: 'ðŸ’', label: 'Gran colecciÃ³n',     desc: '20 pelÃ­culas en favoritos',               check: () => favorites.length >= 20 },
+    { id: 'lister',         icon: 'ðŸ“‹', label: 'Organizador',        desc: 'Crea 3 listas personalizadas',            check: () => Object.keys(customLists).length >= 3 },
+    { id: 'ten_lists',      icon: 'ðŸ—‚ï¸', label: 'Archivista',        desc: '10 listas personalizadas',                check: () => Object.keys(customLists).length >= 10 },
 
-    { id: 'rater',          icon: '🌟', label: 'Crítico',            desc: 'Valora 10 películas',                     check: () => Object.keys(userRatings).length >= 10 },
-    { id: 'critic_pro',     icon: '🎖️', label: 'Crítico pro',       desc: 'Valora 50 películas',                     check: () => Object.keys(userRatings).length >= 50 },
-    { id: 'notetaker',      icon: '📝', label: 'Anotador',           desc: 'Escribe 5 notas en películas',            check: () => Object.keys(userNotes).filter(k=>userNotes[k]?.trim()).length >= 5 },
+    { id: 'rater',          icon: 'ðŸŒŸ', label: 'CrÃ­tico',            desc: 'Valora 10 pelÃ­culas',                     check: () => Object.keys(userRatings).length >= 10 },
+    { id: 'critic_pro',     icon: 'ðŸŽ–ï¸', label: 'CrÃ­tico pro',       desc: 'Valora 50 pelÃ­culas',                     check: () => Object.keys(userRatings).length >= 50 },
+    { id: 'notetaker',      icon: 'ðŸ“', label: 'Anotador',           desc: 'Escribe 5 notas en pelÃ­culas',            check: () => Object.keys(userNotes).filter(k=>userNotes[k]?.trim()).length >= 5 },
 
-    { id: 'explorer',       icon: '🌍', label: 'Explorador',         desc: '5 géneros distintos vistos',              check: () => { const gs=new Set(); watchHistory.forEach(h=>(h.genre_ids||[]).forEach(g=>gs.add(g))); return gs.size>=5; } },
-    { id: 'omnivore',       icon: '🎭', label: 'Omnívoro',           desc: '10 géneros distintos vistos',             check: () => { const gs=new Set(); watchHistory.forEach(h=>(h.genre_ids||[]).forEach(g=>gs.add(g))); return gs.size>=10; } },
-    { id: 'decade_80s',     icon: '📼', label: 'Cinéfilo de los 80s',desc: '5 películas de los 80s',                 check: () => watchHistory.filter(h=>(h.release_date||'').startsWith('198')).length >= 5 },
-    { id: 'decade_90s',     icon: '💿', label: 'Noventero',          desc: '5 películas de los 90s',                 check: () => watchHistory.filter(h=>(h.release_date||'').startsWith('199')).length >= 5 },
-    { id: 'classics',       icon: '🎞️', label: 'Clásicos eternos',  desc: '3 películas anteriores a 1970',           check: () => watchHistory.filter(h=>parseInt((h.release_date||'9999').split('-')[0])<1970).length >= 3 },
+    { id: 'explorer',       icon: 'ðŸŒ', label: 'Explorador',         desc: '5 gÃ©neros distintos vistos',              check: () => { const gs=new Set(); watchHistory.forEach(h=>(h.genre_ids||[]).forEach(g=>gs.add(g))); return gs.size>=5; } },
+    { id: 'omnivore',       icon: 'ðŸŽ­', label: 'OmnÃ­voro',           desc: '10 gÃ©neros distintos vistos',             check: () => { const gs=new Set(); watchHistory.forEach(h=>(h.genre_ids||[]).forEach(g=>gs.add(g))); return gs.size>=10; } },
+    { id: 'decade_80s',     icon: 'ðŸ“¼', label: 'CinÃ©filo de los 80s',desc: '5 pelÃ­culas de los 80s',                 check: () => watchHistory.filter(h=>(h.release_date||'').startsWith('198')).length >= 5 },
+    { id: 'decade_90s',     icon: 'ðŸ’¿', label: 'Noventero',          desc: '5 pelÃ­culas de los 90s',                 check: () => watchHistory.filter(h=>(h.release_date||'').startsWith('199')).length >= 5 },
+    { id: 'classics',       icon: 'ðŸŽžï¸', label: 'ClÃ¡sicos eternos',  desc: '3 pelÃ­culas anteriores a 1970',           check: () => watchHistory.filter(h=>parseInt((h.release_date||'9999').split('-')[0])<1970).length >= 3 },
 
-    { id: 'top10_full',     icon: '🥇', label: 'Mi Top 10',          desc: 'Completa tu Top 10',                     check: () => top10List.length >= 10 },
-    { id: 'marathon_5',     icon: '🎯', label: 'Maratón épico',      desc: 'Crea un maratón de 5+ películas',        check: () => marathonQueue.length >= 5 },
-    { id: 'marathon_10',    icon: '🚀', label: 'Maratón legendario', desc: 'Crea un maratón de 10+ películas',       check: () => marathonQueue.length >= 10 },
+    { id: 'top10_full',     icon: 'ðŸ¥‡', label: 'Mi Top 10',          desc: 'Completa tu Top 10',                     check: () => top10List.length >= 10 },
+    { id: 'marathon_5',     icon: 'ðŸŽ¯', label: 'MaratÃ³n Ã©pico',      desc: 'Crea un maratÃ³n de 5+ pelÃ­culas',        check: () => marathonQueue.length >= 5 },
+    { id: 'marathon_10',    icon: 'ðŸš€', label: 'MaratÃ³n legendario', desc: 'Crea un maratÃ³n de 10+ pelÃ­culas',       check: () => marathonQueue.length >= 10 },
 
-    { id: 'sharer',         icon: '📤', label: 'Embajador',          desc: 'Comparte tu primera película',            check: () => (localStorage.getItem('shareCount')||0) >= 1 },
+    { id: 'sharer',         icon: 'ðŸ“¤', label: 'Embajador',          desc: 'Comparte tu primera pelÃ­cula',            check: () => (localStorage.getItem('shareCount')||0) >= 1 },
 
-    { id: 'pending_10',     icon: '🕐', label: 'Lista larga',        desc: '10 películas en "Ver después"',          check: () => watchLater.length >= 10 },
+    { id: 'pending_10',     icon: 'ðŸ•', label: 'Lista larga',        desc: '10 pelÃ­culas en "Ver despuÃ©s"',          check: () => watchLater.length >= 10 },
 
-    { id: 'perfect_5',      icon: '💫', label: 'Perfeccionista',     desc: 'Da una valoración de 5 estrellas',       check: () => Object.values(userRatings).includes(5) },
-    { id: 'tough_1',        icon: '😤', label: 'Exigente',           desc: 'Da una valoración de 1 estrella',        check: () => Object.values(userRatings).includes(1) },
+    { id: 'perfect_5',      icon: 'ðŸ’«', label: 'Perfeccionista',     desc: 'Da una valoraciÃ³n de 5 estrellas',       check: () => Object.values(userRatings).includes(5) },
+    { id: 'tough_1',        icon: 'ðŸ˜¤', label: 'Exigente',           desc: 'Da una valoraciÃ³n de 1 estrella',        check: () => Object.values(userRatings).includes(1) },
 
-    { id: 'level_critico',  icon: '📰', label: 'Alcanzó Crítico',    desc: 'Llega al nivel Crítico',                 check: () => watchHistory.length >= 15 },
-    { id: 'level_maestro',  icon: '🎓', label: 'Alcanzó Maestro',    desc: 'Llega al nivel Maestro',                 check: () => watchHistory.length >= 60 },
-    { id: 'night_owl',      icon: '🦉', label: 'Búho nocturno',      desc: 'Ve una película después de las 12AM',    check: () => watchHistory.some(h=>{ const d=new Date(h._watchedAt||0); return d.getHours()<5; }) },
+    { id: 'level_critico',  icon: 'ðŸ“°', label: 'AlcanzÃ³ CrÃ­tico',    desc: 'Llega al nivel CrÃ­tico',                 check: () => watchHistory.length >= 15 },
+    { id: 'level_maestro',  icon: 'ðŸŽ“', label: 'AlcanzÃ³ Maestro',    desc: 'Llega al nivel Maestro',                 check: () => watchHistory.length >= 60 },
+    { id: 'night_owl',      icon: 'ðŸ¦‰', label: 'BÃºho nocturno',      desc: 'Ve una pelÃ­cula despuÃ©s de las 12AM',    check: () => watchHistory.some(h=>{ const d=new Date(h._watchedAt||0); return d.getHours()<5; }) },
 ,
 
     { id: 'premium_join',    icon: '?', label: 'Miembro Premium',    desc: 'Exclusivo Premium - Unete al club',   check: () => isPremium, premium: true },
@@ -3437,7 +3437,7 @@ function showAchievementPopup(a) {
     el.innerHTML = `
         <div class="aup-icon">${a.icon}</div>
         <div class="aup-info">
-            <div class="aup-eyebrow">🏆 LOGRO DESBLOQUEADO</div>
+            <div class="aup-eyebrow">ðŸ† LOGRO DESBLOQUEADO</div>
             <div class="aup-label">${a.label}</div>
             <div class="aup-desc">${a.desc}</div>
         </div>`;
@@ -3450,22 +3450,22 @@ function showAchievementPopup(a) {
 }
 
 function loadAchievementsView() {
-    sectionTitle.textContent = '🏆 Logros';
+    sectionTitle.textContent = 'ðŸ† Logros';
     sectionCount.textContent = `${Object.keys(achievements).length}/${ACHIEVEMENTS_DEF.length}`;
     checkAchievements();
 
     moviesGrid.innerHTML = `
         <div class="achievements-container">
             <div class="ach-header">
-                <div class="ach-jp">実績 · LOGROS</div>
-                <div class="ach-streak">🔥 Racha actual: <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord: <strong>${streakData.longest}</strong></div>
+                <div class="ach-jp">å®Ÿç¸¾ Â· LOGROS</div>
+                <div class="ach-streak">ðŸ”¥ Racha actual: <strong>${streakData.streak}</strong> dÃ­a${streakData.streak!==1?'s':''} Â· RÃ©cord: <strong>${streakData.longest}</strong></div>
             </div>
             <div class="ach-grid">
                 ${ACHIEVEMENTS_DEF.map(a => {
                     const unlocked = !!achievements[a.id];
                     const date = unlocked ? new Date(achievements[a.id]).toLocaleDateString('es-ES') : null;
                     return `<div class="ach-card ${unlocked?'ach-unlocked':'ach-locked'}">
-                        <div class="ach-icon">${unlocked ? a.icon : '🔒'}</div>
+                        <div class="ach-icon">${unlocked ? a.icon : 'ðŸ”’'}</div>
                         <div class="ach-label">${a.label}</div>
                         <div class="ach-desc">${a.desc}</div>
                         ${date ? `<div class="ach-date">${date}</div>` : ''}
@@ -3508,7 +3508,7 @@ async function loadTVSeasons(item) {
 
     container.innerHTML = `
     <div class="tv-seasons">
-        <h4><i class="fas fa-tv"></i> Temporadas y episodios · エピソード</h4>
+        <h4><i class="fas fa-tv"></i> Temporadas y episodios Â· ã‚¨ãƒ”ã‚½ãƒ¼ãƒ‰</h4>
         <div class="season-tabs">
             ${seasons.map((s,i) => `<button class="season-tab ${i===0?'active':''}" data-season="${s.season_number}">T${s.season_number}</button>`).join('')}
         </div>
@@ -3537,8 +3537,8 @@ async function loadTVSeasons(item) {
                         </div>
                         <div class="episode-info">
                             <div class="episode-title">${e.name || `Episodio ${e.episode_number}`}</div>
-                            <div class="episode-meta">${air}${rating ? ` · ⭐ ${rating}` : ''}${e.runtime ? ` · ${e.runtime}min` : ''}</div>
-                            <div class="episode-overview">${(e.overview||'').slice(0,120)}${e.overview?.length>120?'…':''}</div>
+                            <div class="episode-meta">${air}${rating ? ` Â· â­ ${rating}` : ''}${e.runtime ? ` Â· ${e.runtime}min` : ''}</div>
+                            <div class="episode-overview">${(e.overview||'').slice(0,120)}${e.overview?.length>120?'â€¦':''}</div>
                         </div>
                     </div>`;
                 }).join('')}
@@ -3550,11 +3550,11 @@ async function loadTVSeasons(item) {
                     const vc = document.getElementById('videoContainer');
                     if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; localStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
                     const SERVERS_EP = [
-                        { label:'Servidor 1 🌐', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true` },
-                        { label:'Servidor 2 🌐', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
-                        { label:'Servidor 3 🌐', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Servidor 4 🌐', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Servidor 5 🌐', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
+                        { label:'Servidor 1 ðŸŒ', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true` },
+                        { label:'Servidor 2 ðŸŒ', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
+                        { label:'Servidor 3 ðŸŒ', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 4 ðŸŒ', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 5 ðŸŒ', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
                     ];
                     vc.innerHTML = `
                     <div class="ep-server-bar">
@@ -3577,7 +3577,7 @@ async function loadTVSeasons(item) {
                         if (nextCard) {
                             vc.insertAdjacentHTML('beforeend', `
                             <div class="sf-autoplay-bar" id="sfAutoplayBar">
-                                <span>⭐ Próximo episodio: <strong>${nextCard.querySelector('.ep-title')?.textContent || 'Episodio ' + (parseInt(epNum)+1)}</strong></span>
+                                <span>â­ PrÃ³ximo episodio: <strong>${nextCard.querySelector('.ep-title')?.textContent || 'Episodio ' + (parseInt(epNum)+1)}</strong></span>
                                 <div class="sf-autoplay-actions">
                                     <button class="sf-autoplay-play" id="sfAutoplayPlay"><i class="fas fa-forward"></i> Reproducir</button>
                                     <button class="sf-autoplay-cancel" id="sfAutoplayCancel">Cancelar</button>
@@ -3602,12 +3602,12 @@ async function loadTVSeasons(item) {
 }
 
 const LEVELS = [
-    { min:0,   max:4,   label:'Espectador',  icon:'👁️',  color:'#666' },
-    { min:5,   max:14,  label:'Cinéfilo',    icon:'🎬',  color:'#888' },
-    { min:15,  max:29,  label:'Crítico',     icon:'📝',  color:'#c9a84c' },
-    { min:30,  max:59,  label:'Experto',     icon:'🎭',  color:'#cc7700' },
-    { min:60,  max:99,  label:'Maestro',     icon:'🏆',  color:'#cc0000' },
-    { min:100, max:Infinity, label:'Leyenda', icon:'⭐', color:'#ffd700' },
+    { min:0,   max:4,   label:'Espectador',  icon:'ðŸ‘ï¸',  color:'#666' },
+    { min:5,   max:14,  label:'CinÃ©filo',    icon:'ðŸŽ¬',  color:'#888' },
+    { min:15,  max:29,  label:'CrÃ­tico',     icon:'ðŸ“',  color:'#c9a84c' },
+    { min:30,  max:59,  label:'Experto',     icon:'ðŸŽ­',  color:'#cc7700' },
+    { min:60,  max:99,  label:'Maestro',     icon:'ðŸ†',  color:'#cc0000' },
+    { min:100, max:Infinity, label:'Leyenda', icon:'â­', color:'#ffd700' },
 ];
 function getUserLevel() {
     const n = watchHistory.length;
@@ -3631,13 +3631,13 @@ const WEEKLY_CHALLENGES_PREMIUM = [
     { id:'week_prem_hist', label:'Historia Viva',     desc:'Ve 2 peliculas historicas',        genre:36, target:2, icon:'?' },
 ];
 const WEEKLY_CHALLENGES = [
-    { id:'week_horror',  label:'Terror semanal',   desc:'Ve 3 películas de Terror',        genre:27, target:3, icon:'👻' },
-    { id:'week_action',  label:'Semana de acción',  desc:'Ve 3 películas de Acción',       genre:28, target:3, icon:'💥' },
-    { id:'week_comedy',  label:'Ríe con nosotros',  desc:'Ve 2 comedias esta semana',      genre:35, target:2, icon:'😂' },
-    { id:'week_drama',   label:'Drama profundo',    desc:'Ve 2 dramas esta semana',         genre:18, target:2, icon:'🎭' },
-    { id:'week_scifi',   label:'Ciencia ficción',   desc:'Ve 2 películas de Sci-Fi',       genre:878,target:2, icon:'🚀' },
-    { id:'week_any',     label:'Maratón semanal',   desc:'Ve 5 películas esta semana',      genre:0,  target:5, icon:'🎬' },
-    { id:'week_old',     label:'Clásicos eternos',  desc:'Ve 2 películas anteriores a 1990',genre:0,  target:2, icon:'📼', pre1990:true },
+    { id:'week_horror',  label:'Terror semanal',   desc:'Ve 3 pelÃ­culas de Terror',        genre:27, target:3, icon:'ðŸ‘»' },
+    { id:'week_action',  label:'Semana de acciÃ³n',  desc:'Ve 3 pelÃ­culas de AcciÃ³n',       genre:28, target:3, icon:'ðŸ’¥' },
+    { id:'week_comedy',  label:'RÃ­e con nosotros',  desc:'Ve 2 comedias esta semana',      genre:35, target:2, icon:'ðŸ˜‚' },
+    { id:'week_drama',   label:'Drama profundo',    desc:'Ve 2 dramas esta semana',         genre:18, target:2, icon:'ðŸŽ­' },
+    { id:'week_scifi',   label:'Ciencia ficciÃ³n',   desc:'Ve 2 pelÃ­culas de Sci-Fi',       genre:878,target:2, icon:'ðŸš€' },
+    { id:'week_any',     label:'MaratÃ³n semanal',   desc:'Ve 5 pelÃ­culas esta semana',      genre:0,  target:5, icon:'ðŸŽ¬' },
+    { id:'week_old',     label:'ClÃ¡sicos eternos',  desc:'Ve 2 pelÃ­culas anteriores a 1990',genre:0,  target:2, icon:'ðŸ“¼', pre1990:true },
 ];
 function getCurrentWeekChallenge() {
 
@@ -3682,14 +3682,14 @@ async function loadLeaderboard() {
     const container = document.getElementById('pvp-leaderboard');
     if (!container) return;
     const inner = container.querySelector('.pvp-inner');
-    inner.innerHTML = `<div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Cargando clasificación...</span></div>`;
+    inner.innerHTML = `<div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Cargando clasificaciÃ³n...</span></div>`;
 
     try {
 
         const ownDoc = await getDoc(doc(db, 'leaderboard', user.uid));
         const own = ownDoc.exists() ? ownDoc.data() : {};
 
-        // Obtener top 10 de la clasificación global
+        // Obtener top 10 de la clasificaciÃ³n global
         const leaderboardQuery = query(
             collection(db, 'leaderboard'),
             orderBy('xp', 'desc'),
@@ -3708,23 +3708,23 @@ async function loadLeaderboard() {
                     <div class="lb-avatar"><span class="lb-avatar-icon">${icon}</span></div>
                     <div class="lb-user-info">
                         <div class="lb-name">${u.name||'Usuario'}${isPrem ? ' <i class="fas fa-star lb-premium-star" title="Premium"></i>' : ''}</div>
-                        <div class="lb-sub">${u.xp||0} XP · ${u.watched||0} vistas</div>
+                        <div class="lb-sub">${u.xp||0} XP Â· ${u.watched||0} vistas</div>
                     </div>
                 </div>
                 <div class="lb-xp">${u.xp||0}</div>
             </div>`;
-        }).join('') : `<div class="lb-empty"><span>🌐</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
+        }).join('') : `<div class="lb-empty"><span>ðŸŒ</span><p>AÃºn no hay datos de clasificaciÃ³n. Abre la app para generar tu registro.</p></div>`;
 
         const ownIcon = own.avatarIcon || userAvatarIcon || getDefaultAvatarIcon(user.uid);
         inner.innerHTML = `
         <div class="lb-wrap">
-            <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global · ランキング</div>
-            <div class="lb-subtitle">Tu posición en la comunidad StreamFlex</div>
+            <div class="lb-title"><i class="fas fa-trophy"></i> ClasificaciÃ³n global Â· ãƒ©ãƒ³ã‚­ãƒ³ã‚°</div>
+            <div class="lb-subtitle">Tu posiciÃ³n en la comunidad StreamFlex</div>
             <div class="lb-own-card">
                 <div class="lb-own-avatar"><span class="lb-avatar-icon">${ownIcon}</span></div>
                 <div class="lb-own-info">
-                    <div class="lb-own-name" style="${isPremium ? 'color:var(--gold);font-weight:700' : ''}">${own.name || user.email.split('@')[0]} ${isPremium ? '<span class="sf-premium-badge">⭐ PREMIUM</span>' : ''}</div>
-                    <div class="lb-own-stats">${getUserXP()} XP · ${watchHistory.length} vistas · ${getUserLevel().icon} ${getUserLevel().label}</div>
+                    <div class="lb-own-name" style="${isPremium ? 'color:var(--gold);font-weight:700' : ''}">${own.name || user.email.split('@')[0]} ${isPremium ? '<span class="sf-premium-badge">â­ PREMIUM</span>' : ''}</div>
+                    <div class="lb-own-stats">${getUserXP()} XP Â· ${watchHistory.length} vistas Â· ${getUserLevel().icon} ${getUserLevel().label}</div>
                 </div>
                 <div class="lb-own-xp">${getUserXP()}<span>XP</span></div>
             </div>
@@ -3738,11 +3738,11 @@ async function loadLeaderboard() {
         </div>`;
 
         document.getElementById('lbShareBtn')?.addEventListener('click', () => {
-            const text = `🎬 Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} películas vistas. ¡Supérame!`;
+            const text = `ðŸŽ¬ Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} pelÃ­culas vistas. Â¡SupÃ©rame!`;
             navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-share-alt"></i> Copiado para compartir'));
         });
     } catch(e) {
-        inner.innerHTML = `<div class="pv-empty-tab"><span>🌐</span><p>No se pudo cargar la clasificación.</p><small>Verifica tu conexión a internet.</small></div>`;
+        inner.innerHTML = `<div class="pv-empty-tab"><span>ðŸŒ</span><p>No se pudo cargar la clasificaciÃ³n.</p><small>Verifica tu conexiÃ³n a internet.</small></div>`;
     }
 }
 
@@ -3755,7 +3755,7 @@ function openEditProfile() {
     const currentIcon = userAvatarIcon || getDefaultAvatarIcon(currentUid || user.uid || currentName || '');
     modalBody.innerHTML = `
     <div class="edit-profile-modal">
-        <div class="modal-title-jp">プロフィール編集 · EDITAR PERFIL</div>
+        <div class="modal-title-jp">ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ç·¨é›† Â· EDITAR PERFIL</div>
         <h2>Editar perfil</h2>
         <div class="ep-avatar-wrap">
             <div class="ep-avatar" id="epAvatarPreview">
@@ -3773,7 +3773,7 @@ function openEditProfile() {
             <input type="text" id="epNameInput" value="${currentName}" placeholder="Tu nombre..." maxlength="30">
         </div>
         <div class="ep-field">
-            <label>Correo electrónico</label>
+            <label>Correo electrÃ³nico</label>
             <input type="email" value="${user.email}" disabled style="opacity:0.4;cursor:not-allowed">
         </div>
         <div class="ep-error" id="epError" style="display:none"></div>
@@ -3794,7 +3794,7 @@ function openEditProfile() {
     document.getElementById('epSaveBtn')?.addEventListener('click', async () => {
         const newName = document.getElementById('epNameInput').value.trim();
         const errEl = document.getElementById('epError');
-        if (!newName) { errEl.textContent = 'El nombre no puede estar vacío'; errEl.style.display='block'; return; }
+        if (!newName) { errEl.textContent = 'El nombre no puede estar vacÃ­o'; errEl.style.display='block'; return; }
         const btn = document.getElementById('epSaveBtn');
         btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
         try {
@@ -3815,7 +3815,7 @@ function openEditProfile() {
             closeModalFn();
             if (currentView === 'profile') loadProfileView();
         } catch(e) {
-            errEl.textContent = 'Error al guardar. Inténtalo de nuevo.';
+            errEl.textContent = 'Error al guardar. IntÃ©ntalo de nuevo.';
             errEl.style.display = 'block';
             btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
         }
@@ -3846,7 +3846,7 @@ function buildAdvancedStats() {
     const monthHistory = Object.entries(monthCounts).sort((a,b)=>a[0].localeCompare(b[0])).slice(-6);
 
     const ratings = Object.values(userRatings).filter(r => r > 0);
-    const avgRating = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : '—';
+    const avgRating = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : 'â€”';
 
     const decCounts = {};
     watchHistory.forEach(h => {
@@ -4038,7 +4038,7 @@ function loadPerfilBg() {
         '<label class="sf-bg-upload-btn"><i class="fas fa-upload"></i> Subir imagen<input type="file" id="sfBgInput" accept="image/*" style="display:none"></label>' +
         (profileBg ? '<button class="sf-bg-remove-btn" id="sfBgRemove"><i class="fas fa-trash"></i> Quitar fondo</button>' : '') +
         '<div class="pv-block-label" style="margin-top:1.5rem"><i class="fas fa-pen"></i> Bio personal</div>' +
-        '<textarea class="sf-bio-input" id="sfBioInput" placeholder="Cuéntale a la comunidad algo sobre ti... (max 150 caracteres)" maxlength="150">' + (userBio||'') + '</textarea>' +
+        '<textarea class="sf-bio-input" id="sfBioInput" placeholder="CuÃ©ntale a la comunidad algo sobre ti... (max 150 caracteres)" maxlength="150">' + (userBio||'') + '</textarea>' +
         '<div class="sf-bio-actions"><span class="sf-bio-count" id="sfBioCount">' + (userBio?.length||0) + '/150</span><button class="sf-bio-save" id="sfBioSave"><i class="fas fa-save"></i> Guardar bio</button></div>' +
         '<div class="pv-block-label" style="margin-top:1.5rem"><i class="fas fa-share-alt"></i> Tarjeta de perfil</div>' +
         '<button class="sf-share-card-btn" id="sfShareCardBtn"><i class="fas fa-image"></i> Generar tarjeta para compartir</button>' +
@@ -4094,7 +4094,7 @@ function generateShareCard() {
     ctx.font = 'bold 36px Arial';
     const fbUser = window._fb?.auth?.currentUser;
     const name = fbUser?.displayName || fbUser?.email?.split('@')[0] || 'Cinefilo';
-    ctx.fillText(name + (isPremium ? ' ⭐' : ''), 40, 80);
+    ctx.fillText(name + (isPremium ? ' â­' : ''), 40, 80);
 
     ctx.fillStyle = '#888';
     ctx.font = '18px Arial';
@@ -4124,7 +4124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!e.target.closest('#sfPipBtn')) return;
         const iframe = document.querySelector('#playerContainer iframe, #cinemaPlayer iframe, #videoContainer iframe');
         if (!iframe) { showToast('Primero reproduce un video'); return; }
-        if (!isPremium) { showToast('⭐ Picture-in-Picture es exclusivo Premium'); return; }
+        if (!isPremium) { showToast('â­ Picture-in-Picture es exclusivo Premium'); return; }
         try {
             if (document.pictureInPictureElement) {
                 await document.exitPictureInPicture();
@@ -4197,16 +4197,26 @@ function openPremiumModal() {
           <div class="sf-prem-header">
             <div class="sf-prem-star">&#11088;</div>
             <div class="sf-prem-title">StreamFlex Premium</div>
-            <div class="sf-prem-sub">Apoya el proyecto y desbloquea todo</div>
+            <div class="sf-prem-sub">Apoya el proyecto y desbloquea funciones pro</div>
           </div>
+          <div class="sf-prem-section-title">Incluye</div>
           <div class="sf-prem-perks">
             <div class="sf-prem-perk"><i class="fas fa-times-circle" style="color:var(--red)"></i> Sin popup de anuncios</div>
-            <div class="sf-prem-perk"><i class="fas fa-star" style="color:var(--gold)"></i> XP doble en todo</div>
             <div class="sf-prem-perk"><i class="fas fa-palette" style="color:#9b4dff"></i> Temas de color exclusivos</div>
-            <div class="sf-prem-perk"><i class="fas fa-play-circle" style="color:#00cc66"></i> Continuar viendo series</div>
-            <div class="sf-prem-perk"><i class="fas fa-magic" style="color:#1a8aff"></i> Recomendaciones personalizadas</div>
-            <div class="sf-prem-perk"><i class="fas fa-image" style="color:#f0d080"></i> Perfil personalizable + bio</div>
-            <div class="sf-prem-perk"><i class="fas fa-trophy" style="color:var(--gold)"></i> Logros y retos exclusivos</div>
+            <div class="sf-prem-perk"><i class="fas fa-user-astronaut" style="color:#f0d080"></i> Perfil+ con bio y fondo</div>
+            <div class="sf-prem-perk"><i class="fas fa-play-circle" style="color:#00cc66"></i> Continuar viendo con progreso</div>
+            <div class="sf-prem-perk"><i class="fas fa-magic" style="color:#1a8aff"></i> Recomendaciones inteligentes</div>
+            <div class="sf-prem-perk"><i class="fas fa-chart-line" style="color:var(--gold)"></i> EstadÃ­sticas avanzadas y rachas</div>
+            <div class="sf-prem-perk"><i class="fas fa-layer-group" style="color:#7b2dcc"></i> Listas ilimitadas + notas privadas</div>
+            <div class="sf-prem-perk"><i class="fas fa-filter" style="color:#00c2ff"></i> BÃºsqueda avanzada con filtros pro</div>
+          </div>
+          <div class="sf-prem-section-title">PrÃ³ximamente</div>
+          <div class="sf-prem-perks">
+            <div class="sf-prem-perk sf-prem-perk-soon"><i class="fas fa-download" style="color:#4ade80"></i> Descargas offline <span class="sf-prem-soon">PrÃ³ximamente</span></div>
+            <div class="sf-prem-perk sf-prem-perk-soon"><i class="fas fa-users" style="color:#38bdf8"></i> Watch Party con chat <span class="sf-prem-soon">PrÃ³ximamente</span></div>
+            <div class="sf-prem-perk sf-prem-perk-soon"><i class="fas fa-bell" style="color:#fbbf24"></i> Alertas de estreno <span class="sf-prem-soon">PrÃ³ximamente</span></div>
+            <div class="sf-prem-perk sf-prem-perk-soon"><i class="fas fa-compress-arrows-alt" style="color:#f87171"></i> Cine Mode limpio <span class="sf-prem-soon">PrÃ³ximamente</span></div>
+            <div class="sf-prem-perk sf-prem-perk-soon"><i class="fas fa-user-shield" style="color:#a78bfa"></i> Perfiles extra + control parental <span class="sf-prem-soon">PrÃ³ximamente</span></div>
           </div>
           <div class="sf-prem-actions">
             <a href="https://www.patreon.com/streamflex" target="_blank" class="sf-prem-btn sf-prem-patreon">
@@ -4326,7 +4336,7 @@ async function initReviews(itemId, mediaType) {
     });
 
     document.getElementById('sfReviewSubmit')?.addEventListener('click', async () => {
-        if (!user) { showToast('<i class="fas fa-user"></i> Debes iniciar sesión para reseñar'); return; }
+        if (!user) { showToast('<i class="fas fa-user"></i> Debes iniciar sesiÃ³n para reseÃ±ar'); return; }
         const text = document.getElementById('sfReviewText')?.value.trim();
         if (!text) { showToast('<i class="fas fa-exclamation"></i> Escribe algo primero'); return; }
         const rating = getUserRating(itemId);
@@ -4349,13 +4359,13 @@ async function initReviews(itemId, mediaType) {
             });
             document.getElementById('sfReviewText').value = '';
             document.getElementById('sfReviewChars').textContent = '0/300';
-            showToast('<i class="fas fa-comments"></i> Reseña publicada');
+            showToast('<i class="fas fa-comments"></i> ReseÃ±a publicada');
             await loadReviews(itemId, user.uid);
         } catch(e) {
             showToast('<i class="fas fa-exclamation-triangle"></i> Error al publicar');
             console.error(e);
         }
-        btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar reseña';
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar reseÃ±a';
     });
 
     await loadReviews(itemId, user?.uid);
@@ -4378,17 +4388,17 @@ async function loadReviews(itemId, currentUid) {
         const reviews = snap.docs.map(d => ({ _id: d.id, ...d.data() }))
                            .sort((a,b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
 
-        if (countEl) countEl.textContent = reviews.length ? `${reviews.length} reseña${reviews.length > 1 ? 's' : ''}` : '';
+        if (countEl) countEl.textContent = reviews.length ? `${reviews.length} reseÃ±a${reviews.length > 1 ? 's' : ''}` : '';
 
         if (!reviews.length) {
-            list.innerHTML = '<div class="sf-reviews-empty"><i class="fas fa-comment-slash"></i> Sé el primero en reseñar esta película</div>';
+            list.innerHTML = '<div class="sf-reviews-empty"><i class="fas fa-comment-slash"></i> SÃ© el primero en reseÃ±ar esta pelÃ­cula</div>';
             return;
         }
 
         list.innerHTML = reviews.map(r => {
-            const stars     = r.rating > 0 ? '<span class="sf-rev-stars">' + '★'.repeat(r.rating) + '<span style="opacity:0.3">' + '★'.repeat(5 - r.rating) + '</span></span>' : '';
+            const stars     = r.rating > 0 ? '<span class="sf-rev-stars">' + 'â˜…'.repeat(r.rating) + '<span style="opacity:0.3">' + 'â˜…'.repeat(5 - r.rating) + '</span></span>' : '';
             const isOwn     = r.userId === currentUid;
-            const premBadge = r.isPremium ? '<span class="sf-rev-prem">⭐</span>' : '';
+            const premBadge = r.isPremium ? '<span class="sf-rev-prem">â­</span>' : '';
             const avatarIcon = r.userAvatarIcon || getDefaultAvatarIcon(r.userId || r.userName || '');
             const avatar    = `<div class="sf-rev-avatar-letter">${avatarIcon}</div>`;
             const dateStr   = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString('es-ES', {day:'2-digit',month:'short',year:'numeric'}) : '';
@@ -4408,11 +4418,11 @@ async function loadReviews(itemId, currentUid) {
 
         list.querySelectorAll('.sf-rev-delete').forEach(btn => {
             btn.addEventListener('click', async () => {
-                if (!confirm('¿Eliminar tu reseña?')) return;
+                if (!confirm('Â¿Eliminar tu reseÃ±a?')) return;
                 try {
                     const { db, doc, deleteDoc } = fb;
                     await deleteDoc(doc(db, 'reviews', btn.dataset.id));
-                    showToast('<i class="fas fa-trash"></i> Reseña eliminada');
+                    showToast('<i class="fas fa-trash"></i> ReseÃ±a eliminada');
                     await loadReviews(itemId, currentUid);
                 } catch(e) { showToast('Error al eliminar'); }
             });
@@ -4420,7 +4430,7 @@ async function loadReviews(itemId, currentUid) {
 
     } catch(e) {
         console.error('Reviews error:', e);
-        list.innerHTML = '<div class="sf-reviews-empty">Error cargando reseñas.</div>';
+        list.innerHTML = '<div class="sf-reviews-empty">Error cargando reseÃ±as.</div>';
     }
 }
 
@@ -4501,8 +4511,8 @@ async function searchUsers(query) {
                 return `<div class="sf-friend-card" data-uid="${u._uid}">
                     <div class="sf-friend-avatar"><span>${icon}</span></div>
                     <div class="sf-friend-info">
-                        <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">⭐</span>' : ''}</div>
-                        <div class="sf-friend-meta">${(u.watchHistory||[]).length} vistas · ${getUserLevel_fromData(u).label}</div>
+                        <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">â­</span>' : ''}</div>
+                        <div class="sf-friend-meta">${(u.watchHistory||[]).length} vistas Â· ${getUserLevel_fromData(u).label}</div>
                     </div>
                     <button class="sf-friend-btn ${btnClass}" data-uid="${u._uid}" data-action="${btnAction}" ${btnAction === 'none' ? 'disabled' : ''}>
                         <i class="fas fa-${btnIcon}"></i>
@@ -4517,7 +4527,7 @@ async function searchUsers(query) {
 
     } catch(e) {
         console.error(e);
-        resultsEl.innerHTML = '<div class="sf-friends-empty">Error en la búsqueda.</div>';
+        resultsEl.innerHTML = '<div class="sf-friends-empty">Error en la bÃºsqueda.</div>';
     }
 }
 
@@ -4587,7 +4597,7 @@ async function renderFriendsList(uid) {
         if (badge) badge.textContent = friends.length || '';
 
         if (!friends.length) {
-            el.innerHTML = '<div class="sf-friends-empty"><i class="fas fa-user-friends"></i> Aún no tienes amigos. ¡Búscalos arriba!</div>';
+            el.innerHTML = '<div class="sf-friends-empty"><i class="fas fa-user-friends"></i> AÃºn no tienes amigos. Â¡BÃºscalos arriba!</div>';
             return;
         }
 
@@ -4604,9 +4614,9 @@ async function renderFriendsList(uid) {
             return `<div class="sf-friend-card">
                 <div class="sf-friend-avatar"><span>${icon}</span></div>
                 <div class="sf-friend-info">
-                    <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">⭐</span>' : ''}</div>
-                    <div class="sf-friend-meta">${watched} vistas · ${getUserLevel_fromData(u).label}
-                        ${lastTitle ? `<span class="sf-friend-last"> · Vio: ${lastTitle.substring(0,28)}${lastTitle.length>28?'…':''}</span>` : ''}
+                    <div class="sf-friend-name">${u.displayName || 'Usuario'} ${u.isPremium ? '<span class="sf-rev-prem">â­</span>' : ''}</div>
+                    <div class="sf-friend-meta">${watched} vistas Â· ${getUserLevel_fromData(u).label}
+                        ${lastTitle ? `<span class="sf-friend-last"> Â· Vio: ${lastTitle.substring(0,28)}${lastTitle.length>28?'â€¦':''}</span>` : ''}
                     </div>
                 </div>
                 <button class="sf-friend-btn sf-friend-btn-remove" data-uid="${u._uid}" data-action="remove">
@@ -4657,7 +4667,7 @@ async function renderFriendsActivity(uid) {
                     uid:    u._uid,
                     name:   u.displayName || 'Usuario',
                     avatarIcon: u.avatarIcon || getDefaultAvatarIcon(u._uid || u.displayName || ''),
-                    action: 'marcó favorita',
+                    action: 'marcÃ³ favorita',
                     item,
                     ts: item._addedAt || 0,
                 });
@@ -4673,7 +4683,7 @@ async function renderFriendsActivity(uid) {
         }
 
         el.innerHTML = recent.map(ev => {
-            const title   = ev.item?.title || ev.item?.name || 'Título desconocido';
+            const title   = ev.item?.title || ev.item?.name || 'TÃ­tulo desconocido';
             const poster  = ev.item?.poster_path ? IMG_BASE + ev.item.poster_path : null;
             const icon = ev.avatarIcon || getDefaultAvatarIcon(ev.uid || ev.name || '');
             const timeStr = ev.ts ? timeAgo(ev.ts) : '';
@@ -4683,7 +4693,7 @@ async function renderFriendsActivity(uid) {
                     <span class="sf-act-name">${ev.name}</span>
                     <span class="sf-act-verb"> ${ev.action} </span>
                     <span class="sf-act-title">${title}</span>
-                    ${timeStr ? `<span class="sf-act-time"> · ${timeStr}</span>` : ''}
+                    ${timeStr ? `<span class="sf-act-time"> Â· ${timeStr}</span>` : ''}
                 </div>
                 ${poster ? `<img src="${poster}" class="sf-act-poster" alt="">` : ''}
             </div>`;
@@ -4720,7 +4730,7 @@ async function renderFriendRequests(uid) {
                 <div class="sf-friend-avatar"><span>${icon}</span></div>
                 <div class="sf-friend-info">
                     <div class="sf-friend-name">${req.fromName || 'Usuario'}</div>
-                    <div class="sf-friend-meta">Te envió una solicitud</div>
+                    <div class="sf-friend-meta">Te enviÃ³ una solicitud</div>
                 </div>
                 <div class="sf-friend-actions">
                     <button class="sf-friend-btn sf-friend-btn-accept" data-req-id="${req.id}" data-from="${req.from}">
@@ -4763,7 +4773,7 @@ async function handleFriendRequest(reqId, fromUid, action) {
                 fb.setDoc(myRef, { friends: myFriends }, { merge: true }),
                 fb.setDoc(fromRef, { friends: fromFriends }, { merge: true })
             ]);
-            showToast('<i class="fas fa-user-plus"></i> Amigo añadido');
+            showToast('<i class="fas fa-user-plus"></i> Amigo aÃ±adido');
         } else {
             showToast('<i class="fas fa-times"></i> Solicitud rechazada');
         }
@@ -4780,13 +4790,13 @@ async function handleFriendRequest(reqId, fromUid, action) {
 function getUserLevel_fromData(data) {
     const n = (data.watchHistory||[]).length;
     const LEVELS = [
-        { min:0,   label:'Espectador',  icon:'🎟️',  color:'#888' },
-        { min:5,   label:'Aficionado',  icon:'🎬',  color:'#4ade80' },
-        { min:15,  label:'Crítico',     icon:'📰',  color:'#60a5fa' },
-        { min:30,  label:'Cinéfilo',    icon:'🎭',  color:'#c084fc' },
-        { min:60,  label:'Maestro',     icon:'🎓',  color:'#f59e0b' },
-        { min:100, label:'Experto',     icon:'🏆',  color:'#f97316' },
-        { min:200, label:'Leyenda',     icon:'🌟',  color:'#cc0000' },
+        { min:0,   label:'Espectador',  icon:'ðŸŽŸï¸',  color:'#888' },
+        { min:5,   label:'Aficionado',  icon:'ðŸŽ¬',  color:'#4ade80' },
+        { min:15,  label:'CrÃ­tico',     icon:'ðŸ“°',  color:'#60a5fa' },
+        { min:30,  label:'CinÃ©filo',    icon:'ðŸŽ­',  color:'#c084fc' },
+        { min:60,  label:'Maestro',     icon:'ðŸŽ“',  color:'#f59e0b' },
+        { min:100, label:'Experto',     icon:'ðŸ†',  color:'#f97316' },
+        { min:200, label:'Leyenda',     icon:'ðŸŒŸ',  color:'#cc0000' },
     ];
     for (let i = LEVELS.length - 1; i >= 0; i--) {
         if (n >= LEVELS[i].min) return LEVELS[i];
@@ -4805,3 +4815,4 @@ function timeAgo(ts) {
     if (d < 7)   return `hace ${d}d`;
     return new Date(ts).toLocaleDateString('es-ES', { day:'2-digit', month:'short' });
 }
+
