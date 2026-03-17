@@ -416,12 +416,12 @@ function renderListToolbar(view) {
                 <select id="listSortSelect">
                     <option value="default" ${listSortBy==='default'?'selected':''}>Por defecto</option>
                     <option value="added_asc" ${listSortBy==='added_asc'?'selected':''}>Más antiguos primero</option>
-                    <option value="title_asc" ${listSortBy==='title_asc'?'selected':''}>Título A�?'Z</option>
-                    <option value="title_desc" ${listSortBy==='title_desc'?'selected':''}>Título Z�?'A</option>
-                    <option value="year_desc" ${listSortBy==='year_desc'?'selected':''}>Año �?"</option>
-                    <option value="year_asc" ${listSortBy==='year_asc'?'selected':''}>Año �?'</option>
-                    <option value="rating_desc" ${listSortBy==='rating_desc'?'selected':''}>Puntuación �?"</option>
-                    <option value="myrating_desc" ${listSortBy==='myrating_desc'?'selected':''}>Mi valoración �?"</option>
+                    <option value="title_asc" ${listSortBy==='title_asc'?'selected':''}>Título A-Z</option>
+                    <option value="title_desc" ${listSortBy==='title_desc'?'selected':''}>Título Z-A</option>
+                    <option value="year_desc" ${listSortBy==='year_desc'?'selected':''}>Año más reciente</option>
+                    <option value="year_asc" ${listSortBy==='year_asc'?'selected':''}>Año más antiguo</option>
+                    <option value="rating_desc" ${listSortBy==='rating_desc'?'selected':''}>Mejor puntuación</option>
+                    <option value="myrating_desc" ${listSortBy==='myrating_desc'?'selected':''}>Mi mejor valoración</option>
                 </select>
             </div>
             <div class="list-actions-group">
@@ -1375,18 +1375,18 @@ function showToast(message) {
 }
 
 const SERVERS_MOVIE = [
-    { label:'Servidor 1 �YO�', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
-    { label:'Servidor 2 �YO�', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
-    { label:'Servidor 3 �YO�', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
-    { label:'Servidor 4 �YO�', url: id=>`https://embed.su/embed/movie/${id}` },
-    { label:'Servidor 5 �YO�', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
+    { label:'Servidor 1', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
+    { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
+    { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
+    { label:'Servidor 4', url: id=>`https://embed.su/embed/movie/${id}` },
+    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
 ];
 const SERVERS_TV = [
-    { label:'Servidor 1 �YO�', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
-    { label:'Servidor 2 �YO�', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
-    { label:'Servidor 3 �YO�', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
-    { label:'Servidor 4 �YO�', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
-    { label:'Servidor 5 �YO�', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
+    { label:'Servidor 1', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
+    { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
+    { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
+    { label:'Servidor 4', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
+    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
@@ -1608,7 +1608,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                     const sp=s.poster_path?IMG_BASE+s.poster_path:'https://placehold.co/120x180/1a1a1a/666?text=N/A';
                     const card = document.createElement('div');
                     card.className='similar-card'; card.dataset.id=s.id; card.dataset.type=type;
-                    card.innerHTML=`<img src="${sp}" alt="${st}" loading="lazy"><div class="similar-rating">�~. ${s.vote_average?.toFixed(1)||'N/A'}</div><div class="similar-title">${st}</div><div class="similar-year">${sy}</div>`;
+                    card.innerHTML=`<img src="${sp}" alt="${st}" loading="lazy"><div class="similar-rating">⭐ ${s.vote_average?.toFixed(1)||'N/A'}</div><div class="similar-title">${st}</div><div class="similar-year">${sy}</div>`;
                     card.addEventListener('click', ()=>openModal(s.id, false, type));
                     grid.appendChild(card);
                 });
@@ -1698,7 +1698,7 @@ function buildSimilarHTML(items, type, page, totalPages, itemId) {
         const sp=s.poster_path?IMG_BASE+s.poster_path:'https://placehold.co/120x180/1a1a1a/666?text=N/A';
         return `<div class="similar-card" data-id="${s.id}" data-type="${type}">
             <img src="${sp}" alt="${st}" loading="lazy">
-            <div class="similar-rating">�~. ${s.vote_average?.toFixed(1)||'N/A'}</div>
+            <div class="similar-rating">⭐ ${s.vote_average?.toFixed(1)||'N/A'}</div>
             <div class="similar-title">${st}</div>
             <div class="similar-year">${sy}</div>
         </div>`;
@@ -1835,7 +1835,7 @@ async function loadProfileView() {
         ${isPremium ? '<button class="pvt sf-prem-tab" data-tab="continuar"><i class="fas fa-play-circle"></i> Continuar</button><button class="pvt sf-prem-tab" data-tab="recomendados"><i class="fas fa-magic"></i> Para ti</button><button class="pvt sf-prem-tab" data-tab="perfil-bg"><i class="fas fa-image"></i> Mi Perfil+</button>' : ''}
       </div>
 
-      <!-- �.��.��.� PANEL: RESUMEN �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: RESUMEN -->
       <div class="pvp active" id="pvp-resumen">
         <div class="pvp-inner">
 
@@ -1861,7 +1861,7 @@ async function loadProfileView() {
               <div class="sf-premium-banner-left">
                 <div class="sf-premium-banner-title">⭐ StreamFlex Premium</div>
                 <div class="sf-premium-banner-perks">
-                  <span>�o" Sin popups</span><span>�o" Perfil+</span><span>�o" Recomendaciones pro</span><span>�o" Stats avanzadas</span>
+                  <span>✓ Sin popups</span><span>✓ Perfil+</span><span>✓ Recomendaciones pro</span><span>✓ Stats avanzadas</span>
                 </div>
               </div>
               <button class="sf-premium-banner-btn" id="sfPremiumOpenBtn">Ver planes</button>
@@ -1920,7 +1920,7 @@ async function loadProfileView() {
         </div>
       </div>
 
-      <!-- �.��.��.� PANEL: FAVORITOS �.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.��.� -->
+      <!-- PANEL: FAVORITOS -->
       <div class="pvp" id="pvp-favoritos">
         <div class="pvp-inner">
           ${totalFavs?`
@@ -2679,9 +2679,9 @@ async function loadPorqueViste(currentItemId, type) {
                         const sp = s.poster_path ? IMG_BASE+s.poster_path : 'https://placehold.co/120x180/1a1a1a/666?text=N/A';
                         const mt = s.media_type || type;
                         return `<div class="similar-card" data-id="${s.id}" data-type="${mt}">
-                            <img src="${sp}" alt="${st}" loading="lazy">
-                            <div class="similar-rating">�~. ${s.vote_average?.toFixed(1)||'N/A'}</div>
-                            <div class="similar-title">${st}</div>
+            <img src="${sp}" alt="${st}" loading="lazy">
+            <div class="similar-rating">⭐ ${s.vote_average?.toFixed(1)||'N/A'}</div>
+            <div class="similar-title">${st}</div>
                             <div class="similar-year">${sy}</div>
                         </div>`;
                     }).join('')}
@@ -2695,13 +2695,13 @@ async function loadPorqueViste(currentItemId, type) {
 // ===== MODO "NO S�? QU�? VER" =====
 
 const MOODS = [
-    { id: 'action', label: '�s� Adrenalina', emoji: '�s�', desc: 'Acción y emoción', genres: [28, 12], sort: 'popularity.desc' },
-    { id: 'laugh', label: '�Y~, Reír', emoji: '�Y~,', desc: 'Comedia ligera', genres: [35], sort: 'vote_average.desc' },
-    { id: 'cry', label: '�Y~� Llorar', emoji: '�Y~�', desc: 'Drama emotivo', genres: [18, 10749], sort: 'vote_average.desc' },
-    { id: 'think', label: '�Y�" Pensar', emoji: '�Y�"', desc: 'Thriller e intriga', genres: [9648, 53], sort: 'vote_average.desc' },
-    { id: 'fear', label: '�Y~� Miedo', emoji: '�Y~�', desc: 'Terror puro', genres: [27], sort: 'popularity.desc' },
-    { id: 'wonder', label: '�o� Asombro', emoji: '�o�', desc: 'Fantasia y ciencia ficción', genres: [878, 14], sort: 'vote_average.desc' },
-    { id: 'relax', label: '�Y~O Relajar', emoji: '�Y~O', desc: 'Animación y familia', genres: [16, 10751], sort: 'popularity.desc' },
+    { id: 'action', label: '💥 Adrenalina', emoji: '💥', desc: 'Acción y emoción', genres: [28, 12], sort: 'popularity.desc' },
+    { id: 'laugh', label: '😂 Reír', emoji: '😂', desc: 'Comedia ligera', genres: [35], sort: 'vote_average.desc' },
+    { id: 'cry', label: '😭 Llorar', emoji: '😭', desc: 'Drama emotivo', genres: [18, 10749], sort: 'vote_average.desc' },
+    { id: 'think', label: '🤔 Pensar', emoji: '🤔', desc: 'Thriller e intriga', genres: [9648, 53], sort: 'vote_average.desc' },
+    { id: 'fear', label: '😱 Miedo', emoji: '😱', desc: 'Terror puro', genres: [27], sort: 'popularity.desc' },
+    { id: 'wonder', label: '😮 Asombro', emoji: '😮', desc: 'Fantasia y ciencia ficción', genres: [878, 14], sort: 'vote_average.desc' },
+    { id: 'relax', label: '😌 Relajar', emoji: '😌', desc: 'Animación y familia', genres: [16, 10751], sort: 'popularity.desc' },
     { id: 'short', label: '⏱ Rápida', emoji: '⏱', desc: 'Menos de 90 min', genres: [35, 28], sort: 'popularity.desc', runtimeMax: 90 },
 ];
 
@@ -3108,7 +3108,7 @@ function openMarathonManager() {
                         ${poster ? `<img src="${poster}" alt="">` : ''}
                         <div class="marathon-mgr-info">
                             <div class="marathon-mgr-title">${item.title||item.name||''}</div>
-                            <div class="marathon-mgr-meta">${yr} · ~110 min ${watched?'<span class="marathon-seen">�o" Vista</span>':''}</div>
+                            <div class="marathon-mgr-meta">${yr} · ~110 min ${watched?'<span class="marathon-seen">✓ Vista</span>':''}</div>
                         </div>
                         <div class="marathon-mgr-actions">
                             <button class="mgr-play-btn" data-id="${item.id}" data-type="${item._type||'movie'}"><i class="fas fa-play"></i> Ver</button>
