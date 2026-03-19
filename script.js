@@ -1383,15 +1383,15 @@ function showToast(message) {
 }
 // Servidores para películas - Los marked como premium son solo para usuarios premium
 const SERVERS_MOVIE = [
-    { label:'⭐ Servidor 1', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true`, premium: true },
-    { label:'⭐ Servidor 5', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}`, premium: true },
+    { label:'⭐ Premium', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true`, premium: true },
+    { label:'⭐ Premium', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}`, premium: true },
     { label:'Free', url: id=>`https://vimeus.com/e/movie?tmdb=${id}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
 ];
 
 // Servidores para series - Los marcados como premium son solo para usuarios premium
 const SERVERS_TV = [
-    { label:'⭐ Servidor 1', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true`, premium: true },
-    { label:'⭐ Servidor 5', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1`, premium: true },
+    { label:'⭐ Premium', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true`, premium: true },
+    { label:'⭐ Premium', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1`, premium: true },
     { label:'Free', url: (id, s=1, e=1)=>`https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${e}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
 ];
 
