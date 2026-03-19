@@ -4218,9 +4218,6 @@ function openPremiumModal() {
             <div class="sf-prem-perk"><i class="fas fa-layer-group" style="color:#7b2dcc"></i> Listas ilimitadas + notas privadas</div>
             <div class="sf-prem-perk"><i class="fas fa-filter" style="color:#00c2ff"></i> Búsqueda avanzada con filtros pro</div>
             <div class="sf-prem-perk"><i class="fas fa-server" style="color:#ff6b6b"></i> <strong>Servidores Premium exclusivos</strong></div>
-            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 1 - Alta calidad</div>
-            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 2 - Streaming rápido</div>
-            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 3 - Servidor alternativo</div>
           </div>
           <div class="sf-prem-section-title">Próximamente</div>
           <div class="sf-prem-perks">
