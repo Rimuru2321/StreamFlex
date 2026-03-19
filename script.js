@@ -1375,26 +1375,16 @@ function showToast(message) {
 }
 // Servidores para películas - Los marked como premium son solo para usuarios premium
 const SERVERS_MOVIE = [
-    { label:'Servidor 1', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
-    { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
-    { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
-    { label:'Servidor 4', url: id=>`https://embed.su/embed/movie/${id}` },
-    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
     { label:'⭐ Premium 1', url: id=>`https://vimeus.com/e/movie?tmdb=${id}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U`, premium: true },
-    { label:'⭐ Premium 2', url: id=>`https://streamtape.com/e/d7YoYGQ9QvZ7QX/`, premium: true },
-    { label:'⭐ Premium 3', url: id=>`https://dood.watch/e/${id}`, premium: true },
+    { label:'Servidor 1', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
+    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
 ];
 
 // Servidores para series - Los marcados como premium son solo para usuarios premium
 const SERVERS_TV = [
-    { label:'Servidor 1', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
-    { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
-    { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
-    { label:'Servidor 4', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
-    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
     { label:'⭐ Premium 1', url: (id, s=1, e=1)=>`https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${e}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U`, premium: true },
-    { label:'⭐ Premium 2', url: (id, s=1, e=1)=>`https://streamtape.com/e/d7YoYGQ9QvZ7QX/?id=${id}&s=${s}&e=${e}`, premium: true },
-    { label:'⭐ Premium 3', url: (id, s=1, e=1)=>`https://dood.watch/e/${id}?season=${s}&episode=${e}`, premium: true },
+    { label:'Servidor 1', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
+    { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
