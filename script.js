@@ -558,6 +558,14 @@ function setupEventListeners() {
     searchBtn.addEventListener('click', handleSearch);
     searchInput.addEventListener('keypress', e => { if (e.key==='Enter') handleSearch(); });
     navBtns.forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
+    
+    // Logo click - go to home/inicio
+    const logoElement = document.querySelector('.logo');
+    if (logoElement) {
+        logoElement.style.cursor = 'pointer';
+        logoElement.addEventListener('click', () => switchView('all'));
+    }
+    
     closeModalBtn.addEventListener('click', closeModalFn);
     window.addEventListener('click', e => { if (e.target===modal) closeModalFn(); });
     window.addEventListener('keydown', e => { if (e.key==='Escape') closeModalFn(); });
