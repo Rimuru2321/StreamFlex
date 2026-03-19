@@ -1373,20 +1373,28 @@ function showToast(message) {
     const t = document.createElement('div'); t.className='toast'; t.innerHTML=message;
     document.body.appendChild(t); setTimeout(()=>t.remove(),3000);
 }
-
+// Servidores para películas - Los marked como premium son solo para usuarios premium
 const SERVERS_MOVIE = [
     { label:'Servidor 1', url: id=>`https://vidlink.pro/movie/${id}?autoplay=true` },
     { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1` },
     { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/movie/${id}` },
     { label:'Servidor 4', url: id=>`https://embed.su/embed/movie/${id}` },
     { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/movie?tmdb=${id}` },
+    { label:'⭐ Premium 1', url: id=>`https://vimeus.com/e/movie?tmdb=${id}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U`, premium: true },
+    { label:'⭐ Premium 2', url: id=>`https://streamtape.com/e/d7YoYGQ9QvZ7QX/`, premium: true },
+    { label:'⭐ Premium 3', url: id=>`https://dood.watch/e/${id}`, premium: true },
 ];
+
+// Servidores para series - Los marcados como premium son solo para usuarios premium
 const SERVERS_TV = [
     { label:'Servidor 1', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true` },
     { label:'Servidor 2', url: id=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=1&e=1` },
     { label:'Servidor 3', url: id=>`https://www.2embed.stream/embed/tv/${id}/1/1` },
     { label:'Servidor 4', url: id=>`https://embed.su/embed/tv/${id}/1/1` },
     { label:'Servidor 5', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1` },
+    { label:'⭐ Premium 1', url: (id, s=1, e=1)=>`https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${e}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U`, premium: true },
+    { label:'⭐ Premium 2', url: (id, s=1, e=1)=>`https://streamtape.com/e/d7YoYGQ9QvZ7QX/?id=${id}&s=${s}&e=${e}`, premium: true },
+    { label:'⭐ Premium 3', url: (id, s=1, e=1)=>`https://dood.watch/e/${id}?season=${s}&episode=${e}`, premium: true },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
@@ -1462,7 +1470,8 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         const similarSection = buildSimilarHTML(allSimilar.slice(0,12), type, 1, simTotalPages, item.id);
 
         const allServers = type==='tv' ? SERVERS_TV : SERVERS_MOVIE;
-        const SERVERS = isPremium ? allServers.filter((s, i) => [0,4].includes(i)) : allServers;  // Premium: solo servidores 1 y 5
+        // Premium: ve todos los servidores | Free: solo servidores gratuitos
+        const SERVERS = isPremium ? allServers : allServers.filter(s => !s.premium);
         const serverListHTML = SERVERS.map((s,i)=>`<button class="server-btn ${i===0?'active':''}" data-index="${i}">${s.label}</button>`).join('');
         const backdropHTML   = item.backdrop_path ? `<div class="modal-backdrop"><img src="${IMG_ORIGINAL}${item.backdrop_path}" alt=""></div>` : '';
         const releaseYear    = (item.release_date||item.first_air_date||'?').split('-')[0];
@@ -1862,6 +1871,7 @@ async function loadProfileView() {
                 <div class="sf-premium-banner-title">⭐ StreamFlex Premium</div>
                 <div class="sf-premium-banner-perks">
                   <span>✓ Sin popups</span><span>✓ Perfil+</span><span>✓ Recomendaciones pro</span><span>✓ Stats avanzadas</span>
+                  <span>✓ Servidores Premium</span>
                 </div>
               </div>
               <button class="sf-premium-banner-btn" id="sfPremiumOpenBtn">Ver planes</button>
@@ -4217,6 +4227,10 @@ function openPremiumModal() {
             <div class="sf-prem-perk"><i class="fas fa-chart-line" style="color:var(--gold)"></i> Estadísticas avanzadas y rachas</div>
             <div class="sf-prem-perk"><i class="fas fa-layer-group" style="color:#7b2dcc"></i> Listas ilimitadas + notas privadas</div>
             <div class="sf-prem-perk"><i class="fas fa-filter" style="color:#00c2ff"></i> Búsqueda avanzada con filtros pro</div>
+            <div class="sf-prem-perk"><i class="fas fa-server" style="color:#ff6b6b"></i> <strong>Servidores Premium exclusivos</strong></div>
+            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 1 - Alta calidad</div>
+            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 2 - Streaming rápido</div>
+            <div class="sf-prem-perk" style="margin-left:20px;font-size:0.9em"><i class="fas fa-star" style="color:#ffd700"></i> ⭐ Premium 3 - Servidor alternativo</div>
           </div>
           <div class="sf-prem-section-title">Próximamente</div>
           <div class="sf-prem-perks">
