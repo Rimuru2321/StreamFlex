@@ -104,7 +104,7 @@ header {
 
 /* Japanese vertical line decoration on header */
 header::before {
-    content: '映画';
+    content: '�~��"�';
     position: absolute;
     left: 0;
     top: 0;
@@ -2738,7 +2738,7 @@ main { padding: 0 2.5rem 3rem calc(40px + 2.5rem); }
 .afp-reset-btn:hover { border-color: var(--red); color: var(--red); }
 
 /* ============================================================
-   DÓNDE VER
+   D�"NDE VER
    ============================================================ */
 .donde-ver-section {
     background: var(--bg3);
@@ -2829,7 +2829,7 @@ main { padding: 0 2.5rem 3rem calc(40px + 2.5rem); }
 }
 
 /* ============================================================
-   MOOD PICKER — NO SÉ QUÉ VER
+   MOOD PICKER �?" NO S�? QU�? VER
    ============================================================ */
 .mood-btn { color: var(--gold) !important; border-color: var(--gold) !important; }
 .mood-btn:hover { background: var(--gold) !important; color: #111 !important; }
@@ -3377,7 +3377,7 @@ kbd {
 .collection-item:not(.collection-current):hover { transform: scale(1.06); }
 .collection-item img { width: 75px; height: 112px; object-fit: cover; display: block; border: 1px solid var(--border); }
 .collection-current img { border: 2px solid #c084fc; }
-.collection-current::after { content: '▶'; position: absolute; top: 4px; right: 4px; background: #c084fc; color: white; font-size: 0.55rem; padding: 2px 4px; }
+.collection-current::after { content: '�-�'; position: absolute; top: 4px; right: 4px; background: #c084fc; color: white; font-size: 0.55rem; padding: 2px 4px; }
 .collection-num { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.8); color: white; font-size: 0.6rem; font-family: 'Bebas Neue',sans-serif; padding: 1px 5px; }
 .collection-item-title { font-size: 0.6rem; color: var(--text-dim); margin-top: 0.3rem; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .collection-item-year { font-size: 0.58rem; color: var(--text-muted); text-align: center; }
@@ -3474,7 +3474,7 @@ kbd {
 }
 
 /* ============================================================
-   PROFILE HUB — TAB LAYOUT (reemplaza .profile-container)
+   PROFILE HUB �?" TAB LAYOUT (reemplaza .profile-container)
    ============================================================ */
 .pv-wrap {
     grid-column: 1 / -1;
@@ -3484,7 +3484,7 @@ kbd {
     min-height: 80vh;
 }
 
-/* ─── HERO BAR ───────────────────────────────────────────── */
+/* �"?�"?�"? HERO BAR �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-hero {
     display: flex;
     align-items: center;
@@ -3518,7 +3518,7 @@ kbd {
 .pv-kpi-n small { font-size:0.9rem; color:var(--text-muted); }
 .pv-kpi-l { display:block; font-size:0.62rem; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-top:0.2rem; font-family:'Noto Sans JP',sans-serif; }
 
-/* ─── TABS ───────────────────────────────────────────────── */
+/* �"?�"?�"? TABS �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-tabs {
     display: flex;
     gap: 0;
@@ -3559,12 +3559,12 @@ kbd {
 }
 .pvt.active em { background: var(--red); color: white; }
 
-/* ─── PANELS ─────────────────────────────────────────────── */
+/* �"?�"?�"? PANELS �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pvp { display: none; }
 .pvp.active { display: block; }
 .pvp-inner { padding: 2rem 2.5rem; }
 
-/* ─── RESUMEN: 2 column row ──────────────────────────────── */
+/* �"?�"?�"? RESUMEN: 2 column row �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-row-2col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3587,7 +3587,7 @@ kbd {
 .pv-mini strong { color:var(--text); }
 .pv-chart-wrap { height: 200px; }
 
-/* ─── RECENTS SCROLL ────────────────────────────────────── */
+/* �"?�"?�"? RECENTS SCROLL �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-recents-block { margin-bottom: 1.5rem; }
 .pv-recents-scroll {
     display: flex;
@@ -3610,7 +3610,7 @@ kbd {
 }
 .pv-rec-thumb:hover .pv-rec-overlay { opacity:1; }
 
-/* ─── DATA BUTTONS ───────────────────────────────────────── */
+/* �"?�"?�"? DATA BUTTONS �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-data-section { background: var(--bg2); border: 1px solid var(--border); padding: 1.2rem 1.4rem; }
 .pv-data-btns { display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.5rem; }
 .pv-dbtn {
@@ -3628,7 +3628,7 @@ kbd {
 .pv-dbtn:hover { background:var(--bg4); border-color:var(--red); color:var(--text); }
 .pv-dbtn-danger:hover { background: rgba(204,0,0,0.15); border-color:var(--red); color:var(--red); }
 
-/* ─── LIST HEADER ────────────────────────────────────────── */
+/* �"?�"?�"? LIST HEADER �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-list-hdr {
     display: flex; align-items:center; justify-content:space-between;
     padding: 0 0 1rem 0;
@@ -3638,7 +3638,7 @@ kbd {
 .pv-list-count { font-size:0.8rem; color:var(--text-dim); }
 .pv-list-count i { color:var(--red); margin-right:0.3rem; }
 
-/* ─── ROW CARDS (favoritos / watchlater / historial) ─────── */
+/* �"?�"?�"? ROW CARDS (favoritos / watchlater / historial) �"?�"?�"?�"?�"?�"?�"? */
 .prow-list {
     display: flex;
     flex-direction: column;
@@ -3683,7 +3683,7 @@ kbd {
 }
 .prow-del:hover { color:var(--red); }
 
-/* ─── DIARY ──────────────────────────────────────────────── */
+/* �"?�"?�"? DIARY �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-diary-summary {
     display:flex; gap:1.5rem; font-size:0.8rem; color:var(--text-dim);
     padding-bottom:1rem; border-bottom:1px solid var(--border); margin-bottom:1.5rem;
@@ -3722,7 +3722,7 @@ kbd {
     color:var(--gold); font-size:0.5rem; background:rgba(0,0,0,0.7); padding:1px 0;
 }
 
-/* ─── LOGROS ─────────────────────────────────────────────── */
+/* �"?�"?�"? LOGROS �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-logros-header { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
 .pv-logros-streak { font-size:0.82rem; color:var(--text-dim); }
 .pv-logros-bar-wrap { display:flex; align-items:center; gap:0.8rem; }
@@ -3748,7 +3748,7 @@ kbd {
 .pv-logro-desc { font-size:0.65rem; color:var(--text-dim); line-height:1.4; }
 .pv-logro-date { font-size:0.58rem; color:var(--text-muted); margin-top:0.4rem; }
 
-/* ─── EMPTY STATES ───────────────────────────────────────── */
+/* �"?�"?�"? EMPTY STATES �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .pv-empty-tab {
     text-align:center; padding:4rem 2rem; color:var(--text-muted);
 }
@@ -3756,7 +3756,7 @@ kbd {
 .pv-empty-tab p { font-size:0.9rem; color:var(--text-dim); }
 .pv-empty-tab small { font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem; display:block; }
 
-/* ─── RESPONSIVE ─────────────────────────────────────────── */
+/* �"?�"?�"? RESPONSIVE �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 @media (max-width: 900px) {
     .pv-hero { padding:1.2rem 1rem; }
     .pv-hero-kpis { gap:1rem; }
@@ -3771,7 +3771,7 @@ kbd {
 }
 
 /* ============================================================
-   AUTH SCREEN — CINEMATIC SPLIT
+   AUTH SCREEN �?" CINEMATIC SPLIT
    ============================================================ */
 .auth-screen {
     position: fixed;
@@ -3783,7 +3783,7 @@ kbd {
     font-family: 'Noto Sans JP', sans-serif;
 }
 
-/* ── LEFT CINEMA PANEL ─────────────────────────────────── */
+/* �"?�"? LEFT CINEMA PANEL �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .auth-cinema {
     flex: 1.1;
     position: relative;
@@ -3987,7 +3987,7 @@ kbd {
     background: rgba(204,0,0,0.3);
 }
 
-/* ── RIGHT FORM PANEL ──────────────────────────────────── */
+/* �"?�"? RIGHT FORM PANEL �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 .auth-panel {
     width: 440px;
     flex-shrink: 0;
@@ -4310,7 +4310,7 @@ kbd {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── RESPONSIVE ─────────────────────────────────────────── */
+/* �"?�"? RESPONSIVE �"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"?�"? */
 @media (max-width: 900px) {
     .auth-cinema { display: none; }
     .auth-panel  { width: 100%; border-left: none; }
@@ -4412,7 +4412,7 @@ kbd {
     .user-bar-sync i { font-size: 0.8rem; }
 }
 
-/* Profile view — full width, no card grid */
+/* Profile view �?" full width, no card grid */
 .movies-grid.profile-view-grid {
     display: block !important;
     padding: 0;
@@ -4624,7 +4624,25 @@ kbd {
    LEADERBOARD
    ============================================================ */
 .lb-wrap { max-width: 540px; margin: 0 auto; }
-.lb-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; margin-bottom: .2rem; }
+.lb-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; margin-bottom: .2rem; display: flex; align-items: center; gap: 0.5rem; }
+.lb-live-indicator {
+    font-family: 'Noto Sans JP', sans-serif; font-size: 0.7rem; font-weight: 600;
+    background: linear-gradient(135deg, #00c853, #00e676); color: #000;
+    padding: 0.2rem 0.5rem; border-radius: 20px; letter-spacing: 0.5px;
+    display: inline-flex; align-items: center; gap: 0.3rem; animation: lbPulse 2s infinite;
+}
+.lb-live-dot {
+    width: 6px; height: 6px; background: #000; border-radius: 50%;
+    animation: lbDotPulse 1s infinite;
+}
+@keyframes lbPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+@keyframes lbDotPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
 .lb-subtitle { font-size: .82rem; color: var(--text-muted); margin-bottom: 1.5rem; }
 .lb-own-card {
     display: flex; align-items: center; gap: 1rem;
@@ -4745,7 +4763,7 @@ kbd {
 
 
 /* ============================================================
-   INTRO SCREEN — Cinematic film intro
+   INTRO SCREEN �?" Cinematic film intro
    ============================================================ */
 #introScreen {
     position: fixed; inset: 0; z-index: 99999;
@@ -5209,7 +5227,7 @@ kbd {
 }
 .sf-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-/* Danger variant — red border on dialog */
+/* Danger variant �?" red border on dialog */
 .sf-dialog.variant-danger { border-color: rgba(204,0,0,.3); }
 .sf-dialog.variant-danger .sf-dialog-title { color: #ff4444; }
 
@@ -5807,7 +5825,7 @@ kbd {
 .sf-premium-manage-btn:hover { background: rgba(201,168,76,0.1); }
 
 /* ============================================================
-   PREMIUM FEATURES — CONTINUAR / RECOMENDADOS / PERFIL+
+   PREMIUM FEATURES �?" CONTINUAR / RECOMENDADOS / PERFIL+
    ============================================================ */
 
 /* Premium tab highlight */
@@ -6422,3 +6440,4 @@ kbd {
     background: var(--red);
     color: white;
 }
+
