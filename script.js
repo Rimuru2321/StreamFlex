@@ -203,6 +203,7 @@ let deferredInstall  = null;
 
 let currentUid = null;
 let cloudSaveTimer = null;
+let leaderboardUnsubscribe = null;
 
 function getDefaultAvatarIcon(seed='') {
     if (!seed) return AVATAR_ICONS[0];
@@ -3676,11 +3677,59 @@ function getWeeklyProgress(challenge) {
     }).length;
 }
 
+// Función para renderizar el ranking
+function renderLeaderboardHTML(topUsers, own, user) {
+    const rankRows = topUsers.length ? topUsers.map((u, idx) => {
+        const isSelf = u.id === user.uid;
+        const isPrem = !!u.isPremium;
+        const icon = u.avatarIcon || getDefaultAvatarIcon(u.id || u.name || '');
+        return `<div class="lb-row${isSelf ? ' lb-row-self' : ''}${isPrem ? ' lb-row-premium' : ''}">
+            <div class="lb-rank">${idx+1}</div>
+            <div class="lb-user">
+                <div class="lb-avatar"><span class="lb-avatar-icon">${icon}</span></div>
+                <div class="lb-user-info">
+                    <div class="lb-name">${u.name||'Usuario'}${isPrem ? ' <i class="fas fa-star lb-premium-star" title="Premium"></i>' : ''}</div>
+                    <div class="lb-sub">${u.xp||0} XP · ${u.watched||0} vistas</div>
+                </div>
+            </div>
+            <div class="lb-xp">${u.xp||0}</div>
+        </div>`;
+    }).join('') : `<div class="lb-empty"><span>🏆</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
+
+    const ownIcon = own.avatarIcon || userAvatarIcon || getDefaultAvatarIcon(user.uid);
+    return `
+    <div class="lb-wrap">
+        <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global <span class="lb-live-indicator"><span class="lb-live-dot"></span>En vivo</span></div>
+        <div class="lb-subtitle">Tu posición en la comunidad StreamFlex</div>
+        <div class="lb-own-card">
+            <div class="lb-own-avatar"><span class="lb-avatar-icon">${ownIcon}</span></div>
+            <div class="lb-own-info">
+                <div class="lb-own-name" style="${isPremium ? 'color:var(--gold);font-weight:700' : ''}">${own.name || user.email.split('@')[0]} ${isPremium ? '<span class="sf-premium-badge">⭐ PREMIUM</span>' : ''}</div>
+                <div class="lb-own-stats">${getUserXP()} XP · ${watchHistory.length} vistas · ${getUserLevel().icon} ${getUserLevel().label}</div>
+            </div>
+            <div class="lb-own-xp">${getUserXP()}<span>XP</span></div>
+        </div>
+        <div class="lb-info-note"><i class="fas fa-sync-alt"></i> El ranking se actualiza en tiempo real cuando otros usuarios ganan XP.</div>
+        <div class="lb-share-btn-wrap">
+            <button class="lb-share-btn" id="lbShareBtn"><i class="fas fa-share-alt"></i> Compartir mi perfil</button>
+        </div>
+        <div class="lb-list">
+            ${rankRows}
+        </div>
+    </div>`;
+}
+
 async function loadLeaderboard() {
     if (!window._fb) return;
-    const { db, doc, getDoc, getDocs, setDoc, collection, query, orderBy, limit, serverTimestamp } = window._fb;
+    const { db, doc, getDoc, setDoc, collection, query, orderBy, limit, serverTimestamp, onSnapshot } = window._fb;
     const user = window._fb.auth.currentUser;
     if (!user) return;
+
+    // Limpiar suscripción anterior si existe
+    if (leaderboardUnsubscribe) {
+        leaderboardUnsubscribe();
+        leaderboardUnsubscribe = null;
+    }
 
     try {
         const avatarIcon = userAvatarIcon || getDefaultAvatarIcon(user.uid);
@@ -3701,63 +3750,36 @@ async function loadLeaderboard() {
     inner.innerHTML = `<div class="loading-spinner" style="padding:3rem 0"><div class="spinner"></div><span>Cargando clasificación...</span></div>`;
 
     try {
-
+        // Obtener datos propios del usuario
         const ownDoc = await getDoc(doc(db, 'leaderboard', user.uid));
         const own = ownDoc.exists() ? ownDoc.data() : {};
 
-        // Obtener top 10 de la clasificación global
+        // Crear la consulta para el ranking global
         const leaderboardQuery = query(
             collection(db, 'leaderboard'),
             orderBy('xp', 'desc'),
             limit(10)
         );
-        const leaderboardSnap = await getDocs(leaderboardQuery);
-        const topUsers = leaderboardSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-        const rankRows = topUsers.length ? topUsers.map((u, idx) => {
-            const isSelf = u.id === user.uid;
-            const isPrem = !!u.isPremium;
-            const icon = u.avatarIcon || getDefaultAvatarIcon(u.id || u.name || '');
-            return `<div class="lb-row${isSelf ? ' lb-row-self' : ''}${isPrem ? ' lb-row-premium' : ''}">
-                <div class="lb-rank">${idx+1}</div>
-                <div class="lb-user">
-                    <div class="lb-avatar"><span class="lb-avatar-icon">${icon}</span></div>
-                    <div class="lb-user-info">
-                        <div class="lb-name">${u.name||'Usuario'}${isPrem ? ' <i class="fas fa-star lb-premium-star" title="Premium"></i>' : ''}</div>
-                        <div class="lb-sub">${u.xp||0} XP · ${u.watched||0} vistas</div>
-                    </div>
-                </div>
-                <div class="lb-xp">${u.xp||0}</div>
-            </div>`;
-        }).join('') : `<div class="lb-empty"><span>🏆</span><p>Aún no hay datos de clasificación. Abre la app para generar tu registro.</p></div>`;
-
-        const ownIcon = own.avatarIcon || userAvatarIcon || getDefaultAvatarIcon(user.uid);
-        inner.innerHTML = `
-        <div class="lb-wrap">
-            <div class="lb-title"><i class="fas fa-trophy"></i> Clasificación global</div>
-            <div class="lb-subtitle">Tu posición en la comunidad StreamFlex</div>
-            <div class="lb-own-card">
-                <div class="lb-own-avatar"><span class="lb-avatar-icon">${ownIcon}</span></div>
-                <div class="lb-own-info">
-                    <div class="lb-own-name" style="${isPremium ? 'color:var(--gold);font-weight:700' : ''}">${own.name || user.email.split('@')[0]} ${isPremium ? '<span class="sf-premium-badge">⭐ PREMIUM</span>' : ''}</div>
-                    <div class="lb-own-stats">${getUserXP()} XP · ${watchHistory.length} vistas · ${getUserLevel().icon} ${getUserLevel().label}</div>
-                </div>
-                <div class="lb-own-xp">${getUserXP()}<span>XP</span></div>
-            </div>
-            <div class="lb-info-note"><i class="fas fa-info-circle"></i> La tabla global se actualiza cada vez que un usuario abre la app. Invita amigos para competir.</div>
-            <div class="lb-share-btn-wrap">
-                <button class="lb-share-btn" id="lbShareBtn"><i class="fas fa-share-alt"></i> Compartir mi perfil</button>
-            </div>
-            <div class="lb-list">
-                ${rankRows}
-            </div>
-        </div>`;
-
-        document.getElementById('lbShareBtn')?.addEventListener('click', () => {
-            const text = `🎬 Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} películas vistas. ¡Supérame!`;
-            navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-share-alt"></i> Copiado para compartir'));
+        // Usar onSnapshot para actualizaciones en tiempo real
+        leaderboardUnsubscribe = onSnapshot(leaderboardQuery, (leaderboardSnap) => {
+            const topUsers = leaderboardSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            
+            // Renderizar el HTML del ranking
+            inner.innerHTML = renderLeaderboardHTML(topUsers, own, user);
+            
+            // Agregar evento al botón de compartir
+            document.getElementById('lbShareBtn')?.addEventListener('click', () => {
+                const text = `🎬 Soy ${getUserLevel().icon} ${getUserLevel().label} en StreamFlex con ${getUserXP()} XP y ${watchHistory.length} películas vistas. ¡Supérame!`;
+                navigator.clipboard.writeText(text).then(() => showToast('<i class="fas fa-share-alt"></i> Copiado para compartir'));
+            });
+        }, (error) => {
+            console.error('Leaderboard snapshot error:', error);
+            inner.innerHTML = `<div class="pv-empty-tab"><span>🏆</span><p>No se pudo cargar la clasificación.</p><small>Verifica tu conexión a internet.</small></div>`;
         });
+
     } catch(e) {
+        console.error('Leaderboard load error:', e);
         inner.innerHTML = `<div class="pv-empty-tab"><span>🏆</span><p>No se pudo cargar la clasificación.</p><small>Verifica tu conexión a internet.</small></div>`;
     }
 }
