@@ -5100,6 +5100,41 @@ kbd {
 }
 .sf-premium-manage-btn:hover { background: rgba(201,168,76,0.1); }
 
+.sf-theme-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.sf-theme-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-right: 0.25rem;
+}
+
+.sf-theme-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+    outline: none;
+}
+
+.sf-theme-dot:hover {
+    transform: scale(1.15);
+    border-color: var(--white);
+}
+
+.sf-theme-dot.active {
+    border-color: var(--white);
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
 #sfPremiumOverlay {
     display: none;
     position: fixed;
