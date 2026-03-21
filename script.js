@@ -71,30 +71,30 @@ async function tmdbFetch(url) {
 
 const I18N = {
     'es-ES': {
-        search:      'Buscar películas...',
-        all:         'Todo',
-        forYou:      'Para ti',
-        upcoming:    'Estrenos',
-        profile:     'Perfil',
-        popular:     '⭐ Populares',
-        favorites:   'Favoritos',
-        watchLater:  'Ver después',
-        history:     'Historial',
-        stats:       'Stats',
-        challenges:  'Retos',
-        achievements:'Logros',
-        ranking:     'Ranking',
-        friends:     'Amigos',
-        play:        'Reproducir',
-        noRating:    'Sin valorar',
-        myRating:    'Tu valoración',
-        myNote:      'Mi nota',
-        notePlaceholder: 'Añade una nota personal...',
-        saveNote:    'Guardar',
-        popularMovies: 'Películas populares',
-        sectionUpcoming: 'Próximos estrenos',
-        home:        'Inicio',
-        lang:        'ES',
+        search:      '映画を検索...',
+        all:         'すべて',
+        forYou:      'おすすめ',
+        upcoming:    '新作',
+        profile:     'プロフィール',
+        popular:     '⭐ 人気',
+        favorites:   'お気に入り',
+        watchLater:  '後で見る',
+        history:     '視聴履歴',
+        stats:       '統計',
+        challenges:  'チャレンジ',
+        achievements:'実績',
+        ranking:     'ランキング',
+        friends:     '友達',
+        play:        '再生',
+        noRating:    '評価なし',
+        myRating:    'あなたの評価',
+        myNote:      'メモ',
+        notePlaceholder: 'メモを追加...',
+        saveNote:    '保存',
+        popularMovies: '人気の映画',
+        sectionUpcoming: '公開予定',
+        home:        'ホーム',
+        lang:        'JP',
         synopsis:    'Sinopsis no disponible.',
     },
 };
@@ -740,7 +740,7 @@ async function handleRuleta() {
     let pool = [];
     if (watchLater.length > 0) {
         pool = watchLater;
-        showToast('<i class="fas fa-dice"></i> Ruleta: eligiendo de "Ver después"...');
+        showToast('<i class="fas fa-dice"></i> ルール: "後で見る"から選択中...');
     } else if (currentData.length > 0) {
         pool = currentData;
         showToast('<i class="fas fa-dice"></i> Ruleta: eligiendo de populares...');
@@ -937,8 +937,8 @@ async function loadUpcoming() {
                     <span class="movie-year">${relStr.split('-')[0]}</span>
                 </div>
                 <div class="movie-actions">
-                    <button class="action-btn wl-btn ${watchLater.some(f=>f.id===item.id)?'watchlater-active':''}" data-id="${item.id}" title="Ver después"><i class="fas fa-clock"></i></button>
-                    <button class="action-btn fav-btn ${favorites.some(f=>f.id===item.id)?'active':''}" data-id="${item.id}" title="Favoritos"><i class="fas fa-star"></i></button>
+                    <button class="action-btn wl-btn ${watchLater.some(f=>f.id===item.id)?'watchlater-active':''}" data-id="${item.id}" title="後で見る"><i class="fas fa-clock"></i></button>
+                    <button class="action-btn fav-btn ${favorites.some(f=>f.id===item.id)?'active':''}" data-id="${item.id}" title="お気に入り"><i class="fas fa-star"></i></button>
                     <button class="action-btn play-quick-btn" data-id="${item.id}" data-type="movie" title="Más info"><i class="fas fa-info-circle"></i></button>
                 </div>
             </div>`;
@@ -1173,7 +1173,7 @@ async function loadPopularMovies() {
         totalPages = data.total_pages||1;
         currentData = [...currentData, ...(data.results||[])];
         displayItems(currentData, 'movie');
-        sectionTitle.textContent = 'Películas populares';
+        sectionTitle.textContent = '人気の映画';
         setHero(data.results[0], 'movie');
         heroBanner.classList.add('visible');
     } catch(e) { console.error('Error populares:', e); }
@@ -1258,7 +1258,7 @@ async function handleSearch() {
         const data = await tmdbFetch(`${BASE_URL}/search/${type}?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=${LANGUAGE}&page=1`);
         totalPages = data.total_pages||1; currentData = data.results||[];
         displayItems(currentData, type);
-        sectionTitle.textContent = `Resultados: "${query}"`;
+        sectionTitle.textContent = `結果: "${query}"`;
     } catch(e) { console.error('Error búsqueda:', e); }
 }
 
@@ -1536,7 +1536,7 @@ async function openModal(itemId, autoPlay=false, type='movie') {
                             <button class="detail-btn detail-btn-secondary" id="cinemaBtn" style="display:none"><i class="fas fa-expand"></i> Vista Cine</button>
                             <button class="detail-btn detail-btn-secondary ${isFav?'active-btn':''}" id="favDetailBtn"><i class="fas fa-star"></i> ${isFav?'En favoritos':'Favoritos'}</button>
                             <button class="detail-btn detail-btn-secondary ${isWL?'active-btn':''}" id="wlDetailBtn"><i class="fas fa-clock"></i> ${isWL?'En lista':'Ver después'}</button>
-                            <button class="detail-btn detail-btn-secondary" id="shareDetailBtn"><i class="fas fa-share-alt"></i> Compartir</button>
+                            <button class="detail-btn detail-btn-secondary" id="shareDetailBtn"><i class="fas fa-share-alt"></i> 共有</button>
                             <button class="detail-btn detail-btn-secondary" id="addToListDetailBtn"><i class="fas fa-list-ul"></i> Añadir a lista</button>
                             <button class="detail-btn detail-btn-secondary" id="addToMarathonBtn"><i class="fas fa-film"></i> + Maratón</button>
                         </div>
@@ -1831,16 +1831,16 @@ async function loadProfileView() {
 
       <!-- TAB BAR -->
       <div class="pv-tabs">
-        <button class="pvt active" data-tab="resumen"><i class="fas fa-chart-pie"></i> Resumen</button>
-        <button class="pvt" data-tab="favoritos"><i class="fas fa-star"></i> Favoritos <em>${totalFavs}</em></button>
-        <button class="pvt" data-tab="verdespues"><i class="fas fa-clock"></i> Ver después <em>${totalWL}</em></button>
-        <button class="pvt" data-tab="historial"><i class="fas fa-history"></i> Historial <em>${totalWatched}</em></button>
+        <button class="pvt active" data-tab="resumen"><i class="fas fa-chart-pie"></i> 概要</button>
+        <button class="pvt" data-tab="favoritos"><i class="fas fa-star"></i> お気に入り <em>${totalFavs}</em></button>
+        <button class="pvt" data-tab="verdespues"><i class="fas fa-clock"></i> 後で見る <em>${totalWL}</em></button>
+        <button class="pvt" data-tab="historial"><i class="fas fa-history"></i> 視聴履歴 <em>${totalWatched}</em></button>
         <button class="pvt" data-tab="estadisticas"><i class="fas fa-chart-bar"></i> Stats ${isPremium ? '' : '<span class="pv-lock-badge">⭐</span>'}</button>
         <button class="pvt" data-tab="retos"><i class="fas fa-fire"></i> Retos</button>
         <button class="pvt" data-tab="logros"><i class="fas fa-trophy"></i> Logros <em>${unlockedAch}</em></button>
         <button class="pvt" data-tab="leaderboard"><i class="fas fa-crown"></i> Ranking</button>
-        <button class="pvt" data-tab="amigos"><i class="fas fa-user-friends"></i> Amigos <span id="friendsBadge"></span></button>
-        ${isPremium ? '<button class="pvt sf-prem-tab" data-tab="continuar"><i class="fas fa-play-circle"></i> Continuar</button><button class="pvt sf-prem-tab" data-tab="recomendados"><i class="fas fa-magic"></i> Para ti</button><button class="pvt sf-prem-tab" data-tab="perfil-bg"><i class="fas fa-image"></i> Mi Perfil+</button>' : ''}
+        <button class="pvt" data-tab="amigos"><i class="fas fa-user-friends"></i> 友達 <span id="friendsBadge"></span></button>
+        ${isPremium ? '<button class="pvt sf-prem-tab" data-tab="continuar"><i class="fas fa-play-circle"></i> 続き</button><button class="pvt sf-prem-tab" data-tab="recomendados"><i class="fas fa-magic"></i> おすすめ</button><button class="pvt sf-prem-tab" data-tab="perfil-bg"><i class="fas fa-image"></i> マイプロフィール+</button>' : ''}
       </div>
 
       <!-- PANEL: RESUMEN -->
@@ -1953,7 +1953,7 @@ async function loadProfileView() {
           <div class="prow-list" id="pvWLList">
             ${watchLater.map(it=>cardRow(it)).join('')}
           </div>`:`
-          <div class="pv-empty-tab"><span>⏰</span><p>Tu lista "Ver después" está vacía.</p><small>Pulsa <i class="fas fa-clock"></i> en cualquier película.</small></div>`}
+          <div class="pv-empty-tab"><span>⏰</span><p>あなたの"後で見る"リストは空です。</p><small>どの映画でも <i class="fas fa-clock"></i> を押してください。</small></div>`}
         </div>
       </div>
 
@@ -3849,7 +3849,7 @@ function openEditProfile() {
             if (userBarAvatar) userBarAvatar.textContent = newIcon || newName.charAt(0).toUpperCase();
             userAvatarIcon = newIcon;
             localStorage.setItem('sf_avatarIcon', userAvatarIcon);
-            showToast('<i class="fas fa-check"></i> Perfil actualizado');
+            showToast('<i class="fas fa-check"></i> プロフィールが更新されました');
             closeModalFn();
             if (currentView === 'profile') loadProfileView();
         } catch(e) {
