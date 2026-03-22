@@ -1626,10 +1626,16 @@ async function openModal(itemId, autoPlay=false, type='movie') {
         });
 
         let currentServerIndex = 0;
+        // Obtener primer episodio de primera temporada para series
+        const firstSeason = type==='tv' ? (item.seasons?.find(s=>s.season_number>0)?.season_number || 1) : 1;
+        const firstEpisode = 1;
+        
         function loadServer(index) {
             currentServerIndex = index;
             const c = document.getElementById('videoContainer');
-            c.innerHTML=`<iframe src="${SERVERS[index].url(item.id)}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+            // Para series pasar temporada y episodio, para películas solo el ID
+            const url = type==='tv' ? SERVERS[index].url(item.id, firstSeason, firstEpisode) : SERVERS[index].url(item.id);
+            c.innerHTML=`<iframe src="${url}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
             c.classList.add('visible');
             document.querySelectorAll('.server-btn').forEach((b,i)=>b.classList.toggle('active',i===index));
         }
@@ -3566,12 +3572,20 @@ async function loadTVSeasons(item) {
                     const id = card.dataset.id, s = card.dataset.season, epNum = card.dataset.ep;
                     const vc = document.getElementById('videoContainer');
                     if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; localStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
-                    const SERVERS_EP = [
+                    
+                    // Servidores para episodios - agregar opción free para usuarios no premium
+                    const SERVERS_EP = isPremium ? [
                         { label:'Servidor 1', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true` },
                         { label:'Servidor 2', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
                         { label:'Servidor 3', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
                         { label:'Servidor 4', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
                         { label:'Servidor 5', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
+                    ] : [
+                        { label:'⭐ Free', url: `https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${epNum}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
+                        { label:'Servidor 1', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
+                        { label:'Servidor 2', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 3', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Servidor 4', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}` },
                     ];
                     vc.innerHTML = `
                     <div class="ep-server-bar">
