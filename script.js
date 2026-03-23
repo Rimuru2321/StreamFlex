@@ -1393,7 +1393,7 @@ const SERVERS_MOVIE = [
 const SERVERS_TV = [
     { label:'⭐ Premium', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true`, premium: true },
     { label:'⭐ Premium', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1`, premium: true },
-    { label:'Free', url: (id, s=1, e=1)=>`https://superembed.me/embed/tv/${id}/${s}/${e}` },
+    { label:'Free', url: (id, s=1, e=1)=>`https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${e}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
@@ -3577,7 +3577,7 @@ async function loadTVSeasons(item) {
                     const SERVERS_EP = [
                         { label:'⭐ Premium', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true`, premium: true },
                         { label:'⭐ Premium', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}`, premium: true },
-                        { label:'Free', url: `https://superembed.me/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Free', url: `https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${epNum}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
                     ];
                     
                     // Filtrar servidores según el tipo de usuario
