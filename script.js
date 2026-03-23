@@ -1393,8 +1393,7 @@ const SERVERS_MOVIE = [
 const SERVERS_TV = [
     { label:'⭐ Premium', url: id=>`https://vidlink.pro/tv/${id}/1/1?autoplay=true`, premium: true },
     { label:'⭐ Premium', url: id=>`https://vidsrc.me/embed/tv?tmdb=${id}&season=1&episode=1`, premium: true },
-    { label:'Free', url: (id, s=1, e=1)=>`https://superplayxyz.me/embed/tv/${id}/${s}/${e}` },
-    { label:'Free', url: (id, s=1, e=1)=>`https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
+    { label:'Free', url: (id, s=1, e=1)=>`https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${e}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
 ];
 
 async function openModal(itemId, autoPlay=false, type='movie') {
@@ -3574,14 +3573,11 @@ async function loadTVSeasons(item) {
                     const vc = document.getElementById('videoContainer');
                     if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; localStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
                     
-                    // Servidores para episodios - agregar opción free para usuarios no premium
+                    // Servidores para episodios
                     const SERVERS_EP = [
                         { label:'⭐ Premium', url: `https://vidlink.pro/tv/${id}/${s}/${epNum}?autoplay=true`, premium: true },
                         { label:'⭐ Premium', url: `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${epNum}`, premium: true },
-                        { label:'Free', url: `https://superplayxyz.me/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Free', url: `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${epNum}` },
-                        { label:'Free', url: `https://www.2embed.stream/embed/tv/${id}/${s}/${epNum}` },
-                        { label:'Free', url: `https://embed.su/embed/tv/${id}/${s}/${epNum}` },
+                        { label:'Free', url: `https://vimeus.com/e/tv?tmdb=${id}&season=${s}&episode=${epNum}&view_key=FQN-PxWI4fy3NJkWYCQ6GKAj6ezrUYrG6zhn310489U` },
                     ];
                     
                     // Filtrar servidores según el tipo de usuario
