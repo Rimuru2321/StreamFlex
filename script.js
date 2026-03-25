@@ -1732,6 +1732,7 @@ function bindSimilarEvents(type, currentItemId) {
 }
 
 async function loadProfileView() {
+    heroBanner.classList.remove('visible');
     filterBar.style.display = 'none';
     sectionTitle.textContent = ''; sectionCount.textContent = '';
     cleanupExtras();
@@ -3791,17 +3792,18 @@ async function loadLeaderboard() {
     }
 }
 
-function openEditProfile() {
+async function openEditProfile() {
     const sb = window._sb;
     if (!sb) return;
-    const { data } = sb.auth.getUser ? sb.auth.getUser() : { data: { user: null } };
-    const user = data?.user;
-    if (!user) return;
-    document.body.style.overflow = 'hidden';
-    modal.style.display = 'block';
-    const currentName = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
-    const currentIcon = userAvatarIcon || getDefaultAvatarIcon(currentUid || user.uid || currentName || '');
-    modalBody.innerHTML = `
+    try {
+        const { data } = await sb.auth.getUser();
+        const user = data?.user;
+        if (!user) return;
+        document.body.style.overflow = 'hidden';
+        modal.style.display = 'block';
+        const currentName = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
+        const currentIcon = userAvatarIcon || getDefaultAvatarIcon(currentUid || user.uid || currentName || '');
+        modalBody.innerHTML = `
     <div class="edit-profile-modal">
         <div class="modal-title-jp">EDITAR PERFIL</div>
         <h2>Editar perfil</h2>
@@ -3829,45 +3831,48 @@ function openEditProfile() {
             <button class="ep-save-btn" id="epSaveBtn"><i class="fas fa-save"></i> Guardar cambios</button>
         </div>
     </div>`;
-    document.getElementById('epIconGrid')?.querySelectorAll('.ep-icon-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.ep-icon-btn').forEach(b => b.classList.toggle('active', b === btn));
-            const icon = btn.dataset.icon;
-            const preview = document.getElementById('epAvatarPreview');
-            preview.innerHTML = `<span class="ep-avatar-icon">${icon}</span>`;
-            preview.dataset.newIcon = icon;
+        document.getElementById('epIconGrid')?.querySelectorAll('.ep-icon-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.ep-icon-btn').forEach(b => b.classList.toggle('active', b === btn));
+                const icon = btn.dataset.icon;
+                const preview = document.getElementById('epAvatarPreview');
+                preview.innerHTML = `<span class="ep-avatar-icon">${icon}</span>`;
+                preview.dataset.newIcon = icon;
+            });
         });
-    });
 
-    document.getElementById('epSaveBtn')?.addEventListener('click', async () => {
-        const newName = document.getElementById('epNameInput').value.trim();
-        const errEl = document.getElementById('epError');
-        if (!newName) { errEl.textContent = 'El nombre no puede estar vacío'; errEl.style.display='block'; return; }
-        const btn = document.getElementById('epSaveBtn');
-        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
-        try {
-            const avatarEl = document.getElementById('epAvatarPreview');
-            const newIcon = avatarEl?.dataset?.newIcon || currentIcon || '';
-            await window._sb.auth.updateUser({ data: { display_name: newName } });
+        document.getElementById('epSaveBtn')?.addEventListener('click', async () => {
+            const newName = document.getElementById('epNameInput').value.trim();
+            const errEl = document.getElementById('epError');
+            if (!newName) { errEl.textContent = 'El nombre no puede estar vacío'; errEl.style.display='block'; return; }
+            const btn = document.getElementById('epSaveBtn');
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            try {
+                const avatarEl = document.getElementById('epAvatarPreview');
+                const newIcon = avatarEl?.dataset?.newIcon || currentIcon || '';
+                await window._sb.auth.updateUser({ data: { display_name: newName } });
 
-            if (window._sfSaveToCloud) {
-                await window._sfSaveToCloud({ displayName: newName, avatarIcon: newIcon });
+                if (window._sfSaveToCloud) {
+                    await window._sfSaveToCloud({ displayName: newName, avatarIcon: newIcon });
+                }
+
+                document.getElementById('userBarName').textContent = newName.split(' ')[0];
+                const userBarAvatar = document.getElementById('userBarAvatar');
+                if (userBarAvatar) userBarAvatar.textContent = newIcon || newName.charAt(0).toUpperCase();
+                userAvatarIcon = newIcon;
+                localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+                showToast('<i class="fas fa-check"></i> Perfil actualizado');
+                closeModalFn();
+                if (currentView === 'profile') loadProfileView();
+            } catch(e) {
+                errEl.textContent = 'Error al guardar. Inténtalo de nuevo.';
+                errEl.style.display = 'block';
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
             }
-
-            document.getElementById('userBarName').textContent = newName.split(' ')[0];
-            const userBarAvatar = document.getElementById('userBarAvatar');
-            if (userBarAvatar) userBarAvatar.textContent = newIcon || newName.charAt(0).toUpperCase();
-            userAvatarIcon = newIcon;
-            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
-            showToast('<i class="fas fa-check"></i> Perfil actualizado');
-            closeModalFn();
-            if (currentView === 'profile') loadProfileView();
-        } catch(e) {
-            errEl.textContent = 'Error al guardar. Inténtalo de nuevo.';
-            errEl.style.display = 'block';
-            btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Guardar cambios';
-        }
-    });
+        });
+    } catch(e) {
+        console.error('Error openEditProfile:', e);
+    }
 }
 
 function buildAdvancedStats() {
