@@ -134,7 +134,7 @@ async function bootAuth() {
             if (error) throw error;
 
             if (data.user) {
-                await supabase.from('profiles').insert({
+                const { error: profileError } = await supabase.from('profiles').upsert({
                     id: data.user.id,
                     display_name: name,
                     email: email,
@@ -148,7 +148,8 @@ async function bootAuth() {
                     achievements: {},
                     streak_data: { streak: 0, longest: 0, lastWatch: null },
                     marathon_queue: [],
-                });
+                }, { onConflict: 'id', ignoreDuplicates: true });
+                if (profileError) console.warn('Profile auto-created by trigger:', profileError.message);
             }
         } catch(e) {
             showError(errEl, supabaseErrorMsg(e));
