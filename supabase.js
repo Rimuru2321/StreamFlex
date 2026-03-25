@@ -20,6 +20,7 @@ function supabaseErrorMsg(error) {
         'invalid_credentials': 'Credenciales incorrectas. Verifica tu email y contraseña.',
     };
     const msg = error?.message || '';
+    console.log('Supabase error:', error);
     for (const [key, val] of Object.entries(msgs)) {
         if (msg.includes(key)) return val;
     }
@@ -79,11 +80,19 @@ async function bootAuth() {
         const password = document.getElementById('loginPassword').value;
         const errEl = document.getElementById('loginError');
         clearError(errEl);
+        if (!email) return showError(errEl, 'El email es obligatorio.');
+        if (!password) return showError(errEl, 'La contraseña es obligatoria.');
         setLoading('loginBtn', true);
         try {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
+            console.log('Intentando login con:', email);
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                console.error('Error login:', error);
+                throw error;
+            }
+            console.log('Login exitoso:', data);
         } catch(e) {
+            console.error('Login error:', e);
             showError(errEl, supabaseErrorMsg(e));
         }
         setLoading('loginBtn', false);
@@ -159,10 +168,11 @@ async function bootAuth() {
 
     document.getElementById('googleSignInBtn')?.addEventListener('click', async () => {
         try {
+            const currentUrl = window.location.origin + window.location.pathname;
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: `${window.location.origin}${window.location.pathname}`
+                    redirectTo: currentUrl
                 }
             });
             if (error) throw error;
