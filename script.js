@@ -3792,7 +3792,10 @@ async function loadLeaderboard() {
 }
 
 function openEditProfile() {
-    const { data: { user } } = window._sb?.auth?.getUser() || { data: { user: null } };
+    const sb = window._sb;
+    if (!sb) return;
+    const { data } = sb.auth.getUser ? sb.auth.getUser() : { data: { user: null } };
+    const user = data?.user;
     if (!user) return;
     document.body.style.overflow = 'hidden';
     modal.style.display = 'block';
