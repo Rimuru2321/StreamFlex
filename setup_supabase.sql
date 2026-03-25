@@ -91,13 +91,15 @@ ALTER TABLE friend_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE codes ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for profiles
-DROP POLICY IF EXISTS "Users can view all profiles" ON profiles;
-DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
-DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
+DROP POLICY IF EXISTS "Public read profiles" ON profiles;
+DROP POLICY IF EXISTS "Public insert profiles" ON profiles;
+DROP POLICY IF EXISTS "Public update profiles" ON profiles;
 
-CREATE POLICY "Anyone can view profiles" ON profiles FOR SELECT USING (true);
-CREATE POLICY "Anyone can insert profiles" ON profiles FOR INSERT WITH CHECK (true);
-CREATE POLICY "Anyone can update profiles" ON profiles FOR UPDATE USING (true);
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "profiles_select" ON profiles FOR SELECT USING (true);
+CREATE POLICY "profiles_insert" ON profiles FOR INSERT WITH CHECK (true);
+CREATE POLICY "profiles_update" ON profiles FOR UPDATE USING (true);
 
 -- RLS Policies for leaderboard
 DROP POLICY IF EXISTS "Anyone can view leaderboard" ON leaderboard;
