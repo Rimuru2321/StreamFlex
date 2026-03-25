@@ -3792,11 +3792,11 @@ async function loadLeaderboard() {
 }
 
 function openEditProfile() {
-    const user = window._sb?.auth?.user();
+    const { data: { user } } = window._sb?.auth?.getUser() || { data: { user: null } };
     if (!user) return;
     document.body.style.overflow = 'hidden';
     modal.style.display = 'block';
-    const currentName = user.displayName || '';
+    const currentName = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
     const currentIcon = userAvatarIcon || getDefaultAvatarIcon(currentUid || user.uid || currentName || '');
     modalBody.innerHTML = `
     <div class="edit-profile-modal">
