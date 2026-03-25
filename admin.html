@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamFlex Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --bg:    #0a0a0a;
+    --bg2:   #111111;
+    --bg3:   #181818;
+    --bg4:   #222222;
+    --red:   #cc0000;
+    --gold:  #c9a84c;
+    --green: #00cc66;
+    --text:  #eeeeee;
+    --muted: #888888;
+    --border:#2a2a2a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: Arial, sans-serif; min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  #adminLogin {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .login-box {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 2.5rem 2rem; width: 100%; max-width: 380px; text-align: center;
+  }
+  .login-box h1 { color: var(--red); font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .login-box p  { color: var(--muted); font-size: 0.82rem; margin-bottom: 1.8rem; }
+  .login-box input {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 0.7rem 0.9rem;
+    font-size: 0.9rem; margin-bottom: 0.8rem; outline: none;
+  }
+  .login-box input:focus { border-color: var(--red); }
+  .login-box button {
+    width: 100%; background: var(--red); color: white; border: none;
+    padding: 0.8rem; border-radius: 8px; font-weight: 700; font-size: 1rem;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .login-box button:hover { opacity: 0.85; }
+  .login-error { color: var(--red); font-size: 0.8rem; margin-top: 0.6rem; }
+
+  /* ── MAIN PANEL ── */
+  #adminPanel { display: none; }
+  .admin-header {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between;
+  }
+  .admin-header h1 { font-size: 1.2rem; color: var(--red); }
+  .admin-header span { font-size: 0.8rem; color: var(--muted); }
+  .admin-logout {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 0.4rem 0.9rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+  }
+  .admin-logout:hover { border-color: var(--red); color: var(--red); }
+
+  .admin-nav {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    display: flex; padding: 0 1rem; gap: 0.2rem;
+  }
+  .nav-btn {
+    background: none; border: none; color: var(--muted); padding: 0.8rem 1.1rem;
+    font-size: 0.85rem; cursor: pointer; border-bottom: 2px solid transparent;
+    transition: color 0.15s; display: flex; align-items: center; gap: 0.4rem;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--text); border-bottom-color: var(--red); }
+
+  .admin-content { padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+  /* ── TABS ── */
+  .admin-tab { display: none; }
+  .admin-tab.active { display: block; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .kpi-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+  }
+  .kpi-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi-val   { font-size: 2rem; font-weight: 700; color: var(--text); line-height: 1; }
+  .kpi-val.red    { color: var(--red); }
+  .kpi-val.gold   { color: var(--gold); }
+  .kpi-val.green  { color: var(--green); }
+
+  /* ── TABLE ── */
+  .admin-table-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .table-header {
+    padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-header h2 { font-size: 0.95rem; font-weight: 700; }
+  .table-search {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text); padding: 0.4rem 0.8rem; font-size: 0.82rem; outline: none; width: 220px;
+  }
+  .table-search:focus { border-color: var(--red); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { background: var(--bg3); padding: 0.7rem 1.2rem; text-align: left; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:hover { background: var(--bg3); }
+  tbody td { padding: 0.75rem 1.2rem; font-size: 0.83rem; }
+  .badge {
+    display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 700;
+  }
+  .badge-prem  { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .badge-free  { background: var(--bg4); color: var(--muted); border: 1px solid var(--border); }
+  .badge-used  { background: rgba(204,0,0,0.15); color: #ff6666; border: 1px solid rgba(204,0,0,0.3); }
+  .badge-avail { background: rgba(0,204,102,0.12); color: var(--green); border: 1px solid rgba(0,204,102,0.3); }
+
+  .action-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer;
+    transition: all 0.15s; margin-right: 0.3rem;
+  }
+  .action-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .action-btn.danger:hover { border-color: var(--red); color: var(--red); }
+  .action-btn.success:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── LOADING ── */
+  .loading-row td { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; }
+  .empty-row  td { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; }
+
+  /* ── TOAST ── */
+  #adminToast {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1.2rem;
+    font-size: 0.85rem; display: none; z-index: 9999; max-width: 300px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .admin-content { padding: 1rem 0.8rem; }
+    .table-header { flex-direction: column; gap: 0.7rem; align-items: flex-start; }
+    .table-search { width: 100%; }
+    td.hide-mobile { display: none; }
+    th.hide-mobile { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════ -->
+<div id="adminLogin">
+  <div class="login-box">
+    <h1><i class="fas fa-shield-alt"></i> Admin</h1>
+    <p>StreamFlex — Panel de administración</p>
+    <input type="email"    id="adminEmail" placeholder="Tu email de admin">
+    <input type="password" id="adminPass"  placeholder="Contraseña">
+    <button id="adminLoginBtn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+    <div class="login-error" id="loginErr" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ══ PANEL ═══════════════════════════════════════════════════ -->
+<div id="adminPanel">
+  <div class="admin-header">
+    <h1><i class="fas fa-shield-alt"></i> StreamFlex Admin</h1>
+    <div style="display:flex;align-items:center;gap:1rem">
+      <span id="adminUserLabel"></span>
+      <button class="admin-logout" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </div>
+  </div>
+
+  <div class="admin-nav">
+    <button class="nav-btn active" data-tab="overview"><i class="fas fa-chart-bar"></i> Resumen</button>
+    <button class="nav-btn"        data-tab="users">   <i class="fas fa-users"></i> Usuarios</button>
+    <button class="nav-btn"        data-tab="codes">   <i class="fas fa-key"></i> Códigos</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- TAB: OVERVIEW -->
+    <div class="admin-tab active" id="tab-overview">
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card"><div class="kpi-label">Total usuarios</div><div class="kpi-val" id="kpiTotal">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Usuarios Premium</div><div class="kpi-val gold" id="kpiPrem">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Códigos disponibles</div><div class="kpi-val green" id="kpiAvail">—</div></div>
+        <div class="kpi-card"><div class="kpi-label">Códigos usados</div><div class="kpi-val red" id="kpiUsed">—</div></div>
+      </div>
+      <div class="admin-table-wrap">
+        <div class="table-header"><h2>Últimos usuarios registrados</h2></div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Email</th><th class="hide-mobile">Registrado</th><th>Plan</th><th>Acciones</th></tr></thead>
+          <tbody id="recentUsersBody"><tr class="loading-row"><td colspan="5"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div class="admin-tab" id="tab-users">
+      <div class="admin-table-wrap">
+        <div class="table-header">
+          <h2>Todos los usuarios</h2>
+          <input type="text" class="table-search" id="userSearch" placeholder="Buscar por email o nombre...">
+        </div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Email</th><th class="hide-mobile">Películas vistas</th><th>Plan</th><th>Acciones</th></tr></thead>
+          <tbody id="usersBody"><tr class="loading-row"><td colspan="5"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: CODES -->
+    <div class="admin-tab" id="tab-codes">
+      <div class="admin-table-wrap">
+        <div class="table-header">
+          <h2>Códigos Premium</h2>
+          <input type="text" class="table-search" id="codeSearch" placeholder="Buscar código...">
+        </div>
+        <table>
+          <thead><tr><th>Código</th><th>Estado</th><th class="hide-mobile">Usado por</th><th class="hide-mobile">Fecha uso</th><th>Acciones</th></tr></thead>
+          <tbody id="codesBody"><tr class="loading-row"><td colspan="5"><i class="fas fa-spinner fa-spin"></i> Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="adminToast"></div>
+
+<!-- ══ FIREBASE ════════════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy, limit }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyApxnv6GbVYM4aV3ubRA6eG1QWrgowscYM",
+  authDomain:        "streamflex-app-d8624.firebaseapp.com",
+  projectId:         "streamflex-app-d8624",
+  storageBucket:     "streamflex-app-d8624.firebasestorage.app",
+  messagingSenderId: "919493990395",
+  appId:             "1:919493990395:web:9e350a110a87d2c0c6dd5e",
+};
+
+// ── IMPORTANT: set your admin emails here ──
+const ADMIN_EMAILS = [
+  "galaxycosmos870@gmail.com"
+];
+
+const app  = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+let allUsers = [];
+let allCodes = [];
+
+// ── Toast ─────────────────────────────────────────────────────
+function toast(msg, color = '#00cc66') {
+  const t = document.getElementById('adminToast');
+  t.innerHTML = msg; t.style.display = 'block'; t.style.borderColor = color;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// ── Format date ───────────────────────────────────────────────
+function fmtDate(val) {
+  if (!val) return '—';
+  const d = val?.toDate ? val.toDate() : new Date(val);
+  return isNaN(d) ? '—' : d.toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ── User row HTML ─────────────────────────────────────────────
+function userRowHTML(u) {
+  const name    = u.displayName || '—';
+  const email   = u.email || '—';
+  const watched = (u.watchHistory || []).length;
+  const prem    = u.isPremium;
+  return `<tr data-uid="${u._uid}">
+    <td>${name}</td>
+    <td style="color:var(--muted);font-size:0.78rem">${email}</td>
+    <td class="hide-mobile">${watched}</td>
+    <td><span class="badge ${prem ? 'badge-prem' : 'badge-free'}">${prem ? '⭐ Premium' : 'Free'}</span></td>
+    <td>
+      ${prem
+        ? `<button class="action-btn danger" onclick="revokeUser('${u._uid}','${name}')"><i class="fas fa-times"></i> Quitar Premium</button>`
+        : `<button class="action-btn success" onclick="grantUser('${u._uid}','${name}')"><i class="fas fa-star"></i> Dar Premium</button>`
+      }
+    </td>
+  </tr>`;
+}
+
+// ── Code row HTML ─────────────────────────────────────────────
+function codeRowHTML(c) {
+  const used = c.used;
+  return `<tr>
+    <td style="font-family:monospace;color:var(--gold)">${c._id}</td>
+    <td><span class="badge ${used ? 'badge-used' : 'badge-avail'}">${used ? 'Usado' : 'Disponible'}</span></td>
+    <td class="hide-mobile" style="font-size:0.78rem;color:var(--muted)">${c.usedByEmail || '—'}</td>
+    <td class="hide-mobile" style="font-size:0.78rem;color:var(--muted)">${fmtDate(c.usedAt)}</td>
+    <td>
+      ${used
+        ? `<button class="action-btn success" onclick="resetCode('${c._id}')"><i class="fas fa-undo"></i> Resetear</button>`
+        : `<button class="action-btn danger"  onclick="deleteCode('${c._id}')"><i class="fas fa-trash"></i> Eliminar</button>`
+      }
+    </td>
+  </tr>`;
+}
+
+// ── Load all data ─────────────────────────────────────────────
+async function loadData() {
+  try {
+    // Users
+    const usersSnap = await getDocs(collection(db, 'users'));
+    allUsers = usersSnap.docs.map(d => ({ _uid: d.id, ...d.data() }));
+
+    // Codes
+    const codesSnap = await getDocs(collection(db, 'premiumCodes'));
+    allCodes = codesSnap.docs.map(d => ({ _id: d.id, ...d.data() }));
+
+    updateKPIs();
+    renderRecentUsers();
+    renderUsers();
+    renderCodes();
+  } catch(e) {
+    console.error(e);
+    toast('Error cargando datos: ' + e.message, 'var(--red)');
+  }
+}
+
+function updateKPIs() {
+  document.getElementById('kpiTotal').textContent = allUsers.length;
+  document.getElementById('kpiPrem').textContent  = allUsers.filter(u => u.isPremium).length;
+  document.getElementById('kpiAvail').textContent = allCodes.filter(c => !c.used).length;
+  document.getElementById('kpiUsed').textContent  = allCodes.filter(c => c.used).length;
+}
+
+function renderRecentUsers() {
+  const sorted = [...allUsers].sort((a,b) => {
+    const ta = a.createdAt?.toMillis?.() || 0;
+    const tb = b.createdAt?.toMillis?.() || 0;
+    return tb - ta;
+  }).slice(0, 10);
+  const body = document.getElementById('recentUsersBody');
+  body.innerHTML = sorted.length ? sorted.map(userRowHTML).join('') :
+    '<tr class="empty-row"><td colspan="5">Sin usuarios aún</td></tr>';
+}
+
+function renderUsers(filter = '') {
+  const body = document.getElementById('usersBody');
+  const filtered = filter
+    ? allUsers.filter(u => (u.email||'').toLowerCase().includes(filter) || (u.displayName||'').toLowerCase().includes(filter))
+    : allUsers;
+  body.innerHTML = filtered.length ? filtered.map(userRowHTML).join('') :
+    '<tr class="empty-row"><td colspan="5">No se encontraron usuarios</td></tr>';
+}
+
+function renderCodes(filter = '') {
+  const body = document.getElementById('codesBody');
+  const filtered = filter ? allCodes.filter(c => c._id.toLowerCase().includes(filter)) : allCodes;
+  const sorted   = [...filtered].sort((a,b) => a.used - b.used || a._id.localeCompare(b._id));
+  body.innerHTML = sorted.length ? sorted.map(codeRowHTML).join('') :
+    '<tr class="empty-row"><td colspan="5">No se encontraron códigos</td></tr>';
+}
+
+// ── Grant / Revoke Premium ────────────────────────────────────
+window.grantUser = async function(uid, name) {
+  try {
+    await updateDoc(doc(db, 'users', uid), { isPremium: true, premiumSince: new Date().toISOString() });
+    const u = allUsers.find(u => u._uid === uid);
+    if (u) u.isPremium = true;
+    updateKPIs(); renderRecentUsers(); renderUsers(document.getElementById('userSearch').value.toLowerCase());
+    toast(`<i class="fas fa-star"></i> Premium activado para ${name}`);
+  } catch(e) { toast('Error: ' + e.message, 'var(--red)'); }
+};
+
+window.revokeUser = async function(uid, name) {
+  if (!confirm(`¿Quitar Premium a ${name}?`)) return;
+  try {
+    await updateDoc(doc(db, 'users', uid), { isPremium: false, premiumRevokedAt: new Date().toISOString() });
+    const u = allUsers.find(u => u._uid === uid);
+    if (u) u.isPremium = false;
+    updateKPIs(); renderRecentUsers(); renderUsers(document.getElementById('userSearch').value.toLowerCase());
+    toast(`<i class="fas fa-times"></i> Premium removido para ${name}`, 'var(--red)');
+  } catch(e) { toast('Error: ' + e.message, 'var(--red)'); }
+};
+
+// ── Reset / Delete code ───────────────────────────────────────
+window.resetCode = async function(codeId) {
+  try {
+    await updateDoc(doc(db, 'premiumCodes', codeId), { used: false, usedBy: null, usedByEmail: null, usedAt: null });
+    const c = allCodes.find(c => c._id === codeId);
+    if (c) { c.used = false; c.usedByEmail = null; c.usedAt = null; }
+    updateKPIs(); renderCodes(document.getElementById('codeSearch').value.toLowerCase());
+    toast(`<i class="fas fa-undo"></i> Código ${codeId} reseteado`);
+  } catch(e) { toast('Error: ' + e.message, 'var(--red)'); }
+};
+
+window.deleteCode = async function(codeId) {
+  if (!confirm(`¿Eliminar el código ${codeId}?`)) return;
+  try {
+    await deleteDoc(doc(db, 'premiumCodes', codeId));
+    allCodes = allCodes.filter(c => c._id !== codeId);
+    updateKPIs(); renderCodes(document.getElementById('codeSearch').value.toLowerCase());
+    toast(`<i class="fas fa-trash"></i> Código eliminado`, 'var(--red)');
+  } catch(e) { toast('Error: ' + e.message, 'var(--red)'); }
+};
+
+// ── Nav tabs ──────────────────────────────────────────────────
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Search ────────────────────────────────────────────────────
+document.getElementById('userSearch').addEventListener('input', e => renderUsers(e.target.value.toLowerCase()));
+document.getElementById('codeSearch').addEventListener('input', e => renderCodes(e.target.value.toLowerCase()));
+
+// ── Auth ──────────────────────────────────────────────────────
+onAuthStateChanged(auth, user => {
+  if (user) {
+    if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.some(admin => admin.toLowerCase() === user.email.toLowerCase())) {
+      toast('No tienes permisos de admin.', 'var(--red)');
+      signOut(auth);
+      return;
+    }
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('adminUserLabel').textContent = user.email;
+    loadData();
+  } else {
+    document.getElementById('adminLogin').style.display = 'flex';
+    document.getElementById('adminPanel').style.display = 'none';
+  }
+});
+
+document.getElementById('adminLoginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('adminEmail').value.trim();
+  const pass  = document.getElementById('adminPass').value;
+  const err   = document.getElementById('loginErr');
+  err.style.display = 'none';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    err.textContent = 'Email o contraseña incorrectos.';
+    err.style.display = 'block';
+  }
+});
+
+['adminEmail','adminPass'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('adminLoginBtn').click();
+  });
+});
+
+document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
+</script>
+</body>
+</html>

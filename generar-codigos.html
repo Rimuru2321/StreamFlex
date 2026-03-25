@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>StreamFlex — Generador de Códigos Premium</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #0a0a0a; color: #eee; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .wrap { background: #161616; border: 1px solid #333; border-radius: 12px; padding: 2rem; width: 100%; max-width: 540px; }
+  h1 { color: #c9a84c; font-size: 1.3rem; margin-bottom: 0.3rem; }
+  .sub { color: #666; font-size: 0.82rem; margin-bottom: 1.5rem; }
+  label { font-size: 0.82rem; color: #aaa; display: block; margin-bottom: 0.3rem; }
+  input, select { width: 100%; background: #222; border: 1px solid #333; border-radius: 6px; color: #eee; padding: 0.6rem 0.8rem; font-size: 0.9rem; margin-bottom: 1rem; outline: none; }
+  input:focus, select:focus { border-color: #c9a84c; }
+  button { width: 100%; background: #c9a84c; color: #1a1a00; border: none; padding: 0.8rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-bottom: 1rem; }
+  button:hover { opacity: 0.85; }
+  .codes-out { background: #111; border: 1px solid #333; border-radius: 8px; padding: 1rem; min-height: 80px; font-family: monospace; font-size: 0.9rem; line-height: 1.8; display: none; }
+  .code-row { display: flex; justify-content: space-between; align-items: center; padding: 0.2rem 0; border-bottom: 1px solid #1e1e1e; }
+  .code-val { color: #f0d080; letter-spacing: 0.1em; }
+  .copy-one { background: none; border: 1px solid #333; color: #aaa; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; cursor: pointer; width: auto; margin: 0; }
+  .copy-one:hover { border-color: #c9a84c; color: #c9a84c; }
+  .actions { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .actions button { flex: 1; margin: 0; }
+  .btn-copy-all { background: #222; color: #c9a84c; border: 1px solid #c9a84c; }
+  .note { background: #1a1400; border: 1px solid #c9a84c33; border-radius: 6px; padding: 0.8rem 1rem; font-size: 0.78rem; color: #aaa; line-height: 1.6; margin-top: 1rem; }
+  .note strong { color: #c9a84c; }
+  .step { background: #111; border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.82rem; color: #aaa; line-height: 1.7; }
+  .step strong { color: #eee; display: block; margin-bottom: 0.4rem; }
+  pre { background: #0a0a0a; padding: 0.5rem 0.8rem; border-radius: 4px; font-size: 0.75rem; color: #00cc66; overflow-x: auto; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>⭐ Generador de Códigos Premium</h1>
+  <p class="sub">Genera códigos únicos para darle a cada pagador de Patreon/Ko-fi</p>
+
+  <label>Cantidad de códigos</label>
+  <select id="qty">
+    <option value="1">1 código</option>
+    <option value="5" selected>5 códigos</option>
+    <option value="10">10 códigos</option>
+    <option value="25">25 códigos</option>
+    <option value="50">50 códigos</option>
+  </select>
+
+  <label>Prefijo (opcional)</label>
+  <input type="text" id="prefix" placeholder="ej: SF o PATRON" maxlength="6" value="SF">
+
+  <button onclick="generateCodes()">⚡ Generar Códigos</button>
+
+  <div id="codesOut" class="codes-out"></div>
+
+  <div class="actions" id="actions" style="display:none">
+    <button class="btn-copy-all" onclick="copyAll()">📋 Copiar todos</button>
+    <button onclick="downloadTxt()">💾 Descargar .txt</button>
+  </div>
+
+  <div class="note">
+    <strong>⚠️ Cómo funciona:</strong><br>
+    1. Genera los códigos aquí<br>
+    2. Añádelos a Firestore (instrucciones abajo)<br>
+    3. Dale <strong>un código por persona</strong> que pague<br>
+    4. Cuando lo usen → se marca <code>used: true</code> en Firestore → nadie más puede usarlo
+  </div>
+
+  <div class="step">
+    <strong>📋 Añadir códigos a Firestore:</strong>
+    Ve a <a href="https://console.firebase.google.com" target="_blank" style="color:#c9a84c">console.firebase.google.com</a> →
+    Tu proyecto → Firestore → Colección <code>premiumCodes</code> → Añadir documento.<br><br>
+    Por cada código, crea un documento con ID = el código y estos campos:
+    <pre>{
+  "used": false,
+  "createdAt": "2026-01-01",
+  "note": "Patreon - enero 2026"
+}</pre>
+  </div>
+</div>
+
+<script>
+let generated = [];
+
+function generateCodes() {
+  const qty = parseInt(document.getElementById('qty').value);
+  const prefix = document.getElementById('prefix').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  generated = [];
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0,O,1,I to avoid confusion
+  for (let i = 0; i < qty; i++) {
+    let code = prefix ? prefix + '-' : '';
+    for (let j = 0; j < 8; j++) code += chars[Math.floor(Math.random()*chars.length)];
+    generated.push(code);
+  }
+  renderCodes();
+}
+
+function renderCodes() {
+  const out = document.getElementById('codesOut');
+  out.style.display = 'block';
+  out.innerHTML = generated.map(c => `
+    <div class="code-row">
+      <span class="code-val">${c}</span>
+      <button class="copy-one" onclick="copyOne('${c}')">Copiar</button>
+    </div>`).join('');
+  document.getElementById('actions').style.display = 'flex';
+}
+
+function copyOne(code) {
+  const btn = event.target;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = 'Copiar', 1200);
+  });
+}
+
+function copyAll() {
+  const btn = event.target;
+  navigator.clipboard.writeText(generated.join('\n')).then(() => {
+    btn.textContent = '✓ Copiados';
+    setTimeout(() => btn.textContent = '📋 Copiar todos', 1500);
+  });
+}
+
+function downloadTxt() {
+  const date = new Date().toISOString().split('T')[0];
+  const blob = new Blob([generated.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `streamflex-premium-codes-${date}.txt`;
+  a.click();
+}
+</script>
+</body>
+</html>
