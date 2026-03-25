@@ -1,4 +1,4 @@
-﻿(function runIntro() {
+(function runIntro() {
     const el = document.getElementById('introScreen');
     if (!el) return;
 
@@ -4123,7 +4123,7 @@ function loadPerfilBg() {
     document.getElementById('sfShareCardBtn')?.addEventListener('click', generateShareCard);
 }
 
-function generateShareCard() {
+async function generateShareCard() {
     const canvas = document.getElementById('sfShareCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
