@@ -266,81 +266,76 @@ async function loadUserData(uid, retryCount = 0) {
 
         // data puede ser un array vacío si no existe el perfil
         if (!data || data.length === 0) {
-            console.warn('[SYNC] No se encontró perfil para el usuario');
-            // Crear perfil automáticamente
-            await createUserProfile(uid, syncEl);
+            console.warn('[SYNC] No se encontró perfil para el usuario, creando...');
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { error: insertError } = await supabase.from('profiles').insert({
+                        id: user.id,
+                        email: user.email,
+                        display_name: user.user_metadata?.display_name || user.email.split('@')[0],
+                        favorites: [],
+                        watch_later: [],
+                        watch_history: [],
+                        top10_list: [],
+                        user_ratings: {},
+                        user_notes: {},
+                        custom_lists: {},
+                        achievements: {},
+                        streak_data: { streak: 0, longest: 0, lastWatch: null },
+                        marathon_queue: [],
+                        is_premium: false,
+                        friends: []
+                    });
+                    
+                    if (insertError) {
+                        console.error('[SYNC] Error al crear perfil:', insertError);
+                        handleOfflineMode(syncEl);
+                    } else {
+                        console.log('[SYNC] Perfil creado, recargando...');
+                        loadUserData(uid, 0);
+                        return;
+                    }
+                }
+            } catch(e) {
+                console.error('[SYNC] Error creando perfil:', e);
+                handleOfflineMode(syncEl);
+            }
             return;
         }
 
-        const profileData = data[0]; // Primer resultado
+        const profileData = data[0];
         console.log('[SYNC] Datos recibidos:', Object.keys(profileData));
-            
-            const mappedData = {
-                displayName: profileData.display_name,
-                email: profileData.email,
-                favorites: profileData.favorites || [],
-                watchLater: profileData.watch_later || [],
-                watchHistory: profileData.watch_history || [],
-                top10List: profileData.top10_list || [],
-                userRatings: profileData.user_ratings || {},
-                userNotes: profileData.user_notes || {},
-                customLists: profileData.custom_lists || {},
-                achievements: profileData.achievements || {},
-                streakData: profileData.streak_data || { streak: 0, longest: 0, lastWatch: null },
-                marathonQueue: profileData.marathon_queue || [],
-                avatarIcon: profileData.avatar_icon || '',
-                isPremium: profileData.is_premium || false,
-                friends: profileData.friends || [],
-            };
-            
-            console.log('[SYNC] Datos mapeados, llamando a _sfLoadUserData...');
-            window._sfLoadUserData(mappedData);
-            
-            const lastSync = localStorage.getItem('lastSyncTime');
-            const syncTime = lastSync ? new Date(parseInt(lastSync)).toLocaleString('es-ES') : 'Nunca';
-            if (syncEl) { 
-                syncEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (${syncTime})`; 
-                syncEl.className = 'user-bar-sync';
-            }
-            console.log('[SYNC] Carga completada exitosamente');
-        } else {
-            console.warn('[SYNC] No se encontraron datos para el usuario - creando perfil nuevo');
-            
-            // El usuario no existe en la tabla profiles, lo creamos
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { error: insertError } = await supabase.from('profiles').insert({
-                    id: user.id,
-                    email: user.email,
-                    display_name: user.user_metadata?.display_name || user.email.split('@')[0],
-                    favorites: [],
-                    watch_later: [],
-                    watch_history: [],
-                    top10_list: [],
-                    user_ratings: {},
-                    user_notes: {},
-                    custom_lists: {},
-                    achievements: {},
-                    streak_data: { streak: 0, longest: 0, lastWatch: null },
-                    marathon_queue: [],
-                    is_premium: false,
-                    friends: []
-                });
-                
-                if (insertError) {
-                    console.error('[SYNC] Error al crear perfil:', insertError);
-                } else {
-                    console.log('[SYNC] Perfil creado, recargando...');
-                    loadUserData(uid, 0);
-                    return;
-                }
-            }
-            
-            if (syncEl) { 
-                syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin datos'; 
-                syncEl.className = 'user-bar-sync error';
-            }
+        
+        const mappedData = {
+            displayName: profileData.display_name,
+            email: profileData.email,
+            favorites: profileData.favorites || [],
+            watchLater: profileData.watch_later || [],
+            watchHistory: profileData.watch_history || [],
+            top10List: profileData.top10_list || [],
+            userRatings: profileData.user_ratings || {},
+            userNotes: profileData.user_notes || {},
+            customLists: profileData.custom_lists || {},
+            achievements: profileData.achievements || {},
+            streakData: profileData.streak_data || { streak: 0, longest: 0, lastWatch: null },
+            marathonQueue: profileData.marathon_queue || [],
+            avatarIcon: profileData.avatar_icon || '',
+            isPremium: profileData.is_premium || false,
+            friends: profileData.friends || [],
+        };
+        
+        console.log('[SYNC] Datos mapeados, llamando a _sfLoadUserData...');
+        window._sfLoadUserData(mappedData);
+        
+        const lastSync = localStorage.getItem('lastSyncTime');
+        const syncTime = lastSync ? new Date(parseInt(lastSync)).toLocaleString('es-ES') : 'Nunca';
+        if (syncEl) { 
+            syncEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (${syncTime})`; 
+            syncEl.className = 'user-bar-sync';
         }
+        console.log('[SYNC] Carga completada exitosamente');
+        
     } catch(e) {
         console.error('[SYNC] Error loading user data:', e.message || e);
         
