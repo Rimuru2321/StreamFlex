@@ -1739,6 +1739,7 @@ async function loadProfileView() {
     sectionTitle.textContent = ''; sectionCount.textContent = '';
     cleanupExtras();
     checkAchievements();
+    removeLoadMoreSpinner();
 
     moviesGrid.innerHTML = '';
     moviesGrid.className = 'movies-grid profile-view-grid';
