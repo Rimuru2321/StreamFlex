@@ -337,23 +337,34 @@ async function loadUserData(uid, retryCount = 0) {
         console.log('[SYNC] Carga completada exitosamente');
         
     } catch(e) {
-        console.error('[SYNC] Error loading user data:', e.message || e);
+        const errMsg = e?.message || String(e);
+        console.error('[SYNC] Error loading user data:', errMsg);
+        
+        // Error de lock de Supabase: otro tab/proceso tiene el lock del auth token.
+        // Reintentar con delay más largo o caer a modo offline.
+        const isLockError = errMsg.includes('Lock') || errMsg.includes('lock');
+        
+        if (isLockError && retryCount < maxRetries) {
+            console.log(`[SYNC] Lock error detectado, reintentando con delay largo (${retryCount + 1}/${maxRetries})...`);
+            if (syncEl) { 
+                syncEl.innerHTML = `<i class="fas fa-sync fa-spin"></i> Esperando lock (${retryCount + 1}/${maxRetries})...`; 
+            }
+            setTimeout(() => loadUserData(uid, retryCount + 1), 3000 * (retryCount + 1));
+            return;
+        }
         
         if (retryCount < maxRetries) {
             console.log(`[SYNC] Reintentando carga de datos (${retryCount + 1}/${maxRetries})...`);
             if (syncEl) { 
                 syncEl.innerHTML = `<i class="fas fa-sync fa-spin"></i> Reintentando (${retryCount + 1}/${maxRetries})...`; 
             }
-            setTimeout(() => loadUserData(uid, retryCount + 1), 1000 * (retryCount + 1));
+            setTimeout(() => loadUserData(uid, retryCount + 1), 2000 * (retryCount + 1));
             return;
         }
         
-        if (syncEl) { 
-            syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin conexión'; 
-            syncEl.className = 'user-bar-sync error';
-        }
-        
-        SFStorage.setItem('sf_offline_mode', 'true');
+        // Tras agotar reintentos: activar modo offline y cargar datos locales
+        console.warn('[SYNC] Reintentos agotados, activando modo offline');
+        handleOfflineMode(syncEl);
     }
 }
 
@@ -453,16 +464,20 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
         SFStorage.removeItem('pendingSync');
         
     } catch(e) {
-        console.error('[SYNC] Error al guardar en la nube:', e);
+        const errMsg = e?.message || String(e);
+        console.error('[SYNC] Error al guardar en la nube:', errMsg);
+        
+        const isLockError = errMsg.includes('Lock') || errMsg.includes('lock');
+        const retryDelay = isLockError ? 3000 * (retryCount + 1) : 2000 * (retryCount + 1);
         
         if (retryCount < maxRetries) {
-            console.log(`[SYNC] Reintentando sincronización (${retryCount + 1}/${maxRetries})...`);
+            console.log(`[SYNC] Reintentando sincronización (${retryCount + 1}/${maxRetries})${isLockError ? ' [lock error]' : ''}...`);
             if (syncEl) { 
                 syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Reintentando...'; 
             }
             setTimeout(() => {
                 window._sfSaveToCloud(data, retryCount + 1);
-            }, 1000 * (retryCount + 1));
+            }, retryDelay);
             return;
         }
         
