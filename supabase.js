@@ -50,7 +50,7 @@ async function bootAuth() {
             document.getElementById('userBarName').textContent = firstName;
             document.getElementById('userBarEmail').textContent = user.email;
             const avatarEl = document.getElementById('userBarAvatar');
-            const savedIcon = localStorage.getItem('sf_avatarIcon') || '';
+            const savedIcon = SFStorage.getItem('sf_avatarIcon') || '';
             if (savedIcon) avatarEl.textContent = savedIcon;
             else avatarEl.textContent = firstName.charAt(0).toUpperCase();
 
@@ -328,7 +328,7 @@ async function loadUserData(uid, retryCount = 0) {
         console.log('[SYNC] Datos mapeados, llamando a _sfLoadUserData...');
         window._sfLoadUserData(mappedData);
         
-        const lastSync = localStorage.getItem('lastSyncTime');
+        const lastSync = SFStorage.getItem('lastSyncTime');
         const syncTime = lastSync ? new Date(parseInt(lastSync)).toLocaleString('es-ES') : 'Nunca';
         if (syncEl) { 
             syncEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (${syncTime})`; 
@@ -353,7 +353,7 @@ async function loadUserData(uid, retryCount = 0) {
             syncEl.className = 'user-bar-sync error';
         }
         
-        localStorage.setItem('sf_offline_mode', 'true');
+        SFStorage.setItem('sf_offline_mode', 'true');
     }
 }
 
@@ -363,22 +363,22 @@ function handleOfflineMode(syncEl) {
         syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Modo offline'; 
         syncEl.className = 'user-bar-sync error';
     }
-    localStorage.setItem('sf_offline_mode', 'true');
+    SFStorage.setItem('sf_offline_mode', 'true');
     
-    // Cargar datos desde localStorage
+    // Cargar datos desde SFStorage
     const localData = {
-        favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
-        watchLater: JSON.parse(localStorage.getItem('watchLater') || '[]'),
-        watchHistory: JSON.parse(localStorage.getItem('watchHistory') || '[]'),
-        userRatings: JSON.parse(localStorage.getItem('userRatings') || '{}'),
-        userNotes: JSON.parse(localStorage.getItem('userNotes') || '{}'),
-        customLists: JSON.parse(localStorage.getItem('customLists') || '{}'),
-        achievements: JSON.parse(localStorage.getItem('achievements') || '{}'),
-        streakData: JSON.parse(localStorage.getItem('streakData') || '{"streak":0,"longest":0}'),
-        avatarIcon: localStorage.getItem('sf_avatarIcon') || '',
+        favorites: JSON.parse(SFStorage.getItem('favorites') || '[]'),
+        watchLater: JSON.parse(SFStorage.getItem('watchLater') || '[]'),
+        watchHistory: JSON.parse(SFStorage.getItem('watchHistory') || '[]'),
+        userRatings: JSON.parse(SFStorage.getItem('userRatings') || '{}'),
+        userNotes: JSON.parse(SFStorage.getItem('userNotes') || '{}'),
+        customLists: JSON.parse(SFStorage.getItem('customLists') || '{}'),
+        achievements: JSON.parse(SFStorage.getItem('achievements') || '{}'),
+        streakData: JSON.parse(SFStorage.getItem('streakData') || '{"streak":0,"longest":0}'),
+        avatarIcon: SFStorage.getItem('sf_avatarIcon') || '',
     };
     
-    console.log('[SYNC] Datos cargados desde localStorage');
+    console.log('[SYNC] Datos cargados desde SFStorage');
     window._sfLoadUserData(localData);
 }
 
@@ -449,8 +449,8 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
             }, 2000);
         }
         
-        localStorage.setItem('lastSyncTime', Date.now());
-        localStorage.removeItem('pendingSync');
+        SFStorage.setItem('lastSyncTime', Date.now());
+        SFStorage.removeItem('pendingSync');
         
     } catch(e) {
         console.error('[SYNC] Error al guardar en la nube:', e);
@@ -471,17 +471,17 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
             syncEl.className = 'user-bar-sync error';
         }
         
-        localStorage.setItem('pendingSync', JSON.stringify(data));
+        SFStorage.setItem('pendingSync', JSON.stringify(data));
     }
 };
 
 function checkPendingSync() {
-    const pendingData = localStorage.getItem('pendingSync');
+    const pendingData = SFStorage.getItem('pendingSync');
     if (pendingData) {
         try {
             const data = JSON.parse(pendingData);
             window._sfSaveToCloud(data);
-            localStorage.removeItem('pendingSync');
+            SFStorage.removeItem('pendingSync');
         } catch(e) {
             console.error('Error al procesar sincronización pendiente:', e);
         }
