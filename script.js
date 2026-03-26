@@ -2,13 +2,13 @@
     const el = document.getElementById('introScreen');
     if (!el) return;
 
-    const lastIntro = parseInt(localStorage.getItem('lastIntro') || '0');
+    const lastIntro = parseInt(SFStorage.getItem('lastIntro') || '0');
     const now = Date.now();
     if (now - lastIntro < 60 * 60 * 1000) {
         el.style.display = 'none';
         return;
     }
-    localStorage.setItem('lastIntro', now);
+    SFStorage.setItem('lastIntro', now);
 
     const fill     = document.getElementById('introBarFill');
     const barText  = document.getElementById('introBarText');
@@ -163,16 +163,16 @@ const themeToggleBtn  = document.getElementById('themeToggle');
 
 function safeSet(el, prop, val) { if (el) el[prop] = val; }
 
-let isPremium          = JSON.parse(localStorage.getItem('sf_premium')) || false;
-let premiumTheme       = localStorage.getItem('sf_theme') || 'red';
+let isPremium          = JSON.parse(SFStorage.getItem('sf_premium')) || false;
+let premiumTheme       = SFStorage.getItem('sf_theme') || 'red';
 let currentView        = 'all';
 let currentGenre       = 'popular';
 let currentData        = [];
-let favorites          = JSON.parse(localStorage.getItem('favorites'))    || [];
-let watchLater         = JSON.parse(localStorage.getItem('watchLater'))   || [];
-let watchHistory       = JSON.parse(localStorage.getItem('watchHistory')) || [];
-let userRatings        = JSON.parse(localStorage.getItem('userRatings'))  || {};
-let userNotes          = JSON.parse(localStorage.getItem('userNotes'))    || {};
+let favorites          = JSON.parse(SFStorage.getItem('favorites'))    || [];
+let watchLater         = JSON.parse(SFStorage.getItem('watchLater'))   || [];
+let watchHistory       = JSON.parse(SFStorage.getItem('watchHistory')) || [];
+let userRatings        = JSON.parse(SFStorage.getItem('userRatings'))  || {};
+let userNotes          = JSON.parse(SFStorage.getItem('userNotes'))    || {};
 let genresList         = [];
 let tvGenresList       = [];
 let currentPage        = 1;
@@ -186,21 +186,21 @@ let isPersonSearch     = false;
 let listSortBy         = 'default';
 let searchMode         = 'content'; // 'content' | 'person'
 let currentDecade      = ''; // '' | '70s' | '80s' | '90s' | '2000s' | '2010s' | '2020s'
-let customLists        = JSON.parse(localStorage.getItem('customLists')) || {};
+let customLists        = JSON.parse(SFStorage.getItem('customLists')) || {};
 
 let advFilters = { ratingMin: 0, runtimeMax: 0, language: '', voteMin: 0 };
 let cinemaMode = { active: false, itemId: null, type: null, serverIndex: 0 };
 
-let marathonQueue    = JSON.parse(localStorage.getItem('marathonQueue'))    || [];
-let seriesProgress   = JSON.parse(localStorage.getItem('seriesProgress'))   || {};
-let userBio          = localStorage.getItem('sf_bio') || '';
-let profileBg        = localStorage.getItem('sf_profileBg') || '';
+let marathonQueue    = JSON.parse(SFStorage.getItem('marathonQueue'))    || [];
+let seriesProgress   = JSON.parse(SFStorage.getItem('seriesProgress'))   || {};
+let userBio          = SFStorage.getItem('sf_bio') || '';
+let profileBg        = SFStorage.getItem('sf_profileBg') || '';
 const AVATAR_ICONS = ['👤','🤖','🎃','👾','👽','🐺','💀','👻','🐶','🐵','🐯','👺','🐸','🕊️','🐭','🐱'];
-let userAvatarIcon   = localStorage.getItem('sf_avatarIcon') || '';
-let top10List        = JSON.parse(localStorage.getItem('top10List'))        || [];
-let searchHistory    = JSON.parse(localStorage.getItem('searchHistory'))    || [];
-let streakData       = JSON.parse(localStorage.getItem('streakData'))       || { lastWatch: null, streak: 0, longest: 0 };
-let achievements     = JSON.parse(localStorage.getItem('achievements'))     || {};
+let userAvatarIcon   = SFStorage.getItem('sf_avatarIcon') || '';
+let top10List        = JSON.parse(SFStorage.getItem('top10List'))        || [];
+let searchHistory    = JSON.parse(SFStorage.getItem('searchHistory'))    || [];
+let streakData       = JSON.parse(SFStorage.getItem('streakData'))       || { lastWatch: null, streak: 0, longest: 0 };
+let achievements     = JSON.parse(SFStorage.getItem('achievements'))     || {};
 let deferredInstall  = null;
 
 let currentUid = null;
@@ -226,15 +226,15 @@ window._sfLoadUserData = function(data) {
         }
         
         // Fusionar datos de la nube con datos locales existentes
-        const localFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        const localWatchLater = JSON.parse(localStorage.getItem('watchLater') || '[]');
-        const localWatchHistory = JSON.parse(localStorage.getItem('watchHistory') || '[]');
-        const localUserRatings = JSON.parse(localStorage.getItem('userRatings') || '{}');
-        const localUserNotes = JSON.parse(localStorage.getItem('userNotes') || '{}');
-        const localCustomLists = JSON.parse(localStorage.getItem('customLists') || '{}');
-        const localAchievements = JSON.parse(localStorage.getItem('achievements') || '{}');
-        const localStreakData = JSON.parse(localStorage.getItem('streakData') || '{"streak":0,"longest":0,"lastWatch":null}');
-        const localMarathonQueue = JSON.parse(localStorage.getItem('marathonQueue') || '[]');
+        const localFavorites = JSON.parse(SFStorage.getItem('favorites') || '[]');
+        const localWatchLater = JSON.parse(SFStorage.getItem('watchLater') || '[]');
+        const localWatchHistory = JSON.parse(SFStorage.getItem('watchHistory') || '[]');
+        const localUserRatings = JSON.parse(SFStorage.getItem('userRatings') || '{}');
+        const localUserNotes = JSON.parse(SFStorage.getItem('userNotes') || '{}');
+        const localCustomLists = JSON.parse(SFStorage.getItem('customLists') || '{}');
+        const localAchievements = JSON.parse(SFStorage.getItem('achievements') || '{}');
+        const localStreakData = JSON.parse(SFStorage.getItem('streakData') || '{"streak":0,"longest":0,"lastWatch":null}');
+        const localMarathonQueue = JSON.parse(SFStorage.getItem('marathonQueue') || '[]');
         
         // Preferir datos locales si existen, sino usar datos de la nube
         favorites = localFavorites.length > 0 ? localFavorites : (data.favorites || []);
@@ -247,24 +247,24 @@ window._sfLoadUserData = function(data) {
         streakData = localStreakData.streak > 0 ? localStreakData : (data.streakData || { streak: 0, longest: 0, lastWatch: null });
         marathonQueue = localMarathonQueue.length > 0 ? localMarathonQueue : (data.marathonQueue || []);
         
-        // Guardar en localStorage
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        localStorage.setItem('watchLater', JSON.stringify(watchLater));
-        localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
-        localStorage.setItem('userRatings', JSON.stringify(userRatings));
-        localStorage.setItem('userNotes', JSON.stringify(userNotes));
-        localStorage.setItem('customLists', JSON.stringify(customLists));
-        localStorage.setItem('achievements', JSON.stringify(achievements));
-        localStorage.setItem('streakData', JSON.stringify(streakData));
-        localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue));
+        // Guardar en SFStorage
+        SFStorage.setItem('favorites', JSON.stringify(favorites));
+        SFStorage.setItem('watchLater', JSON.stringify(watchLater));
+        SFStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+        SFStorage.setItem('userRatings', JSON.stringify(userRatings));
+        SFStorage.setItem('userNotes', JSON.stringify(userNotes));
+        SFStorage.setItem('customLists', JSON.stringify(customLists));
+        SFStorage.setItem('achievements', JSON.stringify(achievements));
+        SFStorage.setItem('streakData', JSON.stringify(streakData));
+        SFStorage.setItem('marathonQueue', JSON.stringify(marathonQueue));
         
         if (data.avatarIcon) {
             userAvatarIcon = data.avatarIcon;
-            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+            SFStorage.setItem('sf_avatarIcon', userAvatarIcon);
         }
         if (!userAvatarIcon && data.email) {
             userAvatarIcon = getDefaultAvatarIcon(currentUid || data.email);
-            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+            SFStorage.setItem('sf_avatarIcon', userAvatarIcon);
             cloudSave();
         }
         
@@ -275,15 +275,15 @@ window._sfLoadUserData = function(data) {
 
         if (data.isPremium === true) {
             isPremium = true;
-            localStorage.setItem('sf_premium', '1');
+            SFStorage.setItem('sf_premium', '1');
         } else if (data.isPremium === false) {
             isPremium = false;
-            localStorage.removeItem('sf_premium');
-            localStorage.removeItem('sf_theme');
+            SFStorage.removeItem('sf_premium');
+            SFStorage.removeItem('sf_theme');
             applyPremiumTheme('red');
         }
 
-        localStorage.setItem('sf_offline_mode', 'false');
+        SFStorage.setItem('sf_offline_mode', 'false');
         
         console.log('[DATA] currentView:', currentView);
         
@@ -308,12 +308,12 @@ window._sfLoadUserData = function(data) {
 
 function cloudSave() {
     if (!window._sfSaveToCloud) {
-        console.log('[SYNC] _sfSaveToCloud no disponible aún, guardando en localStorage');
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        localStorage.setItem('watchLater', JSON.stringify(watchLater));
-        localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
-        localStorage.setItem('userRatings', JSON.stringify(userRatings));
-        localStorage.setItem('userNotes', JSON.stringify(userNotes));
+        console.log('[SYNC] _sfSaveToCloud no disponible aún, guardando en SFStorage');
+        SFStorage.setItem('favorites', JSON.stringify(favorites));
+        SFStorage.setItem('watchLater', JSON.stringify(watchLater));
+        SFStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+        SFStorage.setItem('userRatings', JSON.stringify(userRatings));
+        SFStorage.setItem('userNotes', JSON.stringify(userNotes));
         return;
     }
     
@@ -332,17 +332,17 @@ function cloudSave() {
 // Native loading="lazy" + decoding="async" handles lazy loading without JS overhead
 
 document.addEventListener('DOMContentLoaded', async () => {
-    applyTheme(localStorage.getItem('theme') || 'dark');
+    applyTheme(SFStorage.getItem('theme') || 'dark');
 
-    const savedLang = localStorage.getItem('sf_lang') || 'es-ES';
+    const savedLang = SFStorage.getItem('sf_lang') || 'es-ES';
     // Idioma fijo en español (no hay selección de idioma)
     LANGUAGE = 'es-ES';
     REGION = 'ES';
     const si = document.getElementById('searchInput');
     if (si) si.placeholder = t('search');
 
-    if (isPremium && localStorage.getItem('sf_theme') && localStorage.getItem('sf_theme') !== 'red') {
-        setTimeout(() => applyPremiumTheme(localStorage.getItem('sf_theme')), 50);
+    if (isPremium && SFStorage.getItem('sf_theme') && SFStorage.getItem('sf_theme') !== 'red') {
+        setTimeout(() => applyPremiumTheme(SFStorage.getItem('sf_theme')), 50);
     }
     setupEventListeners();
     initCardDelegation();
@@ -357,7 +357,7 @@ window.addEventListener('sf:userReady', async (e) => {
 
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    SFStorage.setItem('theme', theme);
     if (themeToggleBtn) {
         const icon = themeToggleBtn.querySelector('i');
         if (icon) {
@@ -379,7 +379,7 @@ function applyPremiumTheme(t) {
     const th = themes[t] || themes.red;
     Object.entries(th).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
     premiumTheme = t;
-    if (isPremium) localStorage.setItem('sf_theme', t);
+    if (isPremium) SFStorage.setItem('sf_theme', t);
 }
 function toggleTheme() {
     applyTheme((document.documentElement.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark');
@@ -388,7 +388,7 @@ function toggleTheme() {
 function getUserRating(itemId) { return userRatings[String(itemId)] || 0; }
 function setUserRating(itemId, stars) {
     userRatings[String(itemId)] = stars;
-    localStorage.setItem('userRatings', JSON.stringify(userRatings));
+    SFStorage.setItem('userRatings', JSON.stringify(userRatings));
     cloudSave();
 }
 function renderStars(itemId, interactive = false) {
@@ -406,7 +406,7 @@ function getUserNote(itemId) { return userNotes[String(itemId)] || ''; }
 function setUserNote(itemId, note) {
     if (note.trim()) userNotes[String(itemId)] = note.trim();
     else delete userNotes[String(itemId)];
-    localStorage.setItem('userNotes', JSON.stringify(userNotes));
+    SFStorage.setItem('userNotes', JSON.stringify(userNotes));
 }
 
 function addToHistory(item, type) {
@@ -414,7 +414,7 @@ function addToHistory(item, type) {
     watchHistory = watchHistory.filter(h => h.id !== item.id);
     watchHistory.unshift({ ...item, _type: type, _watchedAt: Date.now() });
     if (!isPremium && watchHistory.length > 50) watchHistory = watchHistory.slice(0, 50);
-    localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+    SFStorage.setItem('watchHistory', JSON.stringify(watchHistory));
     cloudSave();
     updateStreak();
     checkAchievements();
@@ -447,11 +447,11 @@ function importData(file) {
         try {
             const data = JSON.parse(e.target.result);
             if (!data.version) throw new Error('Formato inválido');
-            if (data.favorites)    { favorites    = data.favorites;    localStorage.setItem('favorites',    JSON.stringify(favorites)); }
-            if (data.watchLater)   { watchLater   = data.watchLater;   localStorage.setItem('watchLater',   JSON.stringify(watchLater)); }
-            if (data.watchHistory) { watchHistory = data.watchHistory; localStorage.setItem('watchHistory', JSON.stringify(watchHistory)); }
-            if (data.userRatings)  { userRatings  = data.userRatings;  localStorage.setItem('userRatings',  JSON.stringify(userRatings)); }
-            if (data.userNotes)    { userNotes    = data.userNotes;    localStorage.setItem('userNotes',    JSON.stringify(userNotes)); }
+            if (data.favorites)    { favorites    = data.favorites;    SFStorage.setItem('favorites',    JSON.stringify(favorites)); }
+            if (data.watchLater)   { watchLater   = data.watchLater;   SFStorage.setItem('watchLater',   JSON.stringify(watchLater)); }
+            if (data.watchHistory) { watchHistory = data.watchHistory; SFStorage.setItem('watchHistory', JSON.stringify(watchHistory)); }
+            if (data.userRatings)  { userRatings  = data.userRatings;  SFStorage.setItem('userRatings',  JSON.stringify(userRatings)); }
+            if (data.userNotes)    { userNotes    = data.userNotes;    SFStorage.setItem('userNotes',    JSON.stringify(userNotes)); }
             showToast('<i class="fas fa-check"></i> Datos importados correctamente');
             refreshCurrentView();
         } catch(err) {
@@ -1313,7 +1313,7 @@ async function handleSearch() {
     if (!query) return;
 
     searchHistory = [query, ...searchHistory.filter(q => q !== query)].slice(0, 10);
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    SFStorage.setItem('searchHistory', JSON.stringify(searchHistory));
     document.getElementById('searchHistoryDropdown').style.display = 'none';
     if (searchMode==='person') {
         currentView='all'; navBtns.forEach(btn=>btn.classList.toggle('active',btn.dataset.view==='all'));
@@ -1421,7 +1421,7 @@ function toggleFavorite(itemId) {
     const idx = favorites.findIndex(f=>f.id===item.id);
     if (idx===-1) { favorites.push(item); showToast(`<i class="fas fa-star"></i> Añadido a favoritos`); }
     else { favorites.splice(idx,1); showToast(`<i class="fas fa-star"></i> Eliminado de favoritos`); }
-    localStorage.setItem('favorites', JSON.stringify(favorites));
+    SFStorage.setItem('favorites', JSON.stringify(favorites));
     cloudSave();
     if (currentView==='favorites') renderListView(favorites,'favorites'); else refreshCurrentView();
 }
@@ -1430,7 +1430,7 @@ function toggleWatchLater(itemId) {
     const idx = watchLater.findIndex(f=>f.id===item.id);
     if (idx===-1) { watchLater.push(item); showToast(`<i class="fas fa-clock"></i> Añadido a ver después`); }
     else { watchLater.splice(idx,1); showToast(`<i class="fas fa-clock"></i> Eliminado de ver después`); }
-    localStorage.setItem('watchLater', JSON.stringify(watchLater));
+    SFStorage.setItem('watchLater', JSON.stringify(watchLater));
     cloudSave();
     if (currentView==='watchlater') renderListView(watchLater,'watchlater'); else refreshCurrentView();
 }
@@ -2302,7 +2302,7 @@ async function loadProfileView() {
         btn.addEventListener('click', e => {
             e.stopPropagation();
             watchHistory = watchHistory.filter(h=>h.id!==parseInt(btn.dataset.id));
-            localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+            SFStorage.setItem('watchHistory', JSON.stringify(watchHistory));
             btn.closest('.prow-item').remove();
             showToast('<i class="fas fa-trash"></i> Eliminado del historial');
         }));
@@ -2324,7 +2324,7 @@ async function loadProfileView() {
             variant: 'danger'
         });
         if (!ok) return;
-        watchHistory=[]; localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+        watchHistory=[]; SFStorage.setItem('watchHistory', JSON.stringify(watchHistory));
         showToast('<i class="fas fa-trash"></i> Historial borrado'); loadProfileView();
     });
 
@@ -2357,7 +2357,7 @@ function drawGenreChart(topGenres) {
 }
 
 function saveCustomLists() {
-    localStorage.setItem('customLists', JSON.stringify(customLists));
+    SFStorage.setItem('customLists', JSON.stringify(customLists));
     cloudSave();
 }
 
@@ -3058,7 +3058,7 @@ function showSearchHistory() {
     });
     dd.querySelector('#shClearBtn')?.addEventListener('mousedown', e => {
         e.preventDefault();
-        searchHistory = []; localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+        searchHistory = []; SFStorage.setItem('searchHistory', JSON.stringify(searchHistory));
         dd.style.display = 'none';
     });
 }
@@ -3121,7 +3121,7 @@ function showSwipeIndicator(card, text, dir) {
     setTimeout(() => el.remove(), 1000);
 }
 
-function saveMarathon() { localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue)); cloudSave(); }
+function saveMarathon() { SFStorage.setItem('marathonQueue', JSON.stringify(marathonQueue)); cloudSave(); }
 
 function addToMarathon(item, type) {
     if (marathonQueue.find(m => m.id === item.id)) { showToast('<i class="fas fa-film"></i> Ya está en el maratón'); return; }
@@ -3299,18 +3299,18 @@ function renderTop10() {
         btn.addEventListener('click', () => {
             if (top10List.length >= 10) { showToast('Ya tienes 10 películas en tu ranking'); return; }
             const item = allItems.find(i => i.id === parseInt(btn.dataset.id));
-            if (item) { top10List.push(item); localStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10(); }
+            if (item) { top10List.push(item); SFStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10(); }
         });
     });
     document.querySelectorAll('.top10-remove').forEach(btn => {
         btn.addEventListener('click', () => {
             top10List.splice(parseInt(btn.dataset.idx), 1);
-            localStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10();
+            SFStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10();
         });
     });
     document.getElementById('exportTop10Btn')?.addEventListener('click', exportTop10Image);
     document.getElementById('clearTop10Btn')?.addEventListener('click', () => {
-        top10List = []; localStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10();
+        top10List = []; SFStorage.setItem('top10List', JSON.stringify(top10List)); renderTop10();
     });
 }
 
@@ -3329,7 +3329,7 @@ function setupTop10DragDrop() {
             if (dragIdx !== null && dragIdx !== targetIdx) {
                 const [moved] = top10List.splice(dragIdx, 1);
                 top10List.splice(targetIdx, 0, moved);
-                localStorage.setItem('top10List', JSON.stringify(top10List));
+                SFStorage.setItem('top10List', JSON.stringify(top10List));
                 renderTop10();
             }
         });
@@ -3471,7 +3471,7 @@ function updateStreak() {
     }
     streakData.lastWatch = Date.now();
     streakData.longest = Math.max(streakData.longest, streakData.streak);
-    localStorage.setItem('streakData', JSON.stringify(streakData));
+    SFStorage.setItem('streakData', JSON.stringify(streakData));
     cloudSave();
 
     if (streakData.streak > 1) showToast(`🔥 ¡${streakData.streak} días de racha!`);
@@ -3508,7 +3508,7 @@ const ACHIEVEMENTS_DEF = [
     { id: 'marathon_5',     icon: '🏃', label: 'Maratón épico',      desc: 'Crea un maratón de 5+ películas',        check: () => marathonQueue.length >= 5 },
     { id: 'marathon_10',    icon: '🏅', label: 'Maratón legendario', desc: 'Crea un maratón de 10+ películas',       check: () => marathonQueue.length >= 10 },
 
-    { id: 'sharer',         icon: '📤', label: 'Embajador',          desc: 'Comparte tu primera película',            check: () => (localStorage.getItem('shareCount')||0) >= 1 },
+    { id: 'sharer',         icon: '📤', label: 'Embajador',          desc: 'Comparte tu primera película',            check: () => (SFStorage.getItem('shareCount')||0) >= 1 },
 
 
 
@@ -3526,7 +3526,7 @@ function checkAchievements() {
         }
     });
     if (newUnlocked.length) {
-        localStorage.setItem('achievements', JSON.stringify(achievements));
+        SFStorage.setItem('achievements', JSON.stringify(achievements));
         cloudSave();
 
         newUnlocked.forEach((a, i) => {
@@ -3595,10 +3595,10 @@ function importFromSyncURL() {
     if (!sync) return;
     try {
         const data = JSON.parse(decodeURIComponent(escape(atob(sync))));
-        if (data.favorites)   { favorites = data.favorites;   localStorage.setItem('favorites', JSON.stringify(favorites)); }
-        if (data.watchLater)  { watchLater = data.watchLater;  localStorage.setItem('watchLater', JSON.stringify(watchLater)); }
-        if (data.top10List)   { top10List = data.top10List;    localStorage.setItem('top10List', JSON.stringify(top10List)); }
-        if (data.userRatings) { userRatings = data.userRatings; localStorage.setItem('userRatings', JSON.stringify(userRatings)); }
+        if (data.favorites)   { favorites = data.favorites;   SFStorage.setItem('favorites', JSON.stringify(favorites)); }
+        if (data.watchLater)  { watchLater = data.watchLater;  SFStorage.setItem('watchLater', JSON.stringify(watchLater)); }
+        if (data.top10List)   { top10List = data.top10List;    SFStorage.setItem('top10List', JSON.stringify(top10List)); }
+        if (data.userRatings) { userRatings = data.userRatings; SFStorage.setItem('userRatings', JSON.stringify(userRatings)); }
         showToast('<i class="fas fa-sync"></i> Datos sincronizados desde URL');
         history.replaceState({}, '', location.pathname);
     } catch(e) {}
@@ -3657,7 +3657,7 @@ async function loadTVSeasons(item) {
                 card.addEventListener('click', () => {
                     const id = card.dataset.id, s = card.dataset.season, epNum = card.dataset.ep;
                     const vc = document.getElementById('videoContainer');
-                    if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; localStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
+                    if (isPremium) { seriesProgress[id]={s,ep:epNum,updatedAt:Date.now()}; SFStorage.setItem('seriesProgress',JSON.stringify(seriesProgress)); }
                     
                     // Servidores para episodios
                     const SERVERS_EP = [
@@ -3945,7 +3945,7 @@ async function openEditProfile() {
                 const userBarAvatar = document.getElementById('userBarAvatar');
                 if (userBarAvatar) userBarAvatar.textContent = newIcon || newName.charAt(0).toUpperCase();
                 userAvatarIcon = newIcon;
-                localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+                SFStorage.setItem('sf_avatarIcon', userAvatarIcon);
                 showToast('<i class="fas fa-check"></i> Perfil actualizado');
                 closeModalFn();
                 if (currentView === 'profile') loadProfileView();
@@ -4189,7 +4189,7 @@ function loadPerfilBg() {
 
     document.getElementById('sfBioSave')?.addEventListener('click', () => {
         userBio = document.getElementById('sfBioInput').value.trim();
-        localStorage.setItem('sf_bio', userBio);
+        SFStorage.setItem('sf_bio', userBio);
         showToast('<i class="fas fa-save"></i> Bio guardada');
     });
 
@@ -4199,7 +4199,7 @@ function loadPerfilBg() {
         const reader = new FileReader();
         reader.onload = ev => {
             profileBg = ev.target.result;
-            localStorage.setItem('sf_profileBg', profileBg);
+            SFStorage.setItem('sf_profileBg', profileBg);
             document.getElementById('sfBgPreview').style.backgroundImage = 'url(' + profileBg + ')';
             showToast('<i class="fas fa-image"></i> Fondo actualizado');
         };
@@ -4208,7 +4208,7 @@ function loadPerfilBg() {
 
     document.getElementById('sfBgRemove')?.addEventListener('click', () => {
         profileBg = '';
-        localStorage.removeItem('sf_profileBg');
+        SFStorage.removeItem('sf_profileBg');
         loadPerfilBg();
         showToast('<i class="fas fa-trash"></i> Fondo eliminado');
     });
@@ -4288,10 +4288,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (isPremium && Notification.permission === 'granted') {
-        const lastNotif = parseInt(localStorage.getItem('sf_last_notif') || '0');
+        const lastNotif = parseInt(SFStorage.getItem('sf_last_notif') || '0');
         const weekMs = 7 * 24 * 60 * 60 * 1000;
         if (Date.now() - lastNotif > weekMs) {
-            localStorage.setItem('sf_last_notif', Date.now().toString());
+            SFStorage.setItem('sf_last_notif', Date.now().toString());
             fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=' + API_KEY + '&language=es-ES&page=1')
                 .then(r => r.json())
                 .then(data => {
@@ -4428,7 +4428,7 @@ function openPremiumModal() {
                 }).eq('id', user.id);
 
                 isPremium = true;
-                localStorage.setItem('sf_premium', '1');
+                SFStorage.setItem('sf_premium', '1');
                 msg.style.color = '#00cc66';
                 msg.textContent = 'Codigo valido! Premium activado. Bienvenido!';
                 setTimeout(() => { closePremiumModal(); location.reload(); }, 1800);
