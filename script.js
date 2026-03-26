@@ -217,11 +217,17 @@ function getDefaultAvatarIcon(seed='') {
 }
 
 window._sfLoadUserData = function(data) {
+    console.log('[DATA] Iniciando carga de datos del usuario:', data ? Object.keys(data) : 'sin datos');
+    
     try {
         if (!data) {
-            console.warn('_sfLoadUserData: No se proporcionaron datos');
+            console.warn('[DATA] No se proporcionaron datos');
             return;
         }
+        
+        console.log('[DATA] Procesando favoritos:', data.favorites ? data.favorites.length : 0);
+        console.log('[DATA] Procesando watchLater:', data.watchLater ? data.watchLater.length : 0);
+        console.log('[DATA] Procesando watchHistory:', data.watchHistory ? data.watchHistory.length : 0);
         
         if (data.favorites)    { favorites    = data.favorites;    localStorage.setItem('favorites', JSON.stringify(favorites)); }
         if (data.watchLater)   { watchLater   = data.watchLater;   localStorage.setItem('watchLater', JSON.stringify(watchLater)); }
@@ -261,25 +267,41 @@ window._sfLoadUserData = function(data) {
 
         localStorage.setItem('sf_offline_mode', 'false');
         
+        console.log('[DATA] currentView:', currentView);
+        
         if (currentView === 'profile') {
+            console.log('[DATA] Cargando vista de perfil...');
             loadProfileView();
+        } else {
+            console.log('[DATA] No estamos en perfil, recargando vista actual...');
+            refreshCurrentView();
         }
         
         if (typeof updateMarathonPanel === 'function') {
             updateMarathonPanel();
         }
         
-        console.log('Datos de usuario cargados correctamente');
+        console.log('[DATA] Datos de usuario cargados correctamente');
         
     } catch(e) {
-        console.error('Error al cargar datos del usuario:', e);
+        console.error('[DATA] Error al cargar datos del usuario:', e);
     }
 };
 
 function cloudSave() {
-    if (!window._sfSaveToCloud) return;
+    if (!window._sfSaveToCloud) {
+        console.log('[SYNC] _sfSaveToCloud no disponible aún, guardando en localStorage');
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        localStorage.setItem('watchLater', JSON.stringify(watchLater));
+        localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+        localStorage.setItem('userRatings', JSON.stringify(userRatings));
+        localStorage.setItem('userNotes', JSON.stringify(userNotes));
+        return;
+    }
+    
     clearTimeout(cloudSaveTimer);
     cloudSaveTimer = setTimeout(() => {
+        console.log('[SYNC] Iniciando cloudSave...');
         window._sfSaveToCloud({
             favorites, watchLater, watchHistory, top10List,
             userRatings, userNotes, customLists, achievements,
@@ -1848,6 +1870,8 @@ async function loadProfileView() {
     const chalProgress = getWeeklyProgress(challenge);
     const chalPct = Math.min(100, Math.round(chalProgress / challenge.target * 100));
     const stats   = buildAdvancedStats();
+    const streak = streakData?.streak || 0;
+    const streakLongest = streakData?.longest || 0;
 
     moviesGrid.innerHTML = `
     <div class="pv-wrap">
@@ -1865,7 +1889,7 @@ async function loadProfileView() {
                 <div class="pv-level-bar"><div class="pv-level-fill" style="width:${lvlPct}%;background:${level.color}"></div></div>
                 <span class="pv-level-xp">${xp} XP</span>
             </div>
-            <div class="pv-hero-streak">🔥 Racha <strong>${streakData.streak}</strong> día${streakData.streak!==1?'s':''} · Récord <strong>${streakData.longest}</strong></div>
+            <div class="pv-hero-streak">🔥 Racha <strong>${streak}</strong> día${streak!==1?'s':''} · Récord <strong>${streakLongest}</strong></div>
           </div>
         </div>
         <div class="pv-hero-kpis">
@@ -1935,9 +1959,9 @@ async function loadProfileView() {
                 <div class="pv-mini"><i class="fas fa-star"></i><span>${totalFavs} en favoritos</span></div>
                 <div class="pv-mini"><i class="fas fa-clock"></i><span>${totalWL} por ver</span></div>
                 <div class="pv-mini"><i class="fas fa-list"></i><span>${Object.keys(customLists).length} listas creadas</span></div>
-                <div class="pv-mini"><i class="fas fa-star-half-alt"></i><span>${Object.keys(userRatings).length} valoraciones dadas</span></div>
+                <div class="pv-mini"><i class="fas fa-star-half-alt"></i><span>${Object.keys(userRatings).length} valoracionesadas</span></div>
                 ${topDec?`<div class="pv-mini"><i class="fas fa-calendar-alt"></i><span>Década favorita: <strong>${topDec[0]}s</strong></span></div>`:''}
-                <div class="pv-mini">🔥<span>Racha actual: <strong>${streakData.streak} días</strong></span></div>
+                <div class="pv-mini">🔥<span>Racha actual: <strong>${streak} días</strong></span></div>
               </div>
             </div>
             <!-- Genre chart -->
@@ -1949,7 +1973,7 @@ async function loadProfileView() {
           </div>
 
           <!-- Recent row -->
-          ${watchHistory.length?`
+          ${(watchHistory?.length || 0) ? `
           <div class="pv-recents-block">
             <div class="pv-block-label">Visto recientemente</div>
             <div class="pv-recents-scroll">
