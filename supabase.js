@@ -223,21 +223,30 @@ async function loadUserData(uid, retryCount = 0) {
     const maxRetries = 3;
     const syncEl = document.getElementById('syncStatus');
     console.log('[SYNC] Iniciando carga de datos para usuario:', uid);
+    console.log('[SYNC] Supabase URL:', SUPABASE_URL);
     
     if (syncEl) { 
         syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Sincronizando...'; 
         syncEl.className = 'user-bar-sync syncing'; 
     }
 
+    // Timeout de 10 segundos
+    const timeoutMs = 10000;
+    const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout: La consulta tardó más de 10 segundos')), timeoutMs)
+    );
+
     try {
         console.log('[SYNC] Consultando perfil en Supabase...');
         
-        const { data, error } = await supabase
+        const queryPromise = supabase
             .from('profiles')
             .select('*')
             .eq('id', uid)
             .single();
 
+        const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
+        
         console.log('[SYNC] Respuesta de Supabase:', { data, error });
 
         if (error) {
@@ -277,14 +286,45 @@ async function loadUserData(uid, retryCount = 0) {
             }
             console.log('[SYNC] Carga completada exitosamente');
         } else {
-            console.warn('[SYNC] No se encontraron datos para el usuario');
+            console.warn('[SYNC] No se encontraron datos para el usuario - creando perfil nuevo');
+            
+            // El usuario no existe en la tabla profiles, lo creamos
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { error: insertError } = await supabase.from('profiles').insert({
+                    id: user.id,
+                    email: user.email,
+                    display_name: user.user_metadata?.display_name || user.email.split('@')[0],
+                    favorites: [],
+                    watch_later: [],
+                    watch_history: [],
+                    top10_list: [],
+                    user_ratings: {},
+                    user_notes: {},
+                    custom_lists: {},
+                    achievements: {},
+                    streak_data: { streak: 0, longest: 0, lastWatch: null },
+                    marathon_queue: [],
+                    is_premium: false,
+                    friends: []
+                });
+                
+                if (insertError) {
+                    console.error('[SYNC] Error al crear perfil:', insertError);
+                } else {
+                    console.log('[SYNC] Perfil creado, recargando...');
+                    loadUserData(uid, 0);
+                    return;
+                }
+            }
+            
             if (syncEl) { 
                 syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin datos'; 
                 syncEl.className = 'user-bar-sync error';
             }
         }
     } catch(e) {
-        console.error('[SYNC] Error loading user data:', e);
+        console.error('[SYNC] Error loading user data:', e.message || e);
         
         if (retryCount < maxRetries) {
             console.log(`[SYNC] Reintentando carga de datos (${retryCount + 1}/${maxRetries})...`);
@@ -314,6 +354,9 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
         console.warn('[SYNC] No hay usuario logueado, no se puede guardar');
         return;
     }
+    
+    // Timeout de 10 segundos
+    const timeoutMs = 10000;
     
     try {
         if (syncEl) { 
