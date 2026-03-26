@@ -222,21 +222,32 @@ async function bootAuth() {
 async function loadUserData(uid, retryCount = 0) {
     const maxRetries = 3;
     const syncEl = document.getElementById('syncStatus');
+    console.log('[SYNC] Iniciando carga de datos para usuario:', uid);
+    
     if (syncEl) { 
         syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Sincronizando...'; 
         syncEl.className = 'user-bar-sync syncing'; 
     }
 
     try {
+        console.log('[SYNC] Consultando perfil en Supabase...');
+        
         const { data, error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', uid)
             .single();
 
-        if (error) throw error;
+        console.log('[SYNC] Respuesta de Supabase:', { data, error });
+
+        if (error) {
+            console.error('[SYNC] Error de Supabase:', error);
+            throw error;
+        }
 
         if (data) {
+            console.log('[SYNC] Datos recibidos:', Object.keys(data));
+            
             const mappedData = {
                 displayName: data.display_name,
                 email: data.email,
@@ -254,6 +265,8 @@ async function loadUserData(uid, retryCount = 0) {
                 isPremium: data.is_premium || false,
                 friends: data.friends || [],
             };
+            
+            console.log('[SYNC] Datos mapeados, llamando a _sfLoadUserData...');
             window._sfLoadUserData(mappedData);
             
             const lastSync = localStorage.getItem('lastSyncTime');
@@ -262,12 +275,19 @@ async function loadUserData(uid, retryCount = 0) {
                 syncEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (${syncTime})`; 
                 syncEl.className = 'user-bar-sync';
             }
+            console.log('[SYNC] Carga completada exitosamente');
+        } else {
+            console.warn('[SYNC] No se encontraron datos para el usuario');
+            if (syncEl) { 
+                syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin datos'; 
+                syncEl.className = 'user-bar-sync error';
+            }
         }
     } catch(e) {
-        console.error('Error loading user data:', e);
+        console.error('[SYNC] Error loading user data:', e);
         
         if (retryCount < maxRetries) {
-            console.log(`Reintentando carga de datos (${retryCount + 1}/${maxRetries})...`);
+            console.log(`[SYNC] Reintentando carga de datos (${retryCount + 1}/${maxRetries})...`);
             if (syncEl) { 
                 syncEl.innerHTML = `<i class="fas fa-sync fa-spin"></i> Reintentando (${retryCount + 1}/${maxRetries})...`; 
             }
@@ -287,9 +307,13 @@ async function loadUserData(uid, retryCount = 0) {
 window._sfSaveToCloud = async function(data, retryCount = 0) {
     const maxRetries = 3;
     const syncEl = document.getElementById('syncStatus');
+    console.log('[SYNC] Intentando guardar datos en la nube...');
     
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+        console.warn('[SYNC] No hay usuario logueado, no se puede guardar');
+        return;
+    }
     
     try {
         if (syncEl) { 
@@ -298,6 +322,7 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
         }
 
         const updateData = {
+            id: user.id,
             favorites: data.favorites || [],
             watch_later: data.watchLater || [],
             watch_history: data.watchHistory || [],
@@ -315,13 +340,19 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
             updated_at: new Date().toISOString(),
         };
 
+        console.log('[SYNC] Enviando datos a Supabase:', Object.keys(updateData));
+
         const { error } = await supabase
             .from('profiles')
-            .upsert(updateData, { onConflict: 'id' })
-            .eq('id', user.id);
+            .upsert(updateData, { onConflict: 'id' });
 
-        if (error) throw error;
+        if (error) {
+            console.error('[SYNC] Error al guardar:', error);
+            throw error;
+        }
 
+        console.log('[SYNC] Guardado exitoso');
+        
         if (syncEl) { 
             syncEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado'; 
             syncEl.className = 'user-bar-sync';
@@ -333,12 +364,13 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
         }
         
         localStorage.setItem('lastSyncTime', Date.now());
+        localStorage.removeItem('pendingSync');
         
     } catch(e) {
-        console.error('Error al guardar en la nube:', e);
+        console.error('[SYNC] Error al guardar en la nube:', e);
         
         if (retryCount < maxRetries) {
-            console.log(`Reintentando sincronización (${retryCount + 1}/${maxRetries})...`);
+            console.log(`[SYNC] Reintentando sincronización (${retryCount + 1}/${maxRetries})...`);
             if (syncEl) { 
                 syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Reintentando...'; 
             }
