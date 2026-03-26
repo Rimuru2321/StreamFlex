@@ -225,20 +225,38 @@ window._sfLoadUserData = function(data) {
             return;
         }
         
-        console.log('[DATA] Procesando favoritos:', data.favorites ? data.favorites.length : 0);
-        console.log('[DATA] Procesando watchLater:', data.watchLater ? data.watchLater.length : 0);
-        console.log('[DATA] Procesando watchHistory:', data.watchHistory ? data.watchHistory.length : 0);
+        // Fusionar datos de la nube con datos locales existentes
+        const localFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const localWatchLater = JSON.parse(localStorage.getItem('watchLater') || '[]');
+        const localWatchHistory = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+        const localUserRatings = JSON.parse(localStorage.getItem('userRatings') || '{}');
+        const localUserNotes = JSON.parse(localStorage.getItem('userNotes') || '{}');
+        const localCustomLists = JSON.parse(localStorage.getItem('customLists') || '{}');
+        const localAchievements = JSON.parse(localStorage.getItem('achievements') || '{}');
+        const localStreakData = JSON.parse(localStorage.getItem('streakData') || '{"streak":0,"longest":0,"lastWatch":null}');
+        const localMarathonQueue = JSON.parse(localStorage.getItem('marathonQueue') || '[]');
         
-        if (data.favorites)    { favorites    = data.favorites;    localStorage.setItem('favorites', JSON.stringify(favorites)); }
-        if (data.watchLater)   { watchLater   = data.watchLater;   localStorage.setItem('watchLater', JSON.stringify(watchLater)); }
-        if (data.watchHistory) { watchHistory = data.watchHistory; localStorage.setItem('watchHistory', JSON.stringify(watchHistory)); }
-        if (data.top10List)    { top10List    = data.top10List;    localStorage.setItem('top10List', JSON.stringify(top10List)); }
-        if (data.userRatings)  { userRatings  = data.userRatings;  localStorage.setItem('userRatings', JSON.stringify(userRatings)); }
-        if (data.userNotes)    { userNotes    = data.userNotes;    localStorage.setItem('userNotes', JSON.stringify(userNotes)); }
-        if (data.customLists)  { customLists  = data.customLists;  localStorage.setItem('customLists', JSON.stringify(customLists)); }
-        if (data.achievements) { achievements = data.achievements; localStorage.setItem('achievements', JSON.stringify(achievements)); }
-        if (data.streakData)   { streakData   = data.streakData;   localStorage.setItem('streakData', JSON.stringify(streakData)); }
-        if (data.marathonQueue){ marathonQueue= data.marathonQueue; localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue)); }
+        // Preferir datos locales si existen, sino usar datos de la nube
+        favorites = localFavorites.length > 0 ? localFavorites : (data.favorites || []);
+        watchLater = localWatchLater.length > 0 ? localWatchLater : (data.watchLater || []);
+        watchHistory = localWatchHistory.length > 0 ? localWatchHistory : (data.watchHistory || []);
+        userRatings = Object.keys(localUserRatings).length > 0 ? localUserRatings : (data.userRatings || {});
+        userNotes = Object.keys(localUserNotes).length > 0 ? localUserNotes : (data.userNotes || {});
+        customLists = Object.keys(localCustomLists).length > 0 ? localCustomLists : (data.customLists || {});
+        achievements = Object.keys(localAchievements).length > 0 ? localAchievements : (data.achievements || {});
+        streakData = localStreakData.streak > 0 ? localStreakData : (data.streakData || { streak: 0, longest: 0, lastWatch: null });
+        marathonQueue = localMarathonQueue.length > 0 ? localMarathonQueue : (data.marathonQueue || []);
+        
+        // Guardar en localStorage
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        localStorage.setItem('watchLater', JSON.stringify(watchLater));
+        localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+        localStorage.setItem('userRatings', JSON.stringify(userRatings));
+        localStorage.setItem('userNotes', JSON.stringify(userNotes));
+        localStorage.setItem('customLists', JSON.stringify(customLists));
+        localStorage.setItem('achievements', JSON.stringify(achievements));
+        localStorage.setItem('streakData', JSON.stringify(streakData));
+        localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue));
         
         if (data.avatarIcon) {
             userAvatarIcon = data.avatarIcon;
@@ -1827,6 +1845,7 @@ async function loadProfileView() {
         (byMonth[k]||(byMonth[k]=[])).push(it);
     });
     const months = Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
+    const MN = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     const cardRow = (item) => {
         const type   = item._type||(item.first_air_date?'tv':'movie');
