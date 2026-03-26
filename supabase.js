@@ -239,40 +239,58 @@ async function loadUserData(uid, retryCount = 0) {
     try {
         console.log('[SYNC] Consultando perfil en Supabase...');
         
+        // Usar limit(1) en lugar de single() para evitar el error de múltiples filas
         const queryPromise = supabase
             .from('profiles')
             .select('*')
             .eq('id', uid)
-            .single();
+            .limit(1);
 
         const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
         
-        console.log('[SYNC] Respuesta de Supabase:', { data, error });
+        console.log('[SYNC] Respuesta de Supabase - data:', data, 'error:', error);
 
         if (error) {
-            console.error('[SYNC] Error de Supabase:', error);
+            console.error('[SYNC] Error de Supabase:', error.message || error, 'Code:', error.code);
+            
+            // Si es error 406, probablemente la tabla no existe o RLS la bloquea
+            // Intentar crear la tabla o usar datos locales
+            if (error.code === '406' || error.message?.includes('406') || error.code === 'PGRST116') {
+                console.warn('[SYNC] Error 406/GRST116 - La tabla profiles puede no existir o estar bloqueada');
+                console.warn('[SYNC] Necesitas ejecutar el SQL de setup en Supabase');
+                handleOfflineMode(syncEl);
+                return;
+            }
             throw error;
         }
 
-        if (data) {
-            console.log('[SYNC] Datos recibidos:', Object.keys(data));
+        // data puede ser un array vacío si no existe el perfil
+        if (!data || data.length === 0) {
+            console.warn('[SYNC] No se encontró perfil para el usuario');
+            // Crear perfil automáticamente
+            await createUserProfile(uid, syncEl);
+            return;
+        }
+
+        const profileData = data[0]; // Primer resultado
+        console.log('[SYNC] Datos recibidos:', Object.keys(profileData));
             
             const mappedData = {
-                displayName: data.display_name,
-                email: data.email,
-                favorites: data.favorites || [],
-                watchLater: data.watch_later || [],
-                watchHistory: data.watch_history || [],
-                top10List: data.top10_list || [],
-                userRatings: data.user_ratings || {},
-                userNotes: data.user_notes || {},
-                customLists: data.custom_lists || {},
-                achievements: data.achievements || {},
-                streakData: data.streak_data || { streak: 0, longest: 0, lastWatch: null },
-                marathonQueue: data.marathon_queue || [],
-                avatarIcon: data.avatar_icon || '',
-                isPremium: data.is_premium || false,
-                friends: data.friends || [],
+                displayName: profileData.display_name,
+                email: profileData.email,
+                favorites: profileData.favorites || [],
+                watchLater: profileData.watch_later || [],
+                watchHistory: profileData.watch_history || [],
+                top10List: profileData.top10_list || [],
+                userRatings: profileData.user_ratings || {},
+                userNotes: profileData.user_notes || {},
+                customLists: profileData.custom_lists || {},
+                achievements: profileData.achievements || {},
+                streakData: profileData.streak_data || { streak: 0, longest: 0, lastWatch: null },
+                marathonQueue: profileData.marathon_queue || [],
+                avatarIcon: profileData.avatar_icon || '',
+                isPremium: profileData.is_premium || false,
+                friends: profileData.friends || [],
             };
             
             console.log('[SYNC] Datos mapeados, llamando a _sfLoadUserData...');
@@ -342,6 +360,31 @@ async function loadUserData(uid, retryCount = 0) {
         
         localStorage.setItem('sf_offline_mode', 'true');
     }
+}
+
+function handleOfflineMode(syncEl) {
+    console.warn('[SYNC] Activando modo offline - usando datos locales');
+    if (syncEl) { 
+        syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Modo offline'; 
+        syncEl.className = 'user-bar-sync error';
+    }
+    localStorage.setItem('sf_offline_mode', 'true');
+    
+    // Cargar datos desde localStorage
+    const localData = {
+        favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+        watchLater: JSON.parse(localStorage.getItem('watchLater') || '[]'),
+        watchHistory: JSON.parse(localStorage.getItem('watchHistory') || '[]'),
+        userRatings: JSON.parse(localStorage.getItem('userRatings') || '{}'),
+        userNotes: JSON.parse(localStorage.getItem('userNotes') || '{}'),
+        customLists: JSON.parse(localStorage.getItem('customLists') || '{}'),
+        achievements: JSON.parse(localStorage.getItem('achievements') || '{}'),
+        streakData: JSON.parse(localStorage.getItem('streakData') || '{"streak":0,"longest":0}'),
+        avatarIcon: localStorage.getItem('sf_avatarIcon') || '',
+    };
+    
+    console.log('[SYNC] Datos cargados desde localStorage');
+    window._sfLoadUserData(localData);
 }
 
 window._sfSaveToCloud = async function(data, retryCount = 0) {
