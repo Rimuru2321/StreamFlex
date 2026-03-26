@@ -1826,6 +1826,7 @@ async function loadProfileView() {
         const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
         (byMonth[k]||(byMonth[k]=[])).push(it);
     });
+    const months = Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
 
     const cardRow = (item) => {
         const type   = item._type||(item.first_air_date?'tv':'movie');
