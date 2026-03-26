@@ -448,6 +448,7 @@ async function loadRecommendations() {
     heroBanner.classList.remove('visible');
 
     moviesGrid.className = 'movies-grid';
+    moviesGrid.innerHTML = '';
     const sectionHeader = document.querySelector('.section-header');
     if (sectionHeader) sectionHeader.style.display = 'flex';
     if (!topGenres.length) {
@@ -898,6 +899,7 @@ async function loadUpcoming() {
     filterBar.style.display = 'none';
 
     moviesGrid.className = 'movies-grid';
+    moviesGrid.innerHTML = '';
     const sectionHeader = document.querySelector('.section-header');
     if (sectionHeader) sectionHeader.style.display = 'flex';
     cleanupExtras();
@@ -1738,6 +1740,7 @@ async function loadProfileView() {
     cleanupExtras();
     checkAchievements();
 
+    moviesGrid.innerHTML = '';
     moviesGrid.className = 'movies-grid profile-view-grid';
 
     const totalWatched = watchHistory.length;
