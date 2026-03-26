@@ -146,7 +146,7 @@ function sfConfirm({ icon='⚠️', kanji='OK', title='¿Estás seguro?', body='
 const moviesGrid      = document.getElementById('moviesGrid');
 const searchInput     = document.getElementById('searchInput');
 const searchBtn       = document.getElementById('searchBtn');
-const navBtns         = document.querySelectorAll('.nav-btn');
+const navBtns         = document.querySelectorAll('.nav-btn') || [];
 const sectionTitle    = document.getElementById('sectionTitle');
 const sectionCount    = document.getElementById('sectionCount');
 const modal           = document.getElementById('modal');
@@ -160,6 +160,8 @@ const listViewBtn     = document.getElementById('listViewBtn');
 const filterBar       = document.getElementById('filterBar');
 const sortSelect      = document.getElementById('sortSelect');
 const themeToggleBtn  = document.getElementById('themeToggle');
+
+function safeSet(el, prop, val) { if (el) el[prop] = val; }
 
 let isPremium          = JSON.parse(localStorage.getItem('sf_premium')) || false;
 let premiumTheme       = localStorage.getItem('sf_theme') || 'red';
@@ -294,9 +296,13 @@ window.addEventListener('sf:userReady', async (e) => {
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-    const icon = themeToggleBtn.querySelector('i');
-    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-    themeToggleBtn.title = theme === 'dark' ? 'Modo claro' : 'Modo oscuro';
+    if (themeToggleBtn) {
+        const icon = themeToggleBtn.querySelector('i');
+        if (icon) {
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        themeToggleBtn.title = theme === 'dark' ? 'Modo claro' : 'Modo oscuro';
+    }
 }
 
 function applyPremiumTheme(t) {
@@ -583,7 +589,6 @@ function setupEventListeners() {
         btn.addEventListener('click', () => {
             currentDecade = btn.dataset.decade;
             document.querySelectorAll('.decade-btn').forEach(b => b.classList.toggle('active', b.dataset.decade === currentDecade));
-            currentYear = decadeToYear(currentDecade);
             resetAndReload();
         });
     });
@@ -1168,30 +1173,30 @@ function getListForView(view) {
 
 async function loadPopularMovies() {
     showLoading();
-    moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
+    if (moviesGrid) moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
     const sh = document.querySelector('.section-header'); if (sh) sh.style.display = 'flex';
     try {
         const data = await tmdbFetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=${LANGUAGE}&region=${REGION}&page=${currentPage}`);
         totalPages = data.total_pages||1;
         currentData = [...currentData, ...(data.results||[])];
         displayItems(currentData, 'movie');
-        sectionTitle.textContent = 'Películas populares';
+        if (sectionTitle) sectionTitle.textContent = 'Películas populares';
         setHero(data.results[0], 'movie');
-        heroBanner.classList.add('visible');
+        if (heroBanner) heroBanner.classList.add('visible');
     } catch(e) { console.error('Error populares:', e); }
 }
 async function loadPopularTV() {
     showLoading();
-    moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
+    if (moviesGrid) moviesGrid.className = moviesGrid.classList.contains('list-view') ? 'movies-grid list-view' : 'movies-grid';
     const sh = document.querySelector('.section-header'); if (sh) sh.style.display = 'flex';
     try {
         const data = await tmdbFetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=${LANGUAGE}&page=${currentPage}`);
         totalPages = data.total_pages||1;
         currentData = [...currentData, ...(data.results||[])];
         displayItems(currentData, 'tv');
-        sectionTitle.textContent = 'Series populares';
+        if (sectionTitle) sectionTitle.textContent = 'Series populares';
         setHero(data.results[0], 'tv');
-        heroBanner.classList.add('visible');
+        if (heroBanner) heroBanner.classList.add('visible');
     } catch(e) { console.error('Error series:', e); }
 }
 async function loadByGenre(genreId) {
