@@ -219,9 +219,13 @@ async function bootAuth() {
     });
 }
 
-async function loadUserData(uid) {
+async function loadUserData(uid, retryCount = 0) {
+    const maxRetries = 3;
     const syncEl = document.getElementById('syncStatus');
-    if (syncEl) { syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Sincronizando...'; syncEl.className = 'user-bar-sync syncing'; }
+    if (syncEl) { 
+        syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Sincronizando...'; 
+        syncEl.className = 'user-bar-sync syncing'; 
+    }
 
     try {
         const { data, error } = await supabase
@@ -229,6 +233,8 @@ async function loadUserData(uid) {
             .select('*')
             .eq('id', uid)
             .single();
+
+        if (error) throw error;
 
         if (data) {
             const mappedData = {
@@ -249,20 +255,47 @@ async function loadUserData(uid) {
                 friends: data.friends || [],
             };
             window._sfLoadUserData(mappedData);
+            
+            const lastSync = localStorage.getItem('lastSyncTime');
+            const syncTime = lastSync ? new Date(parseInt(lastSync)).toLocaleString('es-ES') : 'Nunca';
+            if (syncEl) { 
+                syncEl.innerHTML = `<i class="fas fa-check-circle"></i> Sincronizado (${syncTime})`; 
+                syncEl.className = 'user-bar-sync';
+            }
         }
-        if (syncEl) { syncEl.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Sincronizado'; syncEl.className = 'user-bar-sync'; }
     } catch(e) {
         console.error('Error loading user data:', e);
-        if (syncEl) { syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin conexión'; syncEl.className = 'user-bar-sync error'; }
+        
+        if (retryCount < maxRetries) {
+            console.log(`Reintentando carga de datos (${retryCount + 1}/${maxRetries})...`);
+            if (syncEl) { 
+                syncEl.innerHTML = `<i class="fas fa-sync fa-spin"></i> Reintentando (${retryCount + 1}/${maxRetries})...`; 
+            }
+            setTimeout(() => loadUserData(uid, retryCount + 1), 1000 * (retryCount + 1));
+            return;
+        }
+        
+        if (syncEl) { 
+            syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin conexión'; 
+            syncEl.className = 'user-bar-sync error';
+        }
+        
+        localStorage.setItem('sf_offline_mode', 'true');
     }
 }
 
-window._sfSaveToCloud = async function(data) {
+window._sfSaveToCloud = async function(data, retryCount = 0) {
+    const maxRetries = 3;
+    const syncEl = document.getElementById('syncStatus');
+    
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const syncEl = document.getElementById('syncStatus');
+    
     try {
-        if (syncEl) { syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Guardando...'; syncEl.className = 'user-bar-sync syncing'; }
+        if (syncEl) { 
+            syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Guardando...'; 
+            syncEl.className = 'user-bar-sync syncing'; 
+        }
 
         const updateData = {
             favorites: data.favorites || [],
@@ -282,16 +315,62 @@ window._sfSaveToCloud = async function(data) {
             updated_at: new Date().toISOString(),
         };
 
-        await supabase
+        const { error } = await supabase
             .from('profiles')
             .upsert(updateData, { onConflict: 'id' })
             .eq('id', user.id);
 
-        if (syncEl) { syncEl.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Sincronizado'; syncEl.className = 'user-bar-sync'; }
+        if (error) throw error;
+
+        if (syncEl) { 
+            syncEl.innerHTML = '<i class="fas fa-check-circle"></i> Sincronizado'; 
+            syncEl.className = 'user-bar-sync';
+            setTimeout(() => {
+                if (syncEl && syncEl.className !== 'user-bar-sync syncing') {
+                    syncEl.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Sincronizado';
+                }
+            }, 2000);
+        }
+        
+        localStorage.setItem('lastSyncTime', Date.now());
+        
     } catch(e) {
-        if (syncEl) { syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al guardar'; syncEl.className = 'user-bar-sync error'; }
+        console.error('Error al guardar en la nube:', e);
+        
+        if (retryCount < maxRetries) {
+            console.log(`Reintentando sincronización (${retryCount + 1}/${maxRetries})...`);
+            if (syncEl) { 
+                syncEl.innerHTML = '<i class="fas fa-sync fa-spin"></i> Reintentando...'; 
+            }
+            setTimeout(() => {
+                window._sfSaveToCloud(data, retryCount + 1);
+            }, 1000 * (retryCount + 1));
+            return;
+        }
+        
+        if (syncEl) { 
+            syncEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Sin conexión'; 
+            syncEl.className = 'user-bar-sync error';
+        }
+        
+        localStorage.setItem('pendingSync', JSON.stringify(data));
     }
 };
+
+function checkPendingSync() {
+    const pendingData = localStorage.getItem('pendingSync');
+    if (pendingData) {
+        try {
+            const data = JSON.parse(pendingData);
+            window._sfSaveToCloud(data);
+            localStorage.removeItem('pendingSync');
+        } catch(e) {
+            console.error('Error al procesar sincronización pendiente:', e);
+        }
+    }
+}
+
+setInterval(checkPendingSync, 30000);
 
 function setupEyeToggle(btnId, inputId) {
     const btn = document.getElementById(btnId);
