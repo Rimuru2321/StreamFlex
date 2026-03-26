@@ -230,10 +230,10 @@ async function loadUserData(uid, retryCount = 0) {
         syncEl.className = 'user-bar-sync syncing'; 
     }
 
-    // Timeout de 10 segundos
-    const timeoutMs = 10000;
+    // Timeout de 30 segundos (las consultas pueden tardar en ambiente serverless)
+    const timeoutMs = 30000;
     const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Timeout: La consulta tardó más de 10 segundos')), timeoutMs)
+        setTimeout(() => reject(new Error('Timeout: La consulta tardó más de 30 segundos')), timeoutMs)
     );
 
     try {
@@ -393,8 +393,27 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
         return;
     }
     
-    // Timeout de 10 segundos
-    const timeoutMs = 10000;
+    // Timeout de 30 segundos para guardado
+    const timeoutMs = 30000;
+    
+    const updateData = {
+        id: user.id,
+        favorites: data.favorites || [],
+        watch_later: data.watchLater || [],
+        watch_history: data.watchHistory || [],
+        top10_list: data.top10List || [],
+        user_ratings: data.userRatings || {},
+        user_notes: data.userNotes || {},
+        custom_lists: data.customLists || {},
+        achievements: data.achievements || {},
+        streak_data: data.streakData || {},
+        marathon_queue: data.marathonQueue || [],
+        avatar_icon: data.avatarIcon || '',
+        display_name: data.displayName || '',
+        is_premium: data.isPremium,
+        friends: data.friends || [],
+        updated_at: new Date().toISOString(),
+    };
     
     try {
         if (syncEl) { 
@@ -402,30 +421,16 @@ window._sfSaveToCloud = async function(data, retryCount = 0) {
             syncEl.className = 'user-bar-sync syncing'; 
         }
 
-        const updateData = {
-            id: user.id,
-            favorites: data.favorites || [],
-            watch_later: data.watchLater || [],
-            watch_history: data.watchHistory || [],
-            top10_list: data.top10List || [],
-            user_ratings: data.userRatings || {},
-            user_notes: data.userNotes || {},
-            custom_lists: data.customLists || {},
-            achievements: data.achievements || {},
-            streak_data: data.streakData || {},
-            marathon_queue: data.marathonQueue || [],
-            avatar_icon: data.avatarIcon || '',
-            display_name: data.displayName || '',
-            is_premium: data.isPremium,
-            friends: data.friends || [],
-            updated_at: new Date().toISOString(),
-        };
-
-        console.log('[SYNC] Enviando datos a Supabase:', Object.keys(updateData));
-
-        const { error } = await supabase
+        console.log('[SYNC] Preparando datos para guardar...', Object.keys(updateData));
+        
+        // Usar timeout para el guardado también
+        const savePromise = supabase
             .from('profiles')
             .upsert(updateData, { onConflict: 'id' });
+            
+        const { error } = await Promise.race([savePromise, new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout: Guardado tardó más de 30 segundos')), timeoutMs)
+        )]);
 
         if (error) {
             console.error('[SYNC] Error al guardar:', error);
