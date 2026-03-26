@@ -217,41 +217,63 @@ function getDefaultAvatarIcon(seed='') {
 }
 
 window._sfLoadUserData = function(data) {
-    if (data.favorites)    { favorites    = data.favorites;    }
-    if (data.watchLater)   { watchLater   = data.watchLater;   }
-    if (data.watchHistory) { watchHistory = data.watchHistory; }
-    if (data.top10List)    { top10List    = data.top10List;    }
-    if (data.userRatings)  { userRatings  = data.userRatings;  }
-    if (data.userNotes)    { userNotes    = data.userNotes;    }
-    if (data.customLists)  { customLists  = data.customLists;  }
-    if (data.achievements) { achievements = data.achievements; }
-    if (data.streakData)   { streakData   = data.streakData;   }
-    if (data.marathonQueue){ marathonQueue= data.marathonQueue;}
-    if (data.avatarIcon)   {
-        userAvatarIcon = data.avatarIcon;
-        localStorage.setItem('sf_avatarIcon', userAvatarIcon);
-    }
-    if (!userAvatarIcon) {
-        userAvatarIcon = getDefaultAvatarIcon(currentUid || data.email || '');
-        localStorage.setItem('sf_avatarIcon', userAvatarIcon);
-        cloudSave();
-    }
-    const userBarAvatar = document.getElementById('userBarAvatar');
-    if (userBarAvatar && userAvatarIcon) userBarAvatar.textContent = userAvatarIcon;
+    try {
+        if (!data) {
+            console.warn('_sfLoadUserData: No se proporcionaron datos');
+            return;
+        }
+        
+        if (data.favorites)    { favorites    = data.favorites;    localStorage.setItem('favorites', JSON.stringify(favorites)); }
+        if (data.watchLater)   { watchLater   = data.watchLater;   localStorage.setItem('watchLater', JSON.stringify(watchLater)); }
+        if (data.watchHistory) { watchHistory = data.watchHistory; localStorage.setItem('watchHistory', JSON.stringify(watchHistory)); }
+        if (data.top10List)    { top10List    = data.top10List;    localStorage.setItem('top10List', JSON.stringify(top10List)); }
+        if (data.userRatings)  { userRatings  = data.userRatings;  localStorage.setItem('userRatings', JSON.stringify(userRatings)); }
+        if (data.userNotes)    { userNotes    = data.userNotes;    localStorage.setItem('userNotes', JSON.stringify(userNotes)); }
+        if (data.customLists)  { customLists  = data.customLists;  localStorage.setItem('customLists', JSON.stringify(customLists)); }
+        if (data.achievements) { achievements = data.achievements; localStorage.setItem('achievements', JSON.stringify(achievements)); }
+        if (data.streakData)   { streakData   = data.streakData;   localStorage.setItem('streakData', JSON.stringify(streakData)); }
+        if (data.marathonQueue){ marathonQueue= data.marathonQueue; localStorage.setItem('marathonQueue', JSON.stringify(marathonQueue)); }
+        
+        if (data.avatarIcon) {
+            userAvatarIcon = data.avatarIcon;
+            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+        }
+        if (!userAvatarIcon && data.email) {
+            userAvatarIcon = getDefaultAvatarIcon(currentUid || data.email);
+            localStorage.setItem('sf_avatarIcon', userAvatarIcon);
+            cloudSave();
+        }
+        
+        const userBarAvatar = document.getElementById('userBarAvatar');
+        if (userBarAvatar && userAvatarIcon) {
+            userBarAvatar.textContent = userAvatarIcon;
+        }
 
-    if (data.isPremium === true) {
-        isPremium = true;
-        localStorage.setItem('sf_premium', '1');
-    } else if (data.isPremium === false) {
+        if (data.isPremium === true) {
+            isPremium = true;
+            localStorage.setItem('sf_premium', '1');
+        } else if (data.isPremium === false) {
+            isPremium = false;
+            localStorage.removeItem('sf_premium');
+            localStorage.removeItem('sf_theme');
+            applyPremiumTheme('red');
+        }
 
-        isPremium = false;
-        localStorage.removeItem('sf_premium');
-        localStorage.removeItem('sf_theme');
-        applyPremiumTheme('red');
+        localStorage.setItem('sf_offline_mode', 'false');
+        
+        if (currentView === 'profile') {
+            loadProfileView();
+        }
+        
+        if (typeof updateMarathonPanel === 'function') {
+            updateMarathonPanel();
+        }
+        
+        console.log('Datos de usuario cargados correctamente');
+        
+    } catch(e) {
+        console.error('Error al cargar datos del usuario:', e);
     }
-
-    if (currentView === 'profile') loadProfileView();
-    updateMarathonPanel();
 };
 
 function cloudSave() {
@@ -1739,46 +1761,49 @@ function bindSimilarEvents(type, currentItemId) {
 }
 
 async function loadProfileView() {
-    heroBanner.classList.remove('visible');
-    filterBar.style.display = 'none';
-    sectionTitle.textContent = ''; sectionCount.textContent = '';
+    if (heroBanner) heroBanner.classList.remove('visible');
+    if (filterBar) filterBar.style.display = 'none';
+    if (sectionTitle) sectionTitle.textContent = '';
+    if (sectionCount) sectionCount.textContent = '';
     cleanupExtras();
     checkAchievements();
     removeLoadMoreSpinner();
 
+    if (!moviesGrid) {
+        console.warn('moviesGrid no encontrado');
+        return;
+    }
     moviesGrid.innerHTML = '';
     moviesGrid.className = 'movies-grid profile-view-grid';
 
-    const totalWatched = watchHistory.length;
-    const totalFavs    = favorites.length;
-    const totalWL      = watchLater.length;
+    const totalWatched = watchHistory?.length || 0;
+    const totalFavs    = favorites?.length || 0;
+    const totalWL      = watchLater?.length || 0;
     const totalMin     = totalWatched * 110;
     const totalH       = Math.floor(totalMin / 60);
     const totalD       = Math.floor(totalH / 24);
     const timeStr      = totalD > 0 ? `${totalD}d ${totalH%24}h` : totalH > 0 ? `${totalH}h` : `${totalMin}min`;
-    const unlockedAch  = Object.keys(achievements).length;
+    const unlockedAch  = achievements ? Object.keys(achievements).length : 0;
 
     const genreCount = {};
-    [...watchHistory,...favorites].forEach(item =>
+    [...(watchHistory||[]), ...(favorites||[])].forEach(item =>
         (item.genre_ids||[]).forEach(g => { genreCount[g] = (genreCount[g]||0)+1; }));
     const topGenres = Object.entries(genreCount).sort((a,b)=>b[1]-a[1]).slice(0,6)
-        .map(([id,c]) => ({ name: genresList.find(g=>g.id==id)?.name||`G${id}`, count:c }));
+        .map(([id,c]) => ({ name: (genresList||[]).find(g=>g.id==id)?.name||`G${id}`, count:c }));
 
     const decCounts = {};
-    watchHistory.forEach(it => {
+    (watchHistory||[]).forEach(it => {
         const y = parseInt((it.release_date||it.first_air_date||'0').split('-')[0]);
         if (y>=1970) { const d=Math.floor(y/10)*10; decCounts[d]=(decCounts[d]||0)+1; }
     });
     const topDec = Object.entries(decCounts).sort((a,b)=>b[1]-a[1])[0];
 
-    const MN = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     const byMonth = {};
-    watchHistory.forEach(it => {
+    (watchHistory||[]).forEach(it => {
         const d = new Date(it._watchedAt||0);
         const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
         (byMonth[k]||(byMonth[k]=[])).push(it);
     });
-    const months = Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
 
     const cardRow = (item) => {
         const type   = item._type||(item.first_air_date?'tv':'movie');
@@ -1801,9 +1826,16 @@ async function loadProfileView() {
         </div>`;
     };
 
-    const { data: { user: fbUser } } = await window._sb?.auth?.getUser() || { data: { user: null } };
-    const fbName    = fbUser?.user_metadata?.display_name || fbUser?.email?.split('@')[0] || 'Cinéfilo';
-    const fbEmail   = fbUser?.email || '';
+    let fbName = 'Cinéfilo';
+    let fbEmail = '';
+    try {
+        const { data: { user: fbUser } } = await window._sb?.auth?.getUser() || { data: { user: null } };
+        fbName = fbUser?.user_metadata?.display_name || fbUser?.email?.split('@')[0] || 'Cinéfilo';
+        fbEmail = fbUser?.email || '';
+    } catch(e) {
+        console.warn('Error al obtener usuario de Supabase:', e);
+    }
+    
     const fbInitial = fbName.charAt(0).toUpperCase();
     const avatarHtml = userAvatarIcon
         ? `<span class="pv-avatar-icon">${userAvatarIcon}</span>`
