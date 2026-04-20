@@ -57,7 +57,7 @@ import { loadRecommendations } from './views/para-ti.js';
 
 // ----- CONFIGURACIÓN DE API SEGURA (PROXY) -----
 // URL ANTERIOR INSEGURA: export const BASE_URL = 'https://api.themoviedb.org/3';
-export const BASE_URL = 'https://tu-worker.tu-usuario.workers.dev'; // TODO: Pon la URL de tu worker aquí
+export const BASE_URL = 'https://tmdb-proxy.lorenzobuten02.workers.dev'; 
 
 // KEY ANTERIOR INSEGURA: export const API_KEY = '808c0f44efd9afa0e316f4c383a0dc1e';
 export const API_KEY = 'protegida_en_backend'; // TMDB seguirá creyendo que está bien gracias al worker
