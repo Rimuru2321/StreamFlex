@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos de Servicio — StreamFlex</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#cc0000">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;
+            --red:#cc0000;--red-glow:rgba(204,0,0,0.4);
+            --text:#f0ede8;--text-dim:#888;--text-muted:#444;
+            --gold:#c9a84c;--border:rgba(255,255,255,0.07);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;line-height:1.8;min-height:100vh;}
+        header{background:rgba(10,10,10,0.97);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+        .logo-wrap{display:flex;align-items:center;gap:1rem;text-decoration:none;}
+        .logo-jp{font-family:'Noto Serif JP',serif;font-size:0.6rem;color:var(--red);letter-spacing:0.2em;writing-mode:vertical-rl;opacity:0.7;}
+        .logo-main{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--text);letter-spacing:0.05em;}
+        .logo-main span{color:var(--red);}
+        .back-btn{background:none;border:1px solid var(--border);color:var(--text-dim);padding:0.5rem 1rem;border-radius:4px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;text-decoration:none;transition:all 0.2s;}
+        .back-btn:hover{border-color:var(--red);color:var(--text);}
+        .hero{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg) 60%);border-bottom:1px solid var(--border);padding:4rem 2rem 3rem;position:relative;overflow:hidden;}
+        .hero::before{content:'規約';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-family:'Noto Serif JP',serif;font-size:8rem;color:var(--red);opacity:0.05;pointer-events:none;}
+        .hero-inner{max-width:860px;margin:0 auto;}
+        .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:white;font-size:0.7rem;font-weight:700;letter-spacing:0.15em;padding:0.3rem 0.8rem;border-radius:2px;margin-bottom:1rem;font-family:'Noto Serif JP',serif;}
+        .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.05em;line-height:1;margin-bottom:0.8rem;}
+        .hero h1 span{color:var(--red);}
+        .hero-meta{color:var(--text-dim);font-size:0.85rem;display:flex;gap:1.5rem;flex-wrap:wrap;}
+        .hero-meta span{display:flex;align-items:center;gap:0.4rem;}
+        .content{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem;}
+        .toc{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:4px;padding:1.5rem 2rem;margin-bottom:3rem;}
+        .toc-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--red);margin-bottom:1rem;}
+        .toc ol{padding-left:1.2rem;}
+        .toc li{margin-bottom:0.3rem;}
+        .toc a{color:var(--text-dim);text-decoration:none;font-size:0.9rem;transition:color 0.2s;}
+        .toc a:hover{color:var(--red);}
+        .section{margin-bottom:3rem;scroll-margin-top:80px;}
+        .section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border);}
+        .section-num{background:var(--red);color:white;font-family:'Bebas Neue',sans-serif;font-size:1rem;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;border-radius:2px;flex-shrink:0;}
+        .section h2{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;}
+        .section p{color:var(--text-dim);margin-bottom:1rem;font-size:0.95rem;}
+        .section ul{padding-left:1.5rem;color:var(--text-dim);font-size:0.95rem;}
+        .section li{margin-bottom:0.5rem;}
+        .warning-box{background:rgba(204,0,0,0.08);border:1px solid rgba(204,0,0,0.25);border-left:3px solid var(--red);border-radius:4px;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;color:var(--text-dim);}
+        .warning-box strong{color:var(--red);}
+        .info-box{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.9rem;color:var(--text-dim);}
+        footer{background:var(--bg2);border-top:1px solid var(--border);padding:2rem;text-align:center;}
+        .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);margin-bottom:0.5rem;}
+        .footer-logo span{color:var(--red);}
+        .footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin:1rem 0;}
+        .footer-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}
+        .footer-links a:hover{color:var(--red);}
+        .footer-copy{color:var(--text-muted);font-size:0.8rem;}
+        @media(max-width:600px){header{padding:1rem;}.hero{padding:2.5rem 1rem 2rem;}.content{padding:2rem 1rem 4rem;}}
+    </style>
+</head>
+<body>
+<header>
+    <a class="logo-wrap" href="/index.html">
+        <div class="logo-jp">映画</div>
+        <div class="logo-main">Stream<span>Flex</span></div>
+    </a>
+    <a class="back-btn" href="/index.html"><i class="fas fa-arrow-left"></i> Volver</a>
+</header>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge"><i class="fas fa-file-contract"></i> 利用規約</div>
+        <h1>Términos de <span>Servicio</span></h1>
+        <div class="hero-meta">
+            <span><i class="fas fa-calendar"></i> Última actualización: Marzo 2026</span>
+            <span><i class="fas fa-mobile-alt"></i> Aplicación StreamFlex</span>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="toc">
+        <div class="toc-title"><i class="fas fa-list"></i> &nbsp;Contenido</div>
+        <ol>
+            <li><a href="#s1">Aceptación de los términos</a></li>
+            <li><a href="#s2">Descripción de la aplicación</a></li>
+            <li><a href="#s3">Uso permitido</a></li>
+            <li><a href="#s4">Uso prohibido</a></li>
+            <li><a href="#s5">Cuentas de usuario</a></li>
+            <li><a href="#s6">Contenido de terceros</a></li>
+            <li><a href="#s7">Exención de responsabilidad</a></li>
+            <li><a href="#s8">Limitación de responsabilidad</a></li>
+            <li><a href="#s9">Modificaciones</a></li>
+            <li><a href="#s10">Contacto</a></li>
+        </ol>
+    </div>
+
+    <div class="warning-box">
+        <strong>⚠ Importante:</strong> Al instalar y usar StreamFlex, aceptas estos términos en su totalidad. Si no estás de acuerdo, por favor desinstala la aplicación.
+    </div>
+
+    <div class="section" id="s1">
+        <div class="section-header"><div class="section-num">1</div><h2>Aceptación de los Términos</h2></div>
+        <p>Al descargar, instalar o utilizar la aplicación StreamFlex ("la App"), aceptas quedar vinculado por estos Términos de Servicio. Estos términos constituyen un acuerdo legal entre tú ("el Usuario") y StreamFlex.</p>
+        <p>Si accedes a la App en nombre de una organización, garantizas tener autorización para aceptar estos términos en su nombre.</p>
+    </div>
+
+    <div class="section" id="s2">
+        <div class="section-header"><div class="section-num">2</div><h2>Descripción de la Aplicación</h2></div>
+        <p>StreamFlex es una aplicación de entretenimiento que permite a los usuarios explorar, descubrir y reproducir películas y series. La App ofrece:</p>
+        <ul>
+            <li>Exploración de un extenso catálogo de películas y series</li>
+            <li>Reproducción de contenido multimedia</li>
+            <li>Gestión de listas personales (favoritos, pendientes, vistas)</li>
+            <li>Recomendaciones personalizadas según tus gustos</li>
+            <li>Funcionalidad offline para contenido guardado</li>
+        </ul>
+        <div class="info-box">
+            <i class="fas fa-info-circle" style="color:var(--gold)"></i> StreamFlex <strong>no produce ni distribuye</strong> contenido propio. Todo el contenido reproducible proviene de fuentes externas.
+        </div>
+    </div>
+
+    <div class="section" id="s3">
+        <div class="section-header"><div class="section-num">3</div><h2>Uso Permitido</h2></div>
+        <p>Puedes utilizar StreamFlex para:</p>
+        <ul>
+            <li>Uso personal y no comercial</li>
+            <li>Explorar y descubrir contenido de entretenimiento</li>
+            <li>Crear y gestionar tu perfil de usuario</li>
+            <li>Instalar la aplicación en tus dispositivos personales</li>
+            <li>Compartir recomendaciones con otros usuarios</li>
+        </ul>
+    </div>
+
+    <div class="section" id="s4">
+        <div class="section-header"><div class="section-num">4</div><h2>Uso Prohibido</h2></div>
+        <p>Queda expresamente prohibido:</p>
+        <ul>
+            <li>Usar la App para fines comerciales sin autorización expresa</li>
+            <li>Intentar hackear, manipular o interrumpir el funcionamiento de la App</li>
+            <li>Crear cuentas falsas o suplantar la identidad de otros usuarios</li>
+            <li>Usar herramientas automatizadas para acceder a la App de forma masiva</li>
+            <li>Distribuir o reproducir el código fuente sin permiso</li>
+            <li>Usar la App para actividades ilegales en tu jurisdicción</li>
+        </ul>
+        <div class="warning-box">
+            <strong>Violaciones:</strong> El incumplimiento puede resultar en la suspensión inmediata de tu cuenta.
+        </div>
+    </div>
+
+    <div class="section" id="s5">
+        <div class="section-header"><div class="section-num">5</div><h2>Cuentas de Usuario</h2></div>
+        <p>Para acceder a ciertas funciones necesitas una cuenta. Al registrarte:</p>
+        <ul>
+            <li>Eres responsable de la confidencialidad de tus credenciales</li>
+            <li>Debes proporcionar información veraz y actualizada</li>
+            <li>Debes tener al menos 13 años de edad</li>
+            <li>Eres responsable de toda actividad desde tu cuenta</li>
+        </ul>
+        <p>Nos reservamos el derecho de suspender o eliminar cuentas que violen estos términos, sin previo aviso.</p>
+    </div>
+
+    <div class="section" id="s6">
+        <div class="section-header"><div class="section-num">6</div><h2>Contenido de Terceros</h2></div>
+        <p>StreamFlex muestra y da acceso a contenido provisto por fuentes externas. Todo el contenido multimedia, imágenes e información de películas y series pertenece a sus respectivos propietarios y creadores.</p>
+        <p>StreamFlex no reclama derechos de propiedad sobre dicho contenido y no es responsable de su disponibilidad, calidad o legalidad.</p>
+    </div>
+
+    <div class="section" id="s7">
+        <div class="section-header"><div class="section-num">7</div><h2>Exención de Responsabilidad</h2></div>
+        <p>StreamFlex se proporciona "tal cual". No garantizamos:</p>
+        <ul>
+            <li>La disponibilidad ininterrumpida de la App</li>
+            <li>La calidad, precisión o legalidad del contenido externo</li>
+            <li>La compatibilidad con todos los dispositivos</li>
+            <li>La seguridad absoluta de los datos transmitidos</li>
+        </ul>
+    </div>
+
+    <div class="section" id="s8">
+        <div class="section-header"><div class="section-num">8</div><h2>Limitación de Responsabilidad</h2></div>
+        <p>En ningún caso StreamFlex, sus creadores o colaboradores serán responsables por daños directos, indirectos, incidentales o consecuentes derivados del uso o imposibilidad de uso de la App.</p>
+    </div>
+
+    <div class="section" id="s9">
+        <div class="section-header"><div class="section-num">9</div><h2>Modificaciones</h2></div>
+        <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios serán efectivos al publicarse. El uso continuado de la App tras dichas modificaciones implica la aceptación de los nuevos términos.</p>
+    </div>
+
+    <div class="section" id="s10">
+        <div class="section-header"><div class="section-num">10</div><h2>Contacto</h2></div>
+        <p>Si tienes preguntas sobre estos Términos de Servicio, puedes contactarnos directamente a través del botón de soporte dentro de la aplicación.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-logo">Stream<span>Flex</span> <span style="font-family:'Noto Serif JP';font-size:0.8rem;color:var(--text-dim)">映画</span></div>
+    <div class="footer-links">
+        <a href="/index.html"><i class="fas fa-home"></i> Inicio</a>
+        <a href="/terms.html"><i class="fas fa-file-contract"></i> Términos</a>
+        <a href="/privacy.html"><i class="fas fa-shield-alt"></i> Privacidad</a>
+        <a href="/support.html"><i class="fas fa-headset"></i> Soporte</a>
+    </div>
+    <div class="footer-copy">© 2026 StreamFlex · Todos los derechos reservados</div>
+</footer>
+</body>
+</html>
